@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.Windows.Forms.DataVisualization.Charting;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Threading;
 
 namespace GasSensor_GUI_v1._0
 {
@@ -35,7 +36,42 @@ namespace GasSensor_GUI_v1._0
         float zoom_size = 20f;
         double[] value=new double[4];// = 0, value2 = 0, value3 = 0, value4 = 0;
         double refADCVoltage = 5;
+        private Thread trd;
+        private readonly Queue<float> _queue_time = new Queue<float>();
+        private readonly Queue<float> _queue_prev_time = new Queue<float>();
 
+
+        private void ThreadTask()
+        {
+            //var startTimeSpan = TimeSpan.Zero;
+            //var periodTimeSpan = TimeSpan.FromSeconds(10);
+            float inThreadTime=0, inThreadPrevTime = 0;
+            if (_queue_time.Count > 0)
+            {
+                inThreadTime = _queue_time.Dequeue();
+                if (_queue_time.Count > 0)
+                    inThreadPrevTime = _queue_prev_time.Dequeue();
+                //var timer = new System.Threading.Timer((e) =>
+                //{
+                //    MyMethod();
+                //}, null, startTimeSpan, periodTimeSpan);
+                //// this.Invoke(new Action(() => { buttonClearChart.Click(object sender, EventArgs e); }));
+
+                    UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[0], 1);
+                    UpdateChart((float)inThreadPrevTime + inThreadTime   / 60, value[1], 2);
+                    UpdateChart((float)inThreadPrevTime + inThreadTime / 60, value[2], 3);
+                    UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[3], 4);
+                    UpdateGridView((float)inThreadPrevTime + inThreadTime  / 60, value[0], value[1], value[2], value[3], 0, 0);
+                
+            }
+        }
+        //public void MyMethod()
+        //{
+        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1);
+        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2);
+        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3);
+        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4);
+        //}
         SerialPort _uart;
         public Form1()
         {
@@ -99,7 +135,9 @@ namespace GasSensor_GUI_v1._0
             //chart1.Series["Sensor 0"].Points.AddXY(1, 3);
             //chart1.ChartAreas[0].AxisY.Minimum = 0;
             //chart1.ChartAreas[0].AxisY.Maximum = 5;
-
+            Thread trd = new Thread(new ThreadStart(this.ThreadTask));
+            trd.IsBackground = true;
+            trd.Start();
 
         }
         public void mouseWheel(object sender, MouseEventArgs e)
@@ -390,9 +428,12 @@ namespace GasSensor_GUI_v1._0
                 {
                     chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.00";
                 }
-            if((int)time%5==0)
+            _queue_time.Enqueue(time);
+            _queue_prev_time.Enqueue(prev_time);
+
+            if ((int)time % 5 == 0)
             {
-                UpdateChart((float)prev_time+time * (timer1.Interval/1000)/60, value[0], 1);
+                UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1);
                 UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2);
                 UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3);
                 UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4);
@@ -548,7 +589,7 @@ namespace GasSensor_GUI_v1._0
 
 
 
-        private void SetMaxAxisYToolStripMenuItem_Click(object sender, EventArgs e)
+        public void SetMaxAxisYToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Prompt1.ShowDialog("Max AxisY", "Set AxisY MaxMin",chart1);
         }
@@ -680,4 +721,6 @@ namespace GasSensor_GUI_v1._0
             return; //prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
     }
+
+
 }
