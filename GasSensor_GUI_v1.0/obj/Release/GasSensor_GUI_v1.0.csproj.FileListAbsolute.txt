@@ -1,0 +1,17 @@
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Release\GasSensor_GUI_v1.0.exe.config
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Release\GasSensor_GUI_v1.0.exe.manifest
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Release\GasSensor_GUI_v1.0.application
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Release\GasSensor_GUI_v1.0.exe
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Release\GasSensor_GUI_v1.0.pdb
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\Interop.VBIDE.dll
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.csproj.ResolveComReference.cache
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1._0.Form1.resources
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1._0.Properties.Resources.resources
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.csproj.GenerateResource.cache
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.csproj.CoreCompileInputs.cache
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.TrustInfo.xml
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.exe.manifest
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.application
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.exe
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.pdb
+F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.csprojAssemblyReference.cache
