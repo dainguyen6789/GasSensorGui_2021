@@ -11,6 +11,7 @@ using System.IO.Ports;
 using System.Windows.Forms.DataVisualization.Charting;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
+using System.IO;
 
 namespace GasSensor_GUI_v1._0
 {
@@ -34,12 +35,16 @@ namespace GasSensor_GUI_v1._0
         int current_gridviewrow_sensor4 = 0;
         int zoom = 0;
         float zoom_size = 20f;
+        //List<Double> value=new List<Double>();
         double[] value=new double[4];// = 0, value2 = 0, value3 = 0, value4 = 0;
         double refADCVoltage = 5;
         private Thread trd;
         private readonly Queue<float> _queue_time = new Queue<float>();
         private readonly Queue<float> _queue_prev_time = new Queue<float>();
+        int graphUpdate = 0;
 
+        List<List<Double>> tableData = new List<List<Double>>();
+        List<Double> rowData = new List<Double>();
 
         private void ThreadTask()
         {
@@ -57,11 +62,11 @@ namespace GasSensor_GUI_v1._0
                 //}, null, startTimeSpan, periodTimeSpan);
                 //// this.Invoke(new Action(() => { buttonClearChart.Click(object sender, EventArgs e); }));
 
-                    UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[0], 1);
-                    UpdateChart((float)inThreadPrevTime + inThreadTime   / 60, value[1], 2);
-                    UpdateChart((float)inThreadPrevTime + inThreadTime / 60, value[2], 3);
-                    UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[3], 4);
-                    UpdateGridView((float)inThreadPrevTime + inThreadTime  / 60, value[0], value[1], value[2], value[3], 0, 0);
+                    //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[0], 1);
+                    //UpdateChart((float)inThreadPrevTime + inThreadTime   / 60, value[1], 2);
+                    //UpdateChart((float)inThreadPrevTime + inThreadTime / 60, value[2], 3);
+                    //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[3], 4);
+                    //UpdateGridView((float)inThreadPrevTime + inThreadTime  / 60, value[0], value[1], value[2], value[3], 0, 0);
                 
             }
         }
@@ -120,6 +125,9 @@ namespace GasSensor_GUI_v1._0
             ay.MajorGrid.Interval = 0.5;
             ay.MajorTickMark.Interval = 1;
             ax.LabelStyle.Format = "0.0000";
+            chart1.Series[0].ChartType = SeriesChartType.FastLine;
+            //chart1.Series[0].ChartType = SeriesChartType.FastPoint;
+
             //chart1.ChartAreas[0].AxisY.MajorGrid.
             //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
             //chart1.ChartAreas[0].AxisY.MajorGrid. = 10;
@@ -135,9 +143,11 @@ namespace GasSensor_GUI_v1._0
             //chart1.Series["Sensor 0"].Points.AddXY(1, 3);
             //chart1.ChartAreas[0].AxisY.Minimum = 0;
             //chart1.ChartAreas[0].AxisY.Maximum = 5;
-            Thread trd = new Thread(new ThreadStart(this.ThreadTask));
-            trd.IsBackground = true;
-            trd.Start();
+            //Thread trd = new Thread(new ThreadStart(this.ThreadTask));
+            //trd.IsBackground = true;
+            //trd.Start();
+            //chart1.Series.SuspendUpdates();
+
 
         }
         public void mouseWheel(object sender, MouseEventArgs e)
@@ -181,14 +191,20 @@ namespace GasSensor_GUI_v1._0
             }
 
         }
-        public void mouseDownEvent(object sender, EventArgs e)
+        public async void mouseDownEvent(object sender, EventArgs e)
 
         {
+           
             MouseEventArgs me = (MouseEventArgs)e;
             if (me.Button == MouseButtons.Right)
             {
-                chart1.ContextMenuStrip = contextMenuStrip1;
+                await Task.Run(() => UpdateChart1());
+                //chart1.ContextMenuStrip = contextMenuStrip1;
             }
+        }
+        private async void UpdateChart1()
+        {
+            chart1.ContextMenuStrip = contextMenuStrip1;
         }
         private void _uart_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
@@ -240,7 +256,6 @@ namespace GasSensor_GUI_v1._0
                     //chart1.Series["Sensor 1"].Points.AddXY(time/60, Convert.ToDouble(realValue_serialPortReceivedData));
                     value[0] = Convert.ToDouble(realValue_serialPortReceivedData);
                     value[0] = value[0] / 5 * refADCVoltage;
-
                     //current_gridviewrow_sensor1++;
                     //current_gridviewrow_sensor1++;
                     //DataGridViewRow gridviewrow = (DataGridViewRow) dataGridView1.Rows[0].Clone();
@@ -402,44 +417,65 @@ namespace GasSensor_GUI_v1._0
 
         private void ButtonSaveAsXlxs_Click(object sender, EventArgs e)
         {
-            copyAlltoClipboard();
-            Microsoft.Office.Interop.Excel.Application xlexcel;
-            Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
-            Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-            xlexcel = new Excel.Application();
-            xlexcel.Visible = true;
-            xlWorkBook = xlexcel.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            Excel.Range CR = (Excel.Range)xlWorkSheet.Cells[1, 1];
-            CR.Select();
-            xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+            //copyAlltoClipboard();
+            //Microsoft.Office.Interop.Excel.Application xlexcel;
+            //Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+            //Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+            //object misValue = System.Reflection.Missing.Value;
+            //xlexcel = new Excel.Application();
+            //xlexcel.Visible = true;
+            //xlWorkBook = xlexcel.Workbooks.Add(misValue);
+            //xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            //Excel.Range CR = (Excel.Range)xlWorkSheet.Cells[1, 1];
+            //CR.Select();
+            //xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
+            
+                //DataPoint dp;
+                SaveFileDialog dlg = new SaveFileDialog();
+                 dlg.Filter ="(*.csv)|*.csv";
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    using (var stream = File.CreateText(dlg.FileName + ".csv"))
+                    {
+                    //// int atPosition =0;
+                    ///
+                        for(int hang=0;hang<time; hang++)
+                        //foreach (var row in tableData)
+                        {
+                            for (int cot = 0; cot <= 5; cot++)
+
+                            {
+                                string csvstring = string.Format("{0},{1},{2},{3},{4}", tableData[hang][0], tableData[hang][1], tableData[hang][2], tableData[hang][3], tableData[hang][4]);
+                                stream.WriteLine(csvstring);
+                            }
+
+                        }
+
+                }
+                }
+            
         }
 
-        private void Timer1_Tick(object sender, EventArgs e)
+        private async void Timer1_Tick(object sender, EventArgs e)
         {
             time++;
             count++;
-            if (time / 60 >= 0.09)
-            {
-                chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.000";
-            }
-            else if(time / 60 >= 0.9)
-                {
-                    chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.00";
-                }
-            _queue_time.Enqueue(time);
-            _queue_prev_time.Enqueue(prev_time);
+            rowData.Clear();
+            rowData.Add((float)prev_time + time * (timer1.Interval / 1000) / 60);
 
-            if ((int)time % 5 == 0)
-            {
-                UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1);
-                UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2);
-                UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3);
-                UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4);
-                //addrow_gridview = 0;
-            }
-            UpdateGridView((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], value[1], value[2], value[3], 0, 0);
+            rowData.Add(value[0]);
+            rowData.Add(value[1]);
+
+            rowData.Add(value[2]);
+
+            rowData.Add(value[3]);
+            // Dimension=#row*(5 columns);
+            tableData.Add(rowData);
+            if(time>4)
+                textBox1.Text = tableData[1][1].ToString();
+            await Task.Run(() => UpdateChartAndGrid());
+
+
 
             //textBoxCount.Text = count.toString();
             //chart1.Series["Sensor 1"].Points.AddXY(time / 60, time);
@@ -454,7 +490,25 @@ namespace GasSensor_GUI_v1._0
             //}
 
         }
+        private async void UpdateChartAndGrid()
+        {
+            //if (time / 60 >= 0.09)
+            //{
+            //    chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.000";
+            //}
+            //else if (time / 60 >= 0.9)
+            //{
+            //    chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.00";
+            //}
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2));
+            await Task.Run(() =>  UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4));
+            //addrow_gridview = 0;
 
+            await Task.Run(() => UpdateGridView((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], value[1], value[2], value[3], 0, 0));
+ 
+        }
 
         private void UpdateChart(float update_time, double YValue, int sensor_number)
         {
@@ -468,6 +522,15 @@ namespace GasSensor_GUI_v1._0
             }
             else
             {
+                //graphUpdate++;
+
+                //if (graphUpdate == 10)
+                //            {
+                //                    chart1.Series.ResumeUpdates();
+                //                    chart1.Series.Invalidate();
+                //                    chart1.Series.SuspendUpdates();
+                //                    graphUpdate = 0;
+                //                }
 
                 if (sensor_number == 1)
                     chart1.Series["Sensor 1"].Points.AddXY((update_time / 60), YValue);
@@ -509,7 +572,7 @@ namespace GasSensor_GUI_v1._0
             if (dataGridView1.InvokeRequired)
             {
                 UpdateGridViewCallback d = new UpdateGridViewCallback(UpdateGridView);
-                this.Invoke(d, new object[] { sample_time_grid,Value1, Value2, Value3, Value4, current_row, sensor_number });
+                this.Invoke(d, new object[] { sample_time_grid, Value1, Value2, Value3, Value4, current_row, sensor_number });
             }
             //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
 
@@ -519,24 +582,70 @@ namespace GasSensor_GUI_v1._0
             {
 
 
-                    DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-                    gridviewrow.Cells[0].Value = sample_time_grid;
-                    gridviewrow.Cells[1].Value = Value1;
-                    gridviewrow.Cells[2].Value = Value2;
-                    gridviewrow.Cells[3].Value = Value3;
-                    gridviewrow.Cells[4].Value = Value4;
-                    row_number++;
-                    dataGridView1.Rows.Add(gridviewrow);
 
-                if (row_number >= 10)
+                //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
+
+                //gridviewrow.Cells[0].Value = sample_time_grid;
+                //gridviewrow.Cells[1].Value = Value1;
+                //gridviewrow.Cells[2].Value = Value2;
+                //gridviewrow.Cells[3].Value = Value3;
+                //gridviewrow.Cells[4].Value = Value4;
+                row_number++;
+                if (row_number > 10)
                 {
-                    try
+                    for (int row = 10; row >= 1; row--)
                     {
-                        dataGridView1.FirstDisplayedScrollingRowIndex = row_number - 10;// FirstDisplayedScrollingRowIndex
-                        //row_number = 0;
+                        for (int col = 4; col >= 0; col--)
+                        {
+                            dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
+                        }
                     }
-                    catch { }
+
                 }
+                else
+                {
+                    dataGridView1.Rows.Add(); //Inserting first row if yet there is no row, first row number is '0'
+                    for (int row = row_number; row >= 1; row--)
+                    {
+                        for (int col = 4; col >= 0; col--)
+                        {
+                            dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
+                        }
+                    }
+                }
+                dataGridView1.Rows[0].Cells[0].Value = sample_time_grid;
+                dataGridView1.Rows[0].Cells[1].Value=Value1;
+                dataGridView1.Rows[0].Cells[2].Value = Value2;
+                dataGridView1.Rows[0].Cells[3].Value = Value3;
+                dataGridView1.Rows[0].Cells[4].Value = Value4;
+                //dataGridView1[1, 2].Value = Value3;
+                //dataGridView1[1, 3].Value = Value4;
+
+                //if (row_number >= 10)
+                //{
+                //    try
+                //    {
+
+                //        dataGridView1.FirstDisplayedScrollingRowIndex = row_number - 10;// FirstDisplayedScrollingRowIndex
+                //        dataGridView1.Rows.Clear();
+                //        //for (int i = 1; i <= 10; i++)
+                //        //{
+                //        //    dataGridView1.Rows[i] = dataGridView1.Rows[i + 1];
+                //        //   dataGridView1.Rows[i].Selected = true;
+                //        //}
+                //        dataGridView1.ReadOnly = false; //Before modifying, it is required.
+                //        for (int row = 10; row >= 1; row--)
+                //        {
+                //            for (int col = 3; col >= 0; col--)
+                //            {
+                //                dataGridView1[row, col].Value = dataGridView1[row - 1, col].Value; //Setting the Second cell of the first row!
+                //            }
+                //        }
+                //        row_number = 0;
+
+                //    }
+                //    catch { }
+                //}
 
 
 
@@ -544,8 +653,9 @@ namespace GasSensor_GUI_v1._0
             }
         }
 
-        private void ButtonClear_Click(object sender, EventArgs e)
+        private async void ButtonClear_Click(object sender, EventArgs e)
         {
+
             chart1.Series["Sensor 1"].Points.Clear();
             chart1.Series["Sensor 2"].Points.Clear();
             chart1.Series["Sensor 3"].Points.Clear();
@@ -569,10 +679,7 @@ namespace GasSensor_GUI_v1._0
             time = 0;
         }
 
-        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            //chart1.ChartAreas[0].Clear();
-        }
+
 
         private void ButtonClearChart_Click(object sender, EventArgs e)
         {
@@ -582,16 +689,25 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Sensor 4"].Points.Clear();
         }
 
-        private void ToolStripMenuItemSetAutoScale_Click(object sender, EventArgs e)
+        private async void ToolStripMenuItemSetAutoScale_Click(object sender, EventArgs e)
         {
             chart1.ChartAreas[0].AxisX.Maximum = double.NaN;
         }
 
+        //private int DoThis()
+        //{
+        //    for (int i = 0; i != 10000000; ++i) { }
+        //    return 42;
+        //}
 
+        //public async void ButtonClick(object sender, EventArgs e)
+        //{
+        //    await Task.Run(() => DoThis());
+        //}
 
-        public void SetMaxAxisYToolStripMenuItem_Click(object sender, EventArgs e)
+        public async void SetMaxAxisYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Prompt1.ShowDialog("Max AxisY", "Set AxisY MaxMin",chart1);
+            await Task.Run(() => Prompt1.ShowDialog("Max AxisY", "Set AxisY MaxMin",chart1));
         }
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
