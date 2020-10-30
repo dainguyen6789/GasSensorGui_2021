@@ -435,23 +435,32 @@ namespace GasSensor_GUI_v1._0
                  dlg.Filter ="(*.csv)|*.csv";
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    using (var stream = File.CreateText(dlg.FileName + ".csv"))
+                    try
                     {
-                    //// int atPosition =0;
-                    ///
-                        for(int hang=0;hang<time; hang++)
-                        //foreach (var row in tableData)
+                        using (var stream = File.CreateText(dlg.FileName + ".csv"))
                         {
-                            for (int cot = 0; cot <= 5; cot++)
-
+                        //// int atPosition =0;
+                        ///
+                        //foreach (var row in tableData)
+                            int dem = 0;
+                            foreach (var dp in chart1.Series["Sensor 1"].Points)
                             {
-                                string csvstring = string.Format("{0},{1},{2},{3},{4}", tableData[hang][0], tableData[hang][1], tableData[hang][2], tableData[hang][3], tableData[hang][4]);
+                                
+                                string csvstring = string.Format("{0},{1},{2},{3},{4}", dp.XValue.ToString(),
+                                                                    dp.YValues[0].ToString(), 
+                                                                    chart1.Series["Sensor 2"].Points[dem].YValues[0].ToString(),
+                                                                    chart1.Series["Sensor 3"].Points[dem].YValues[0].ToString(), 
+                                                                    chart1.Series["Sensor 4"].Points[dem].YValues[0].ToString());
                                 stream.WriteLine(csvstring);
+                                dem++;
                             }
 
-                        }
 
-                }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    { }
                 }
             
         }
@@ -460,19 +469,19 @@ namespace GasSensor_GUI_v1._0
         {
             time++;
             count++;
-            rowData.Clear();
-            rowData.Add((float)prev_time + time * (timer1.Interval / 1000) / 60);
+            //rowData.Clear();
+            //rowData.Add((float)prev_time + time * (timer1.Interval / 1000) / 60);
 
-            rowData.Add(value[0]);
-            rowData.Add(value[1]);
+            //rowData.Add(value[0]);
+            //rowData.Add(value[1]);
 
-            rowData.Add(value[2]);
+            //rowData.Add(value[2]);
 
-            rowData.Add(value[3]);
-            // Dimension=#row*(5 columns);
-            tableData.Add(rowData);
-            if(time>4)
-                textBox1.Text = tableData[1][1].ToString();
+            //rowData.Add(value[3]);
+            //// Dimension=#row*(5 columns);
+            //tableData.Add(rowData);
+            //if(time>4)
+            //    textBox1.Text = tableData[1][1].ToString();
             await Task.Run(() => UpdateChartAndGrid());
 
 
@@ -758,6 +767,7 @@ namespace GasSensor_GUI_v1._0
             prompt.Controls.Add(confirmation);
             prompt.Controls.Add(textLabel);
             prompt.AcceptButton = confirmation;
+    
             prompt.ShowDialog();
             return;// prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
@@ -823,7 +833,8 @@ namespace GasSensor_GUI_v1._0
                 {
                 }
 
-                prompt.Close(); };
+                prompt.Close();
+            };
             prompt.Controls.Add(textBoxMaxAxisY);
             prompt.Controls.Add(confirmation);
             prompt.Controls.Add(textLabelMaxAxisY);
