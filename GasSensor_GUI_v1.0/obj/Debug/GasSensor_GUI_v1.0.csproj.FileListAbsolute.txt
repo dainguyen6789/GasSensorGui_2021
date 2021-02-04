@@ -27,3 +27,19 @@ F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.TrustInfo.
 F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.exe.manifest
 F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.application
 F:\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.csprojAssemblyReference.cache
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Debug\GasSensor_GUI_v1.0.exe.config
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Debug\GasSensor_GUI_v1.0.exe.manifest
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Debug\GasSensor_GUI_v1.0.application
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Debug\GasSensor_GUI_v1.0.exe
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Debug\GasSensor_GUI_v1.0.pdb
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\Interop.VBIDE.dll
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.csproj.ResolveComReference.cache
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1._0.Form1.resources
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1._0.Properties.Resources.resources
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.csproj.GenerateResource.cache
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.csproj.CoreCompileInputs.cache
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.TrustInfo.xml
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.exe.manifest
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.application
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.exe
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.pdb

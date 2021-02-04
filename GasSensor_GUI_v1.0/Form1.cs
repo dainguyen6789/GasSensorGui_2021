@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Windows.Forms.DataVisualization.Charting;
-using Excel = Microsoft.Office.Interop.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using System.IO;
+using System.Management;
+
+
 
 namespace GasSensor_GUI_v1._0
 {
-    
+
     public partial class Form1 : Form
     {
         delegate void UpdateChartCallback(float update_time, double YValue,int sensor_number);
-        delegate void UpdateGridViewCallback(double sample_time_grid,double Value1, double Value2, double Value3, double Value4,
+        delegate void UpdateGridViewCallback(double sample_time_grid,double[] Value,
                                             int current_row, int sensor_number);
         delegate void CloseUartCallback(int i);
         System.Threading.Thread CloseDown;
@@ -78,9 +78,17 @@ namespace GasSensor_GUI_v1._0
         //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4);
         //}
         SerialPort _uart;
+        TextBox tb = new TextBox();
+        TextBox tb_minYAxis = new TextBox();
+
         public Form1()
         {
             InitializeComponent();
+            chart1.Controls.Add(lblMaxYAxisPosition);
+            chart1.Controls.Add(lblMinYAxisPosition);
+
+            //chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
+            //chart1.Cursor = Cursors.IBeam;
             _uart = serialPort1;
             // _uart = new SerialPort() ;
             //_uart.BaudRate = 115200;
@@ -95,7 +103,8 @@ namespace GasSensor_GUI_v1._0
             chart1.Series.Add("Sensor 2");
             chart1.Series.Add("Sensor 3");
             chart1.Series.Add("Sensor 4");
-
+            chart1.Series.Add("Sensor 5");
+            chart1.Series.Add("Sensor 6");
             chart1.Series["Sensor 1"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             chart1.Series["Sensor 1"].BorderDashStyle = ChartDashStyle.Dash;
             chart1.Series["Sensor 1"].BorderWidth = 3;
@@ -105,12 +114,20 @@ namespace GasSensor_GUI_v1._0
 
             chart1.Series["Sensor 3"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             chart1.Series["Sensor 3"].BorderWidth = 3;
+            chart1.Series["Sensor 3"].BorderDashStyle = ChartDashStyle.DashDotDot;
+            chart1.Series["Sensor 3"].MarkerStyle = MarkerStyle.Diamond;
 
             chart1.Series["Sensor 4"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            chart1.Series["Sensor 4"].BorderDashStyle = ChartDashStyle.DashDotDot;
-            chart1.Series["Sensor 4"].MarkerStyle = MarkerStyle.Diamond;
-            chart1.Series["Sensor 4"].MarkerBorderWidth = 3;
             chart1.Series["Sensor 4"].BorderWidth = 3;
+
+            chart1.Series["Sensor 5"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series["Sensor 5"].BorderWidth = 3;
+
+            chart1.Series["Sensor 6"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series["Sensor 6"].BorderDashStyle = ChartDashStyle.DashDotDot;
+            chart1.Series["Sensor 6"].MarkerStyle = MarkerStyle.Diamond;
+            chart1.Series["Sensor 6"].MarkerBorderWidth = 3;
+            chart1.Series["Sensor 6"].BorderWidth = 3;
             //chart1.Series["Sensor 1"].Points.AddXY(1, 2);
             //chart1.Series["Sensor 1"].Points.AddXY(3, 4);
             chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 0.5;
@@ -126,29 +143,21 @@ namespace GasSensor_GUI_v1._0
             ay.MajorTickMark.Interval = 1;
             ax.LabelStyle.Format = "0.0000";
             chart1.Series[0].ChartType = SeriesChartType.FastLine;
-            //chart1.Series[0].ChartType = SeriesChartType.FastPoint;
 
-            //chart1.ChartAreas[0].AxisY.MajorGrid.
-            //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-            //chart1.ChartAreas[0].AxisY.MajorGrid. = 10;
-            //gridviewrow.Cells[0].Value = 1;
-            //dataGridView1.Rows.Add(gridviewrow);
-            //chart1.cha
             chart1.MouseClick += mouseDownEvent;
             chart1.MouseWheel += mouseWheel;
-            //chart1.Series.Add("Sensor 0");
-            //chart1.ChartAreas[0].AxisX.Minimum = 0;
-            //chart1.ChartAreas[0].AxisX.Maximum = 100;
-            //chart1.ChartAreas[0].AxisX.Title = "Time (hour)";
-            //chart1.Series["Sensor 0"].Points.AddXY(1, 3);
-            //chart1.ChartAreas[0].AxisY.Minimum = 0;
-            //chart1.ChartAreas[0].AxisY.Maximum = 5;
-            //Thread trd = new Thread(new ThreadStart(this.ThreadTask));
-            //trd.IsBackground = true;
-            //trd.Start();
-            //chart1.Series.SuspendUpdates();
+            GetSerialPortName();
 
-
+        }
+        public void GetSerialPortName()
+        {
+            string[] ports = SerialPort.GetPortNames();
+            
+            foreach (string port in ports)
+            {
+                comboBox1.Text = port;
+                comboBox1.Items.Add(port);
+            }
         }
         public void mouseWheel(object sender, MouseEventArgs e)
         {
@@ -210,30 +219,6 @@ namespace GasSensor_GUI_v1._0
         {
             string serialPortReceiveddata;
             string realValue_serialPortReceivedData; 
-            //string realValue1_serialPortReceivedData;
-            //string realValue2_serialPortReceivedData; 
-            //string realValue3_serialPortReceivedData, realExistingValue_serialPortReceivedData;
-            //serialPortReceiveddata = _uart.ReadExisting();
-            //if (serialPortReceiveddata != null)
-            //{
-            //    // 12.1234\r\n: length= 9
-            //    realValue0_serialPortReceivedData = serialPortReceiveddata.Substring(1, 7);
-
-            //    value[0] = Convert.ToDouble(realValue0_serialPortReceivedData);
-
-            //    realValue1_serialPortReceivedData = serialPortReceiveddata.Substring(9, 7);
-
-            //    value[1] = Convert.ToDouble(realValue1_serialPortReceivedData);
-
-            //    realValue2_serialPortReceivedData = serialPortReceiveddata.Substring(11, 7);
-
-            //    value[2] = Convert.ToDouble(realValue2_serialPortReceivedData);
-
-            //    realValue3_serialPortReceivedData = serialPortReceiveddata.Substring(19, 7);
-
-            //    value[3] = Convert.ToDouble(realValue3_serialPortReceivedData);
-
-            //}
             serialPortReceiveddata = _uart.ReadLine();
             //realExistingValue_serialPortReceivedData = _uart.ReadExisting();
             //richTextBox1.Text = serialPortReceiveddata;
@@ -304,13 +289,32 @@ namespace GasSensor_GUI_v1._0
                     //current_gridviewrow_sensor4++;
                     addrow_gridview = 4;
                 }
-                //if (addrow_gridview == 4)
-                //{ 
-                //    UpdateGridView(value1, value2, value3, value4, 0, 0);
-                //    addrow_gridview = 0;
-                //}
-                //throw new NotImplementedException();
+                else if (serialPortReceiveddata[0] == '5')
+                {
+                    Console.WriteLine("Data from sensor 5");
+                    Console.WriteLine(serialPortReceiveddata);
+                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
+                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
+                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
+                    value[4] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[4] = value[4] / 5 * refADCVoltage;
 
+                    //current_gridviewrow_sensor4++;
+                    addrow_gridview = 5;
+                }
+                else if (serialPortReceiveddata[0] == '6')
+                {
+                    Console.WriteLine("Data from sensor 6");
+                    Console.WriteLine(serialPortReceiveddata);
+                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
+                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
+                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
+                    value[5] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[5] = value[5] / 5 * refADCVoltage;
+
+                    //current_gridviewrow_sensor4++;
+                    addrow_gridview = 6;
+                }
             }
         }
 
@@ -347,6 +351,7 @@ namespace GasSensor_GUI_v1._0
         private void ConnectSerialPort_Click(object sender, EventArgs e)
         {
             timer1.Enabled = true;
+            
             try
             {
                 if (!_uart.IsOpen)
@@ -417,20 +422,7 @@ namespace GasSensor_GUI_v1._0
 
         private void ButtonSaveAsXlxs_Click(object sender, EventArgs e)
         {
-            //copyAlltoClipboard();
-            //Microsoft.Office.Interop.Excel.Application xlexcel;
-            //Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
-            //Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
-            //object misValue = System.Reflection.Missing.Value;
-            //xlexcel = new Excel.Application();
-            //xlexcel.Visible = true;
-            //xlWorkBook = xlexcel.Workbooks.Add(misValue);
-            //xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            //Excel.Range CR = (Excel.Range)xlWorkSheet.Cells[1, 1];
-            //CR.Select();
-            //xlWorkSheet.PasteSpecial(CR, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, true);
-            
-                //DataPoint dp;
+
                 SaveFileDialog dlg = new SaveFileDialog();
                  dlg.Filter ="(*.csv)|*.csv";
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -476,37 +468,17 @@ namespace GasSensor_GUI_v1._0
             await Task.Run(() => UpdateChartAndGrid());
 
 
-
-            //textBoxCount.Text = count.toString();
-            //chart1.Series["Sensor 1"].Points.AddXY(time / 60, time);
-            //if (time < 30)
-            //{
-            //   // chart1.ChartAreas[0].AxisX.Maximum = 60;
-            //   // chart1.ChartAreas[0].AxisX.MajorGrid.Interval = 5;
-            //}
-            //else
-            //{
-            //    //chart1.ChartAreas[0].RecalculateAxesScale();
-            //}
-
         }
         private async void UpdateChartAndGrid()
         {
-            //if (time / 60 >= 0.09)
-            //{
-            //    chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.000";
-            //}
-            //else if (time / 60 >= 0.9)
-            //{
-            //    chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.00";
-            //}
+
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1));
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2));
             await Task.Run(() =>  UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3));
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4));
             //addrow_gridview = 0;
 
-            await Task.Run(() => UpdateGridView((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], value[1], value[2], value[3], 0, 0));
+            await Task.Run(() => UpdateGridView((float)prev_time + time * (timer1.Interval / 1000) / 60, value, 0, 0));
  
         }
 
@@ -522,16 +494,6 @@ namespace GasSensor_GUI_v1._0
             }
             else
             {
-                //graphUpdate++;
-
-                //if (graphUpdate == 10)
-                //            {
-                //                    chart1.Series.ResumeUpdates();
-                //                    chart1.Series.Invalidate();
-                //                    chart1.Series.SuspendUpdates();
-                //                    graphUpdate = 0;
-                //                }
-
                 if (sensor_number == 1)
                     chart1.Series["Sensor 1"].Points.AddXY((update_time / 60), YValue);
                 else if (sensor_number == 2)
@@ -543,28 +505,10 @@ namespace GasSensor_GUI_v1._0
                 else if (sensor_number == 4)
                     chart1.Series["Sensor 4"].Points.AddXY((update_time / 60), YValue);
 
-                //if (addrow_gridview == 4)
-                //{ 
-                //    DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-                //    gridviewrow.Cells[0].Value = value1;
-                //    gridviewrow.Cells[1].Value = value2;
-                //    gridviewrow.Cells[2].Value = value3;
-                //    gridviewrow.Cells[3].Value = value4;
-                //    row_number++;
-                //    dataGridView1.Rows.Add(gridviewrow);
-
-                //    if (row_number >= 10)
-                //    {
-                //        dataGridView1.FirstDisplayedScrollingRowIndex = row_number - 10;// FirstDisplayedScrollingRowIndex
-                //    }
-                //}
-                //chart1.ChartAreas[0].RecalculateAxesScale();
-
-
             }
         }
 
-        private void UpdateGridView(double sample_time_grid,double Value1 , double Value2, double Value3, double Value4, int current_row, int sensor_number)
+        private void UpdateGridView(double sample_time_grid,double[] Value, int current_row, int sensor_number)
         {
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
@@ -572,7 +516,7 @@ namespace GasSensor_GUI_v1._0
             if (dataGridView1.InvokeRequired)
             {
                 UpdateGridViewCallback d = new UpdateGridViewCallback(UpdateGridView);
-                this.Invoke(d, new object[] { sample_time_grid, Value1, Value2, Value3, Value4, current_row, sensor_number });
+                this.Invoke(d, new object[] { sample_time_grid, Value, current_row, sensor_number });
             }
             //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
 
@@ -581,21 +525,12 @@ namespace GasSensor_GUI_v1._0
             else
             {
 
-
-
-                //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-
-                //gridviewrow.Cells[0].Value = sample_time_grid;
-                //gridviewrow.Cells[1].Value = Value1;
-                //gridviewrow.Cells[2].Value = Value2;
-                //gridviewrow.Cells[3].Value = Value3;
-                //gridviewrow.Cells[4].Value = Value4;
                 row_number++;
                 if (row_number > 10)
                 {
                     for (int row = 10; row >= 1; row--)
                     {
-                        for (int col = 4; col >= 0; col--)
+                        for (int col = dataGridView1.ColumnCount - 3; col >= 0; col--)
                         {
                             dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
                         }
@@ -607,48 +542,19 @@ namespace GasSensor_GUI_v1._0
                     dataGridView1.Rows.Add(); //Inserting first row if yet there is no row, first row number is '0'
                     for (int row = row_number; row >= 1; row--)
                     {
-                        for (int col = 4; col >= 0; col--)
+                        for (int col = dataGridView1.ColumnCount-3; col >= 0; col--)
                         {
                             dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
                         }
                     }
                 }
-                dataGridView1.Rows[0].Cells[0].Value = sample_time_grid;
-                dataGridView1.Rows[0].Cells[1].Value=Value1;
-                dataGridView1.Rows[0].Cells[2].Value = Value2;
-                dataGridView1.Rows[0].Cells[3].Value = Value3;
-                dataGridView1.Rows[0].Cells[4].Value = Value4;
-                //dataGridView1[1, 2].Value = Value3;
-                //dataGridView1[1, 3].Value = Value4;
+                dataGridView1.Rows[0].Cells[0].Value = DateTime.Now.ToString("HH:mm:ss MM/dd/yy");
 
-                //if (row_number >= 10)
-                //{
-                //    try
-                //    {
-
-                //        dataGridView1.FirstDisplayedScrollingRowIndex = row_number - 10;// FirstDisplayedScrollingRowIndex
-                //        dataGridView1.Rows.Clear();
-                //        //for (int i = 1; i <= 10; i++)
-                //        //{
-                //        //    dataGridView1.Rows[i] = dataGridView1.Rows[i + 1];
-                //        //   dataGridView1.Rows[i].Selected = true;
-                //        //}
-                //        dataGridView1.ReadOnly = false; //Before modifying, it is required.
-                //        for (int row = 10; row >= 1; row--)
-                //        {
-                //            for (int col = 3; col >= 0; col--)
-                //            {
-                //                dataGridView1[row, col].Value = dataGridView1[row - 1, col].Value; //Setting the Second cell of the first row!
-                //            }
-                //        }
-                //        row_number = 0;
-
-                //    }
-                //    catch { }
-                //}
-
-
-
+                dataGridView1.Rows[0].Cells[1].Value = sample_time_grid;
+                dataGridView1.Rows[0].Cells[2].Value=Value[0];
+                dataGridView1.Rows[0].Cells[3].Value = Value[1];
+                dataGridView1.Rows[0].Cells[4].Value = Value[2];
+                dataGridView1.Rows[0].Cells[5].Value = Value[3];
 
             }
         }
@@ -674,9 +580,16 @@ namespace GasSensor_GUI_v1._0
 
         private void ButtonSetSampleTime_Click(object sender, EventArgs e)
         {
-            prev_time =prev_time+ time * (timer1.Interval / 1000) / 60;
-            timer1.Interval = (Int32) Convert.ToDouble(textBoxSampleTime.Text)*1000;
-            time = 0;
+            try
+            {
+                prev_time = prev_time + time * (timer1.Interval / 1000) / 60;
+                timer1.Interval = (Int32)Convert.ToDouble(textBoxSampleTime.Text) * 1000;
+                time = 0;
+            }
+            catch(IOException)
+            {
+
+            }
         }
 
 
@@ -708,6 +621,97 @@ namespace GasSensor_GUI_v1._0
         public async void SetMaxAxisYToolStripMenuItem_Click(object sender, EventArgs e)
         {
             await Task.Run(() => Prompt1.ShowDialog("Max AxisY", "Set AxisY MaxMin",chart1));
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+            //TextBox YAxisMaxValue = new TextBox();
+
+        }
+
+
+
+
+        private void OnMouseLeave_lblMaxYPosition(object sender, EventArgs e)
+        {
+            lblMaxYAxisPosition.Cursor = Cursors.Default;
+        }
+
+        private void MaxYAxisPosition_Click(object sender, MouseEventArgs e)
+        {
+            lblMaxYAxisPosition.Cursor = Cursors.IBeam;
+            tb.Visible = true;
+
+            //tb.Location = chart1.Location;
+            //tb.Location = new System.Drawing.Point(94, 93);
+            tb.Width = 35;
+            chart1.Controls.Add(tb);
+            tb.BringToFront();
+            tb.Location = lblMaxYAxisPosition.Location;
+            //tb.Location = new Point((int)chart1.ChartAreas[0].Position.X, (int) chart1.ChartAreas[0].Position.Y);
+
+
+            tb.KeyDown += new KeyEventHandler(tb_KeyDown);
+            //TextBox YAxisMaxValue = new TextBox();
+            //Console.WriteLine("TextBOX");
+            //YAxisMaxValue.Location=lblMaxYAxisPosition.Location;
+        }
+        public void tb_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    chart1.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(this.tb.Text);
+                    tb.Visible = false;
+                }
+                catch(IOException)
+                {
+
+                }
+            }
+
+        }
+
+        private void MouseDoubleClick_MinYAxis(object sender, MouseEventArgs e)
+        {
+            lblMinYAxisPosition.Cursor = Cursors.IBeam;
+            tb_minYAxis.Visible = true;
+
+            //tb.Location = chart1.Location;
+            //tb.Location = new System.Drawing.Point(94, 93);
+            tb_minYAxis.Width = 35;
+            chart1.Controls.Add(tb_minYAxis);
+            tb_minYAxis.BringToFront();
+            tb_minYAxis.Location = lblMinYAxisPosition.Location;
+            //tb.Location = new Point((int)chart1.ChartAreas[0].Position.X, (int) chart1.ChartAreas[0].Position.Y);
+
+
+            tb_minYAxis.KeyDown += new KeyEventHandler(tb_MinYAxis_KeyDown);
+            //TextBox YAxisMaxValue = new TextBox();
+            //Console.WriteLine("TextBOX");
+            //YAxisMaxValue.Location=lblMaxYAxisPosition.Location;
+        }
+        public void tb_MinYAxis_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    chart1.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(this.tb_minYAxis.Text);
+                    tb_minYAxis.Visible = false;
+                }
+                catch (IOException)
+                {
+
+                }
+            }
+
         }
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -763,36 +767,7 @@ namespace GasSensor_GUI_v1._0
         }
     }
 
-    //public static class Prompt1
-    //{
-    //    public static void ShowDialog(string text, string caption)
-    //    {
-    //        Form prompt1 = new Form()
-    //        {
-    //            Width = 450,
-    //            Height = 400,
-    //            FormBorderStyle = FormBorderStyle.FixedDialog,
-    //            Text = caption,
-    //            StartPosition = FormStartPosition.CenterScreen,
-    //            BackColor = Color.AliceBlue
-    //        };
-    //        Label textLabel = new Label() { Left = 60, Top = 15, Text = text, Width = 150, Height = 100 };
-    //        TextBox textBox = new TextBox() { Text = "Ok", Left = 50, Width = 100, Top = 70 };
-
-    //        Button confirmation = new Button() { Text = "Ok", Left = 150, Width = 100, Top = 70, DialogResult = DialogResult.OK };
-
-    //        confirmation.Click += (sender, e) => {
-
-    //            prompt1.Close();
-    //        };
-    //        //prompt.Controls.Add(textBox);
-    //        prompt1.Controls.Add(confirmation);
-    //        prompt1.Controls.Add(textLabel);
-    //        prompt1.AcceptButton = confirmation;
-    //        prompt1.ShowDialog();
-    //        return;// prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
-    //    }
-    //}
+    
     public static class Prompt1
     {
         public static void ShowDialog(string text, string caption,Chart chart)
