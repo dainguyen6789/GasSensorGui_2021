@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GasSensor_GUI_v1.0.exe" size="41968">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GasSensor_GUI_v1.0.exe" size="45040">
       <assemblyIdentity name="GasSensor_GUI_v1.0" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>N/Zj8/Og2J/AW2vJEQQQSmxxwsZnL4trwkWsAi4jgXg=</dsig:DigestValue>
+        <dsig:DigestValue>PMZbS783+MV91PF+XFYSDLB1RfVa89WFgHOzgRYA+3g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

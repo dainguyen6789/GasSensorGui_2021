@@ -36,7 +36,7 @@ namespace GasSensor_GUI_v1._0
         int zoom = 0;
         float zoom_size = 20f;
         //List<Double> value=new List<Double>();
-        double[] value=new double[4];// = 0, value2 = 0, value3 = 0, value4 = 0;
+        double[] value=new double[7];// = 0, value2 = 0, value3 = 0, value4 = 0;
         double refADCVoltage = 5;
         private Thread trd;
         private readonly Queue<float> _queue_time = new Queue<float>();
@@ -45,6 +45,10 @@ namespace GasSensor_GUI_v1._0
 
         List<List<Double>> tableData = new List<List<Double>>();
         List<Double> rowData = new List<Double>();
+
+        List<List<String>> tableData_ClockTime = new List<List<String>>();
+        List<String> rowData_ClockTime = new List<String>();
+
 
         private void ThreadTask()
         {
@@ -351,7 +355,6 @@ namespace GasSensor_GUI_v1._0
         private void ConnectSerialPort_Click(object sender, EventArgs e)
         {
             timer1.Enabled = true;
-            
             try
             {
                 if (!_uart.IsOpen)
@@ -434,10 +437,10 @@ namespace GasSensor_GUI_v1._0
                         for(int hang=0;hang<time; hang++)
                         //foreach (var row in tableData)
                         {
-                            for (int cot = 0; cot <= 5; cot++)
+                            for (int cot = 0; cot <= 8; cot++)
 
                             {
-                                string csvstring = string.Format("{0},{1},{2},{3},{4}", tableData[hang][0], tableData[hang][1], tableData[hang][2], tableData[hang][3], tableData[hang][4]);
+                                string csvstring = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}",  tableData_ClockTime[hang][0],tableData[hang][0], tableData[hang][1], tableData[hang][2], tableData[hang][3], tableData[hang][4], tableData[hang][5], tableData[hang][6]);
                                 stream.WriteLine(csvstring);
                             }
 
@@ -452,16 +455,19 @@ namespace GasSensor_GUI_v1._0
         {
             time++;
             count++;
-            rowData.Clear();
-            rowData.Add((float)prev_time + time * (timer1.Interval / 1000) / 60);
 
+            rowData.Clear();
+
+            rowData.Add((float)prev_time + time * (timer1.Interval / 1000) / 60);
             rowData.Add(value[0]);
             rowData.Add(value[1]);
-
             rowData.Add(value[2]);
-
             rowData.Add(value[3]);
+            rowData.Add(value[4]);
+            rowData.Add(value[5]);
+            rowData_ClockTime.Add(DateTime.Now.ToString("HH:mm:ss MM/dd/yy"));
             // Dimension=#row*(5 columns);
+            tableData_ClockTime.Add(rowData_ClockTime);
             tableData.Add(rowData);
             if(time>4)
                 textBox1.Text = tableData[1][1].ToString();
@@ -474,8 +480,11 @@ namespace GasSensor_GUI_v1._0
 
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1));
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2));
-            await Task.Run(() =>  UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3));
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[4], 5));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[5], 6));
+
             //addrow_gridview = 0;
 
             await Task.Run(() => UpdateGridView((float)prev_time + time * (timer1.Interval / 1000) / 60, value, 0, 0));
@@ -505,6 +514,12 @@ namespace GasSensor_GUI_v1._0
                 else if (sensor_number == 4)
                     chart1.Series["Sensor 4"].Points.AddXY((update_time / 60), YValue);
 
+                else if (sensor_number == 5)
+                    chart1.Series["Sensor 5"].Points.AddXY((update_time / 60), YValue);
+
+                else if (sensor_number == 6)
+                    chart1.Series["Sensor 6"].Points.AddXY((update_time / 60), YValue);
+
             }
         }
 
@@ -513,50 +528,63 @@ namespace GasSensor_GUI_v1._0
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
             // If these threads are different, it returns true.
-            if (dataGridView1.InvokeRequired)
+            try
             {
-                UpdateGridViewCallback d = new UpdateGridViewCallback(UpdateGridView);
-                this.Invoke(d, new object[] { sample_time_grid, Value, current_row, sensor_number });
-            }
-            //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-
-            //gridviewrow.Cells[0].Value = 1;
-            //dataGridView1.Rows.Add(gridviewrow);
-            else
-            {
-
-                row_number++;
-                if (row_number > 10)
+                if (dataGridView1.InvokeRequired)
                 {
-                    for (int row = 10; row >= 1; row--)
-                    {
-                        for (int col = dataGridView1.ColumnCount - 3; col >= 0; col--)
-                        {
-                            dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
-                        }
-                    }
-
+                    UpdateGridViewCallback d = new UpdateGridViewCallback(UpdateGridView);
+                    this.Invoke(d, new object[] { sample_time_grid, Value, current_row, sensor_number });
                 }
+                //DataGridViewRow gridviewrow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
+
+                //gridviewrow.Cells[0].Value = 1;
+                //dataGridView1.Rows.Add(gridviewrow);
                 else
                 {
-                    dataGridView1.Rows.Add(); //Inserting first row if yet there is no row, first row number is '0'
-                    for (int row = row_number; row >= 1; row--)
+
+                    row_number++;
+                    if (row_number > 10)
                     {
-                        for (int col = dataGridView1.ColumnCount-3; col >= 0; col--)
+                        for (int row = 10; row >= 1; row--)
                         {
-                            dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
+                            for (int col = dataGridView1.ColumnCount - 1; col >= 0; col--)
+                            {
+                                dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        dataGridView1.Rows.Add(); //Inserting first row if yet there is no row, first row number is '0'
+                        for (int row = row_number; row >= 1; row--)
+                        {
+                            for (int col = dataGridView1.ColumnCount - 1; col >= 0; col--)
+                            {
+                                dataGridView1.Rows[row].Cells[col].Value = dataGridView1.Rows[row - 1].Cells[col].Value;
+                            }
                         }
                     }
-                }
-                dataGridView1.Rows[0].Cells[0].Value = DateTime.Now.ToString("HH:mm:ss MM/dd/yy");
+                    dataGridView1.Rows[0].Cells[0].Value = DateTime.Now.ToString("HH:mm:ss MM/dd/yy");
 
-                dataGridView1.Rows[0].Cells[1].Value = sample_time_grid;
-                dataGridView1.Rows[0].Cells[2].Value=Value[0];
-                dataGridView1.Rows[0].Cells[3].Value = Value[1];
-                dataGridView1.Rows[0].Cells[4].Value = Value[2];
-                dataGridView1.Rows[0].Cells[5].Value = Value[3];
+                    dataGridView1.Rows[0].Cells[1].Value = sample_time_grid;
+                    dataGridView1.Rows[0].Cells[2].Value = Value[0];
+                    dataGridView1.Rows[0].Cells[3].Value = Value[1];
+                    dataGridView1.Rows[0].Cells[4].Value = Value[2];
+                    dataGridView1.Rows[0].Cells[5].Value = Value[3];
+                    dataGridView1.Rows[0].Cells[6].Value = Value[4];
+                    dataGridView1.Rows[0].Cells[7].Value = Value[5];
+
+
+                }
+            }
+            catch (IOException)
+            {
 
             }
+
+
+            
         }
 
         private async void ButtonClear_Click(object sender, EventArgs e)
@@ -566,7 +594,10 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Sensor 2"].Points.Clear();
             chart1.Series["Sensor 3"].Points.Clear();
             chart1.Series["Sensor 4"].Points.Clear();
+            chart1.Series["Sensor 5"].Points.Clear();
+            chart1.Series["Sensor 6"].Points.Clear();
             dataGridView1.Rows.Clear();
+            row_number = 0;
             time = 0;
             prev_time = 0;
         }
@@ -600,6 +631,8 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Sensor 2"].Points.Clear();
             chart1.Series["Sensor 3"].Points.Clear();
             chart1.Series["Sensor 4"].Points.Clear();
+            chart1.Series["Sensor 5"].Points.Clear();
+            chart1.Series["Sensor 6"].Points.Clear();
         }
 
         private async void ToolStripMenuItemSetAutoScale_Click(object sender, EventArgs e)
@@ -711,6 +744,44 @@ namespace GasSensor_GUI_v1._0
 
                 }
             }
+
+        }
+
+        private void Sensor1Enable_CheckedChanged(object sender, EventArgs e)
+        {
+
+                chart1.Series["Sensor 1"].Enabled = Sensor1Enable.Checked;
+
+
+        }
+
+        private void Sensor2Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            chart1.Series["Sensor 2"].Enabled = Sensor2Enable.Checked;
+
+        }
+
+        private void Sensor3Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            chart1.Series["Sensor 3"].Enabled = Sensor3Enable.Checked;
+
+        }
+
+        private void Sensor4Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            chart1.Series["Sensor 4"].Enabled = Sensor4Enable.Checked;
+
+        }
+
+        private void Sensor5Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            chart1.Series["Sensor 5"].Enabled = Sensor5Enable.Checked;
+
+        }
+
+        private void Sensor6Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            chart1.Series["Sensor 6"].Enabled = Sensor6Enable.Checked;
 
         }
 
