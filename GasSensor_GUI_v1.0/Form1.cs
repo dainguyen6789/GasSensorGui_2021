@@ -10,8 +10,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.Threading;
 using System.IO;
 using System.Management;
-
-
+using System.Text;
 
 namespace GasSensor_GUI_v1._0
 {
@@ -48,8 +47,9 @@ namespace GasSensor_GUI_v1._0
 
         List<List<String>> tableData_ClockTime = new List<List<String>>();
         List<String> rowData_ClockTime = new List<String>();
-
-
+        List<String> outputCsvList = new List<String>();
+        string gridViewData;
+        int columnCount, numOfSample = 1;
         private void ThreadTask()
         {
             //var startTimeSpan = TimeSpan.Zero;
@@ -151,8 +151,25 @@ namespace GasSensor_GUI_v1._0
             chart1.MouseClick += mouseDownEvent;
             chart1.MouseWheel += mouseWheel;
             GetSerialPortName();
+            // Instantiate the output CSV Header .
+            InstantiateCSVHeader();
 
         }
+
+        private void InstantiateCSVHeader()
+        {
+            columnCount = dataGridView1.Columns.Count;
+            string columnNames = "";
+            //string[] outputCsv = new string[dataGridView1.Rows.Count + 1];
+            for (int i = 0; i < columnCount; i++)
+            {
+                columnNames += dataGridView1.Columns[i].HeaderText.ToString() + ",";
+            }
+            gridViewData += columnNames;
+
+            outputCsvList.Add(gridViewData);
+        }
+
         public void GetSerialPortName()
         {
             string[] ports = SerialPort.GetPortNames();
@@ -349,7 +366,7 @@ namespace GasSensor_GUI_v1._0
 
         private void Version10ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Prompt.ShowDialog("This is Gas Sensor GUI\nVersion 1.0", "20February2020");
+            Prompt.ShowDialog("This is Gas Sensor GUI\nVersion 2.0", "Feb2021");
         }
 
         private void ConnectSerialPort_Click(object sender, EventArgs e)
@@ -426,29 +443,36 @@ namespace GasSensor_GUI_v1._0
         private void ButtonSaveAsXlxs_Click(object sender, EventArgs e)
         {
 
-                SaveFileDialog dlg = new SaveFileDialog();
-                 dlg.Filter ="(*.csv)|*.csv";
-                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter ="(*.csv)|*.csv";
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var stream = File.CreateText(dlg.FileName + ".csv"))
                 {
-                    using (var stream = File.CreateText(dlg.FileName + ".csv"))
+                    try
                     {
-                    //// int atPosition =0;
-                    ///
-                        for(int hang=0;hang<time; hang++)
-                        //foreach (var row in tableData)
-                        {
-                            for (int cot = 0; cot <= 8; cot++)
 
-                            {
-                                string csvstring = string.Format("{0},{1},{2},{3},{4},{5},{6},{7}",  tableData_ClockTime[hang][0],tableData[hang][0], tableData[hang][1], tableData[hang][2], tableData[hang][3], tableData[hang][4], tableData[hang][5], tableData[hang][6]);
-                                stream.WriteLine(csvstring);
-                            }
+                        //for (int i = 1; (i) < dataGridView1.Rows.Count; i++)
+                        //{
+                        //    for (int j = 0; j < columnCount; j++)
+                        //    {
+                        //        outputCsv[i] += dataGridView1.Rows[i - 1].Cells[j].Value.ToString() + ",";
+                        //    }
+                        //}
+                        //foreach(var lineText in outputCsvList)
+                            File.WriteAllLines(dlg.FileName, outputCsvList);
 
-                        }
+
+                        MessageBox.Show("Data Exported Successfully !!!", "Info");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error :" + ex.Message);
+                    }
 
                 }
-                }
-            
+
+            }
         }
 
         private async void Timer1_Tick(object sender, EventArgs e)
@@ -468,7 +492,9 @@ namespace GasSensor_GUI_v1._0
             rowData_ClockTime.Add(DateTime.Now.ToString("HH:mm:ss MM/dd/yy"));
             // Dimension=#row*(5 columns);
             tableData_ClockTime.Add(rowData_ClockTime);
+            //tableData.Add(rowData);
             tableData.Add(rowData);
+
             if(time>4)
                 textBox1.Text = tableData[1][1].ToString();
             await Task.Run(() => UpdateChartAndGrid());
@@ -574,7 +600,21 @@ namespace GasSensor_GUI_v1._0
                     dataGridView1.Rows[0].Cells[5].Value = Value[3];
                     dataGridView1.Rows[0].Cells[6].Value = Value[4];
                     dataGridView1.Rows[0].Cells[7].Value = Value[5];
+                    try
+                    {
+                        gridViewData =null;
+                        for (int j = 0; j < columnCount; j++)
+                        {
+                            gridViewData += dataGridView1.Rows[0].Cells[j].Value.ToString() + ",";
+                        }
+                        outputCsvList.Add(gridViewData);
 
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error :" + ex.Message);
+                    }
 
                 }
             }
@@ -751,37 +791,42 @@ namespace GasSensor_GUI_v1._0
         {
 
                 chart1.Series["Sensor 1"].Enabled = Sensor1Enable.Checked;
-
+                dataGridView1.Columns[1 + 1].Visible = Sensor1Enable.Checked;
 
         }
 
         private void Sensor2Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 2"].Enabled = Sensor2Enable.Checked;
+            dataGridView1.Columns[1 + 2].Visible = Sensor2Enable.Checked;
 
         }
 
         private void Sensor3Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 3"].Enabled = Sensor3Enable.Checked;
+            dataGridView1.Columns[1 + 3].Visible = Sensor3Enable.Checked;
 
         }
 
         private void Sensor4Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 4"].Enabled = Sensor4Enable.Checked;
+            dataGridView1.Columns[1 + 4].Visible = Sensor4Enable.Checked;
 
         }
 
         private void Sensor5Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 5"].Enabled = Sensor5Enable.Checked;
+            dataGridView1.Columns[1 + 5].Visible = Sensor5Enable.Checked;
 
         }
 
         private void Sensor6Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 6"].Enabled = Sensor6Enable.Checked;
+            dataGridView1.Columns[1 + 6].Visible = Sensor6Enable.Checked;
 
         }
 
