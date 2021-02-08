@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title5 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
@@ -52,6 +52,9 @@
             this.buttonSetSampleTime = new System.Windows.Forms.Button();
             this.textBoxSampleTime = new System.Windows.Forms.TextBox();
             this.buttonSaveAsXlxs = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.buttonSetADCRefVoltage = new System.Windows.Forms.Button();
+            this.textBoxRefADCVoltage = new System.Windows.Forms.TextBox();
             this.buttonClear = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.Sensor5Enable = new System.Windows.Forms.CheckBox();
@@ -80,9 +83,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.buttonSetADCRefVoltage = new System.Windows.Forms.Button();
-            this.textBoxRefADCVoltage = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSetAutoScale = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,11 +94,11 @@
             this.groupBox1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
@@ -111,49 +111,49 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea3.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea3.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea3.AxisX.MajorGrid.Interval = 0D;
-            chartArea3.AxisX.MinorGrid.Enabled = true;
-            chartArea3.AxisX.Title = "Time (hour)";
-            chartArea3.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea3.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea3.AxisY.MajorGrid.Interval = 0D;
-            chartArea3.AxisY.MajorTickMark.Interval = 0D;
-            chartArea3.AxisY.Maximum = 6D;
-            chartArea3.AxisY.MinorGrid.Enabled = true;
-            chartArea3.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea3.AxisY.Title = "Voltage (V)";
-            chartArea3.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea3.BackColor = System.Drawing.Color.White;
-            chartArea3.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
-            legend3.Alignment = System.Drawing.StringAlignment.Far;
-            legend3.DockedToChartArea = "ChartArea1";
-            legend3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend3.IsTextAutoFit = false;
-            legend3.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend3.Name = "Legend1";
-            legend3.TextWrapThreshold = 50;
-            legend3.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend3);
+            chartArea5.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea5.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea5.AxisX.MajorGrid.Interval = 0D;
+            chartArea5.AxisX.MinorGrid.Enabled = true;
+            chartArea5.AxisX.Title = "Time (hour)";
+            chartArea5.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea5.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea5.AxisY.MajorGrid.Interval = 0D;
+            chartArea5.AxisY.MajorTickMark.Interval = 0D;
+            chartArea5.AxisY.Maximum = 6D;
+            chartArea5.AxisY.MinorGrid.Enabled = true;
+            chartArea5.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea5.AxisY.Title = "Voltage (V)";
+            chartArea5.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea5.BackColor = System.Drawing.Color.White;
+            chartArea5.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea5.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea5);
+            legend5.Alignment = System.Drawing.StringAlignment.Far;
+            legend5.DockedToChartArea = "ChartArea1";
+            legend5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend5.IsTextAutoFit = false;
+            legend5.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend5.Name = "Legend1";
+            legend5.TextWrapThreshold = 50;
+            legend5.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend5);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title3.Name = "Sensor Voltage (V)";
-            title3.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title3);
+            title5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title5.Name = "Sensor Voltage (V)";
+            title5.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title5);
             // 
             // ButtonSave
             // 
             this.ButtonSave.AllowDrop = true;
             this.ButtonSave.Location = new System.Drawing.Point(20, 673);
-            this.ButtonSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonSave.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonSave.Name = "ButtonSave";
             this.ButtonSave.Size = new System.Drawing.Size(200, 28);
             this.ButtonSave.TabIndex = 1;
@@ -164,7 +164,7 @@
             // ButtonExit
             // 
             this.ButtonExit.Location = new System.Drawing.Point(252, 673);
-            this.ButtonExit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonExit.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonExit.Name = "ButtonExit";
             this.ButtonExit.Size = new System.Drawing.Size(100, 28);
             this.ButtonExit.TabIndex = 2;
@@ -188,7 +188,7 @@
             this.Column6});
             this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.dataGridView1.Location = new System.Drawing.Point(7, 22);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
@@ -205,9 +205,9 @@
             // 
             // SampleTime
             // 
-            dataGridViewCellStyle3.Format = "N3";
-            dataGridViewCellStyle3.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Format = "N3";
+            dataGridViewCellStyle5.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle5;
             this.SampleTime.HeaderText = "Time (min)";
             this.SampleTime.MinimumWidth = 6;
             this.SampleTime.Name = "SampleTime";
@@ -262,12 +262,11 @@
             this.groupBox1.Controls.Add(this.groupBox6);
             this.groupBox1.Controls.Add(this.buttonSaveAsXlxs);
             this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Controls.Add(this.groupBox5);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(4, 37);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(809, 592);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
@@ -279,9 +278,9 @@
             this.groupBox7.Controls.Add(this.textBoxCount);
             this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox7.Location = new System.Drawing.Point(435, 521);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox7.Size = new System.Drawing.Size(77, 64);
             this.groupBox7.TabIndex = 10;
             this.groupBox7.TabStop = false;
@@ -290,7 +289,7 @@
             // textBoxCount
             // 
             this.textBoxCount.Location = new System.Drawing.Point(8, 27);
-            this.textBoxCount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxCount.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxCount.Name = "textBoxCount";
             this.textBoxCount.ReadOnly = true;
             this.textBoxCount.Size = new System.Drawing.Size(60, 23);
@@ -305,9 +304,9 @@
             this.groupBox6.Controls.Add(this.textBoxSampleTime);
             this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.Location = new System.Drawing.Point(228, 522);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox6.Size = new System.Drawing.Size(157, 64);
             this.groupBox6.TabIndex = 9;
             this.groupBox6.TabStop = false;
@@ -316,7 +315,7 @@
             // buttonSetSampleTime
             // 
             this.buttonSetSampleTime.Location = new System.Drawing.Point(67, 25);
-            this.buttonSetSampleTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonSetSampleTime.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSetSampleTime.Name = "buttonSetSampleTime";
             this.buttonSetSampleTime.Size = new System.Drawing.Size(53, 28);
             this.buttonSetSampleTime.TabIndex = 1;
@@ -327,7 +326,7 @@
             // textBoxSampleTime
             // 
             this.textBoxSampleTime.Location = new System.Drawing.Point(32, 27);
-            this.textBoxSampleTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxSampleTime.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxSampleTime.Name = "textBoxSampleTime";
             this.textBoxSampleTime.Size = new System.Drawing.Size(27, 23);
             this.textBoxSampleTime.TabIndex = 0;
@@ -337,7 +336,7 @@
             // buttonSaveAsXlxs
             // 
             this.buttonSaveAsXlxs.Location = new System.Drawing.Point(17, 521);
-            this.buttonSaveAsXlxs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonSaveAsXlxs.Margin = new System.Windows.Forms.Padding(4);
             this.buttonSaveAsXlxs.Name = "buttonSaveAsXlxs";
             this.buttonSaveAsXlxs.Size = new System.Drawing.Size(199, 28);
             this.buttonSaveAsXlxs.TabIndex = 8;
@@ -345,13 +344,49 @@
             this.buttonSaveAsXlxs.UseVisualStyleBackColor = true;
             this.buttonSaveAsXlxs.Click += new System.EventHandler(this.ButtonSaveAsXlxs_Click);
             // 
+            // groupBox5
+            // 
+            this.groupBox5.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.groupBox5.Controls.Add(this.buttonSetADCRefVoltage);
+            this.groupBox5.Controls.Add(this.textBoxRefADCVoltage);
+            this.groupBox5.Location = new System.Drawing.Point(432, 23);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox5.Size = new System.Drawing.Size(187, 64);
+            this.groupBox5.TabIndex = 6;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "ADC Ref. Voltage";
+            // 
+            // buttonSetADCRefVoltage
+            // 
+            this.buttonSetADCRefVoltage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSetADCRefVoltage.Location = new System.Drawing.Point(79, 25);
+            this.buttonSetADCRefVoltage.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonSetADCRefVoltage.Name = "buttonSetADCRefVoltage";
+            this.buttonSetADCRefVoltage.Size = new System.Drawing.Size(53, 28);
+            this.buttonSetADCRefVoltage.TabIndex = 1;
+            this.buttonSetADCRefVoltage.Text = "Set";
+            this.buttonSetADCRefVoltage.UseVisualStyleBackColor = true;
+            this.buttonSetADCRefVoltage.Click += new System.EventHandler(this.ButtonSetADCRefVoltage_Click);
+            // 
+            // textBoxRefADCVoltage
+            // 
+            this.textBoxRefADCVoltage.Location = new System.Drawing.Point(16, 26);
+            this.textBoxRefADCVoltage.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxRefADCVoltage.Name = "textBoxRefADCVoltage";
+            this.textBoxRefADCVoltage.Size = new System.Drawing.Size(43, 22);
+            this.textBoxRefADCVoltage.TabIndex = 0;
+            this.textBoxRefADCVoltage.Text = "5";
+            this.textBoxRefADCVoltage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // buttonClear
             // 
             this.buttonClear.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.buttonClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.buttonClear.ForeColor = System.Drawing.Color.Red;
             this.buttonClear.Location = new System.Drawing.Point(680, 672);
-            this.buttonClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonClear.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(223, 28);
             this.buttonClear.TabIndex = 3;
@@ -377,9 +412,9 @@
             this.groupBox2.Controls.Add(this.ButtonExit);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(836, 37);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(917, 705);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
@@ -394,7 +429,7 @@
             this.Sensor5Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor5Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sensor5Enable.Location = new System.Drawing.Point(595, 650);
-            this.Sensor5Enable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Sensor5Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor5Enable.Name = "Sensor5Enable";
             this.Sensor5Enable.Size = new System.Drawing.Size(76, 21);
             this.Sensor5Enable.TabIndex = 12;
@@ -411,7 +446,7 @@
             this.Sensor4Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor4Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sensor4Enable.Location = new System.Drawing.Point(475, 650);
-            this.Sensor4Enable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Sensor4Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor4Enable.Name = "Sensor4Enable";
             this.Sensor4Enable.Size = new System.Drawing.Size(76, 21);
             this.Sensor4Enable.TabIndex = 11;
@@ -428,7 +463,7 @@
             this.Sensor6Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor6Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sensor6Enable.Location = new System.Drawing.Point(723, 650);
-            this.Sensor6Enable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Sensor6Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor6Enable.Name = "Sensor6Enable";
             this.Sensor6Enable.Size = new System.Drawing.Size(76, 21);
             this.Sensor6Enable.TabIndex = 10;
@@ -445,7 +480,7 @@
             this.Sensor3Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor3Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sensor3Enable.Location = new System.Drawing.Point(357, 650);
-            this.Sensor3Enable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Sensor3Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor3Enable.Name = "Sensor3Enable";
             this.Sensor3Enable.Size = new System.Drawing.Size(76, 21);
             this.Sensor3Enable.TabIndex = 9;
@@ -462,7 +497,7 @@
             this.Sensor2Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor2Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sensor2Enable.Location = new System.Drawing.Point(229, 650);
-            this.Sensor2Enable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Sensor2Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor2Enable.Name = "Sensor2Enable";
             this.Sensor2Enable.Size = new System.Drawing.Size(76, 21);
             this.Sensor2Enable.TabIndex = 8;
@@ -479,7 +514,7 @@
             this.Sensor1Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor1Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Sensor1Enable.Location = new System.Drawing.Point(104, 650);
-            this.Sensor1Enable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Sensor1Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor1Enable.Name = "Sensor1Enable";
             this.Sensor1Enable.Size = new System.Drawing.Size(76, 21);
             this.Sensor1Enable.TabIndex = 7;
@@ -522,7 +557,7 @@
             this.buttonClearChart.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.buttonClearChart.ForeColor = System.Drawing.Color.Red;
             this.buttonClearChart.Location = new System.Drawing.Point(429, 672);
-            this.buttonClearChart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonClearChart.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClearChart.Name = "buttonClearChart";
             this.buttonClearChart.Size = new System.Drawing.Size(223, 28);
             this.buttonClearChart.TabIndex = 4;
@@ -557,7 +592,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1767, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1634, 28);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -607,7 +642,7 @@
             // connectSerialPort
             // 
             this.connectSerialPort.Location = new System.Drawing.Point(112, 60);
-            this.connectSerialPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.connectSerialPort.Margin = new System.Windows.Forms.Padding(4);
             this.connectSerialPort.Name = "connectSerialPort";
             this.connectSerialPort.Size = new System.Drawing.Size(73, 28);
             this.connectSerialPort.TabIndex = 1;
@@ -618,7 +653,7 @@
             // disconnectSerialPort
             // 
             this.disconnectSerialPort.Location = new System.Drawing.Point(9, 60);
-            this.disconnectSerialPort.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.disconnectSerialPort.Margin = new System.Windows.Forms.Padding(4);
             this.disconnectSerialPort.Name = "disconnectSerialPort";
             this.disconnectSerialPort.Size = new System.Drawing.Size(100, 28);
             this.disconnectSerialPort.TabIndex = 2;
@@ -632,9 +667,9 @@
             this.groupBox4.Controls.Add(this.labelSerialPortStatus);
             this.groupBox4.Controls.Add(this.panelSerialPortStatus);
             this.groupBox4.Location = new System.Drawing.Point(205, 10);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox4.Size = new System.Drawing.Size(219, 89);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
@@ -644,18 +679,19 @@
             // 
             this.labelSerialPortStatus.AutoSize = true;
             this.labelSerialPortStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.labelSerialPortStatus.Location = new System.Drawing.Point(43, 42);
+            this.labelSerialPortStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSerialPortStatus.Location = new System.Drawing.Point(38, 20);
             this.labelSerialPortStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSerialPortStatus.Name = "labelSerialPortStatus";
-            this.labelSerialPortStatus.Size = new System.Drawing.Size(78, 17);
+            this.labelSerialPortStatus.Size = new System.Drawing.Size(143, 25);
             this.labelSerialPortStatus.TabIndex = 4;
-            this.labelSerialPortStatus.Text = "Disconnect";
+            this.labelSerialPortStatus.Text = "Disconnected";
             // 
             // panelSerialPortStatus
             // 
             this.panelSerialPortStatus.BackColor = System.Drawing.Color.Red;
-            this.panelSerialPortStatus.Location = new System.Drawing.Point(129, 35);
-            this.panelSerialPortStatus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelSerialPortStatus.Location = new System.Drawing.Point(90, 49);
+            this.panelSerialPortStatus.Margin = new System.Windows.Forms.Padding(4);
             this.panelSerialPortStatus.Name = "panelSerialPortStatus";
             this.panelSerialPortStatus.Size = new System.Drawing.Size(28, 28);
             this.panelSerialPortStatus.TabIndex = 3;
@@ -667,11 +703,12 @@
             this.groupBox3.Controls.Add(this.disconnectSerialPort);
             this.groupBox3.Controls.Add(this.comboBox1);
             this.groupBox3.Controls.Add(this.groupBox8);
+            this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Location = new System.Drawing.Point(4, 635);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox3.Size = new System.Drawing.Size(633, 107);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
@@ -680,7 +717,7 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(12, 30);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(171, 24);
             this.comboBox1.TabIndex = 5;
@@ -689,49 +726,13 @@
             // 
             this.groupBox8.BackColor = System.Drawing.Color.PaleTurquoise;
             this.groupBox8.Location = new System.Drawing.Point(5, 10);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox8.Size = new System.Drawing.Size(192, 90);
             this.groupBox8.TabIndex = 7;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Select Serial Port";
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.BackColor = System.Drawing.Color.PaleTurquoise;
-            this.groupBox5.Controls.Add(this.buttonSetADCRefVoltage);
-            this.groupBox5.Controls.Add(this.textBoxRefADCVoltage);
-            this.groupBox5.Location = new System.Drawing.Point(546, 520);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox5.Size = new System.Drawing.Size(187, 64);
-            this.groupBox5.TabIndex = 6;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "ADC Ref. Voltage";
-            // 
-            // buttonSetADCRefVoltage
-            // 
-            this.buttonSetADCRefVoltage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSetADCRefVoltage.Location = new System.Drawing.Point(79, 25);
-            this.buttonSetADCRefVoltage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.buttonSetADCRefVoltage.Name = "buttonSetADCRefVoltage";
-            this.buttonSetADCRefVoltage.Size = new System.Drawing.Size(53, 28);
-            this.buttonSetADCRefVoltage.TabIndex = 1;
-            this.buttonSetADCRefVoltage.Text = "Set";
-            this.buttonSetADCRefVoltage.UseVisualStyleBackColor = true;
-            this.buttonSetADCRefVoltage.Click += new System.EventHandler(this.ButtonSetADCRefVoltage_Click);
-            // 
-            // textBoxRefADCVoltage
-            // 
-            this.textBoxRefADCVoltage.Location = new System.Drawing.Point(16, 26);
-            this.textBoxRefADCVoltage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBoxRefADCVoltage.Name = "textBoxRefADCVoltage";
-            this.textBoxRefADCVoltage.Size = new System.Drawing.Size(43, 26);
-            this.textBoxRefADCVoltage.TabIndex = 0;
-            this.textBoxRefADCVoltage.Text = "5";
-            this.textBoxRefADCVoltage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // contextMenuStrip1
             // 
@@ -772,7 +773,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(713, 645);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -787,14 +788,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1767, 748);
+            this.ClientSize = new System.Drawing.Size(1634, 748);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Gas Sensor GUI v1.0";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
@@ -804,6 +805,8 @@
             this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -811,8 +814,6 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);

@@ -31,4 +31,3 @@ C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v
 C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.TrustInfo.xml
 C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.exe.manifest
 C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.application
-C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Release\GasSensor_GUI_v1.0.csprojAssemblyReference.cache
