@@ -740,12 +740,20 @@ namespace GasSensor_GUI_v1._0
             {
                 try
                 {
-                    chart1.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(this.tb.Text);
-                    tb.Visible = false;
+                    Double d = Double.Parse(this.tb.Text);
+                    if (CheckMaxMinValue(d, chart1.ChartAreas[0].AxisY.Minimum))
+                    {
+                        chart1.ChartAreas[0].AxisY.Maximum = Double.Parse(this.tb.Text);
+                        tb.Visible = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Your max voltage value is not valid");
+                    }
                 }
-                catch(IOException)
+                catch(FormatException)
                 {
-
+                    MessageBox.Show("Your max voltage value is not valid");
                 }
             }
 
@@ -765,7 +773,8 @@ namespace GasSensor_GUI_v1._0
             //tb.Location = new Point((int)chart1.ChartAreas[0].Position.X, (int) chart1.ChartAreas[0].Position.Y);
 
 
-            tb_minYAxis.KeyDown += new KeyEventHandler(tb_MinYAxis_KeyDown);
+            tb_minYAxis.KeyDown += new KeyEventHandler(tb_MinYAxis_KeyDown
+                );
             //TextBox YAxisMaxValue = new TextBox();
             //Console.WriteLine("TextBOX");
             //YAxisMaxValue.Location=lblMaxYAxisPosition.Location;
@@ -776,15 +785,30 @@ namespace GasSensor_GUI_v1._0
             {
                 try
                 {
-                    chart1.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(this.tb_minYAxis.Text);
-                    tb_minYAxis.Visible = false;
-                }
-                catch (IOException)
-                {
+                    Double d = Double.Parse(this.tb_minYAxis.Text);
+                    if (CheckMaxMinValue(chart1.ChartAreas[0].AxisY.Maximum, d))
+                    {
+                        chart1.ChartAreas[0].AxisY.Minimum = Double.Parse(this.tb_minYAxis.Text);
+                        tb_minYAxis.Visible = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Your min voltage value is not valid");
 
+                    }
                 }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Your min voltage value is not valid");
+                }
+
+
             }
 
+        }
+        public bool CheckMaxMinValue(double maxValue,double minValue)
+        {
+            return maxValue > minValue;
         }
 
         private void Sensor1Enable_CheckedChanged(object sender, EventArgs e)
