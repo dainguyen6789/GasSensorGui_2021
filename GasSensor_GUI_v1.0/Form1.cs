@@ -17,16 +17,16 @@ namespace GasSensor_GUI_v1._0
 
     public partial class Form1 : Form
     {
-        delegate void UpdateChartCallback(float update_time, double YValue,int sensor_number);
-        delegate void UpdateGridViewCallback(double sample_time_grid,double[] Value,
+        delegate void UpdateChartCallback(float update_time, double YValue, int sensor_number);
+        delegate void UpdateGridViewCallback(double sample_time_grid, double[] Value,
                                             int current_row, int sensor_number);
         delegate void CloseUartCallback(int i);
         System.Threading.Thread CloseDown;
         // Timer timer = timer1;
         float time = 0, count = 0;
-        float prev_time=0;
+        float prev_time = 0;
 
-        int maxGridViewRow = 10,row_number=0;
+        int maxGridViewRow = 10, row_number = 0;
         int addrow_gridview = 0;
         int current_gridviewrow_sensor1 = 0;
         int current_gridviewrow_sensor2 = 0;
@@ -35,7 +35,7 @@ namespace GasSensor_GUI_v1._0
         int zoom = 0;
         float zoom_size = 20f;
         //List<Double> value=new List<Double>();
-        double[] value=new double[7];// = 0, value2 = 0, value3 = 0, value4 = 0;
+        double[] value = new double[8];// = 0, value2 = 0, value3 = 0, value4 = 0;
         double refADCVoltage = 5;
         private Thread trd;
         private readonly Queue<float> _queue_time = new Queue<float>();
@@ -50,11 +50,30 @@ namespace GasSensor_GUI_v1._0
         List<String> outputCsvList = new List<String>();
         string gridViewData;
         int columnCount, numOfSample = 1;
+
+
+        /*
+        DIG_T1: unsigned short
+        DIG_T2/3: signed short
+        */
+
+        double dig_T1;
+        double dig_T2, dig_T3;
+
+
+        //// humidity compensation data
+        ////unsigned char: 8-bit
+        double dig_H1, dig_H3;
+        // signed short: 16-bit
+        double dig_H2, dig_H4, dig_H5, dig_H6;
+        Int32 t_fine;
+        
+
         private void ThreadTask()
         {
             //var startTimeSpan = TimeSpan.Zero;
             //var periodTimeSpan = TimeSpan.FromSeconds(10);
-            float inThreadTime=0, inThreadPrevTime = 0;
+            float inThreadTime = 0, inThreadPrevTime = 0;
             if (_queue_time.Count > 0)
             {
                 inThreadTime = _queue_time.Dequeue();
@@ -66,12 +85,12 @@ namespace GasSensor_GUI_v1._0
                 //}, null, startTimeSpan, periodTimeSpan);
                 //// this.Invoke(new Action(() => { buttonClearChart.Click(object sender, EventArgs e); }));
 
-                    //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[0], 1);
-                    //UpdateChart((float)inThreadPrevTime + inThreadTime   / 60, value[1], 2);
-                    //UpdateChart((float)inThreadPrevTime + inThreadTime / 60, value[2], 3);
-                    //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[3], 4);
-                    //UpdateGridView((float)inThreadPrevTime + inThreadTime  / 60, value[0], value[1], value[2], value[3], 0, 0);
-                
+                //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[0], 1);
+                //UpdateChart((float)inThreadPrevTime + inThreadTime   / 60, value[1], 2);
+                //UpdateChart((float)inThreadPrevTime + inThreadTime / 60, value[2], 3);
+                //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[3], 4);
+                //UpdateGridView((float)inThreadPrevTime + inThreadTime  / 60, value[0], value[1], value[2], value[3], 0, 0);
+
             }
         }
         //public void MyMethod()
@@ -173,7 +192,7 @@ namespace GasSensor_GUI_v1._0
         public void GetSerialPortName()
         {
             string[] ports = SerialPort.GetPortNames();
-            
+
             foreach (string port in ports)
             {
                 comboBox1.Text = port;
@@ -182,8 +201,8 @@ namespace GasSensor_GUI_v1._0
         }
         public void mouseWheel(object sender, MouseEventArgs e)
         {
-            zoom_size = (float) chart1.ChartAreas[0].AxisX.Maximum;
-            if (e.Delta>0)
+            zoom_size = (float)chart1.ChartAreas[0].AxisX.Maximum;
+            if (e.Delta > 0)
             {
                 zoom++;
                 if (chart1.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X) - zoom_size / (zoom) > 0)
@@ -194,7 +213,7 @@ namespace GasSensor_GUI_v1._0
                 //{
                 //    chart1.ChartAreas[0].AxisX.Minimum = 0;
                 //}
-                chart1.ChartAreas[0].AxisX.Maximum = chart1.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X) + zoom_size / ( zoom);
+                chart1.ChartAreas[0].AxisX.Maximum = chart1.ChartAreas[0].AxisX.PixelPositionToValue(e.Location.X) + zoom_size / (zoom);
                 //  Console.WriteLine(Convert.ToString(chart1.ChartAreas[0].CursorX.Position));
                 Console.WriteLine(Convert.ToString(e.Location.X));
 
@@ -224,7 +243,7 @@ namespace GasSensor_GUI_v1._0
         public async void mouseDownEvent(object sender, EventArgs e)
 
         {
-           
+
             MouseEventArgs me = (MouseEventArgs)e;
             if (me.Button == MouseButtons.Right)
             {
@@ -239,7 +258,7 @@ namespace GasSensor_GUI_v1._0
         private void _uart_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             string serialPortReceiveddata;
-            string realValue_serialPortReceivedData; 
+            string realValue_serialPortReceivedData;
             serialPortReceiveddata = _uart.ReadLine();
             //realExistingValue_serialPortReceivedData = _uart.ReadExisting();
             //richTextBox1.Text = serialPortReceiveddata;
@@ -336,6 +355,148 @@ namespace GasSensor_GUI_v1._0
                     //current_gridviewrow_sensor4++;
                     addrow_gridview = 6;
                 }
+                else if (serialPortReceiveddata[0] == 'U')
+                {
+                    Console.WriteLine("Data from Humidity Sensor");
+                    Console.WriteLine(serialPortReceiveddata);
+                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
+                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
+                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
+                    value[6] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    //value[5] = value[5] / 5 * refADCVoltage;
+
+                    //current_gridviewrow_sensor4++;
+                    //addrow_gridview = 6;
+                }
+                // For compensation data
+                else
+                {
+
+                    /*
+                    DIG_T1: unsigned short
+                    DIG_T2/3: signed short
+                    */
+
+                    //unsigned short dig_T1;
+                    //signed short dig_T2, dig_T3;
+
+
+                    //// humidity compensation data
+                    ////unsigned char: 8-bit
+                    //unsigned char dig_H1 = 0x89, dig_H3;
+                    //// signed short: 16-bit
+                    //signed short dig_H2 = 0xF911, dig_H4 = 0x1234, dig_H5;
+                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(3, serialPortReceiveddata.Length - 1);
+
+                    // temperature compensation data
+                    if (serialPortReceiveddata[0] == 'T')
+                    {
+                        switch (serialPortReceiveddata[1])
+                        {
+                            //  dig_T1
+                            case '1':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_T1 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+                            //  dig_T1
+                            case '2':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_T2 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+
+                            //  dig_T1
+                            case '3':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_T3 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+
+
+                        }
+                    }
+                    if (serialPortReceiveddata[0] == 'H')
+                    {
+                        switch (serialPortReceiveddata[1])
+                        {
+                            //  dig_T1
+                            case '1':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_H1 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_H1 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+                            //  dig_T1
+                            case '2':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_H2 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_H2 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+
+                            //  dig_T1
+                            case '3':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_H3 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_H3 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+                            //  dig_T1
+                            case '4':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_H4 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_H4 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+                            //  dig_T1
+                            case '5':
+                                if (serialPortReceiveddata[2] == 'N')
+                                {
+                                    dig_H5 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                else if (serialPortReceiveddata[2] == 'P')
+                                {
+                                    dig_H5 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                }
+                                break;
+
+
+                        }
+                    }
+
+                }
             }
         }
 
@@ -346,7 +507,7 @@ namespace GasSensor_GUI_v1._0
             {
                 chart1.SaveImage(saveFile.FileName, ChartImageFormat.Png);
             }
-            
+
             //if(saveFile.save)
         }
 
@@ -354,8 +515,8 @@ namespace GasSensor_GUI_v1._0
 
         private void SaveFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
-            
-           // chart1.SaveImage("123", System.Windows.Forms.DataVisualization.Charting.ChartImageFormat.Png);
+
+            // chart1.SaveImage("123", System.Windows.Forms.DataVisualization.Charting.ChartImageFormat.Png);
 
         }
 
@@ -377,7 +538,6 @@ namespace GasSensor_GUI_v1._0
                 if (!_uart.IsOpen)
                 {
                     _uart.PortName = comboBox1.Text;
-
                     _uart.Open();
                 }
                 if (_uart.IsOpen)
@@ -394,9 +554,12 @@ namespace GasSensor_GUI_v1._0
                 }
 
             }
-            catch(System.IO.IOException)
+            catch (Exception ex)
             {
-                
+                timer1.Enabled = false;
+
+                MessageBox.Show("Your Serial Port is invalid");
+
             }
 
         }
@@ -410,7 +573,7 @@ namespace GasSensor_GUI_v1._0
             timer1.Enabled = false;
 
             labelSerialPortStatus.Text = "Disconnected";
-            labelSerialPortStatus.BackColor= Color.Red;
+            labelSerialPortStatus.BackColor = Color.Red;
             panelSerialPortStatus.BackColor = Color.Red;
 
 
@@ -444,7 +607,7 @@ namespace GasSensor_GUI_v1._0
         {
 
             SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter ="(*.csv)|*.csv";
+            dlg.Filter = "(*.csv)|*.csv";
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 using (var stream = File.CreateText(dlg.FileName + ".csv"))
@@ -460,7 +623,7 @@ namespace GasSensor_GUI_v1._0
                         //    }
                         //}
                         //foreach(var lineText in outputCsvList)
-                            File.WriteAllLines(dlg.FileName, outputCsvList);
+                        File.WriteAllLines(dlg.FileName, outputCsvList);
 
 
                         MessageBox.Show("Data Exported Successfully !!!", "Info");
@@ -495,7 +658,7 @@ namespace GasSensor_GUI_v1._0
             //tableData.Add(rowData);
             tableData.Add(rowData);
 
-            if(time>4)
+            if (time > 4)
                 textBox1.Text = tableData[1][1].ToString();
             await Task.Run(() => UpdateChartAndGrid());
 
@@ -514,7 +677,7 @@ namespace GasSensor_GUI_v1._0
             //addrow_gridview = 0;
 
             await Task.Run(() => UpdateGridView((float)prev_time + time * (timer1.Interval / 1000) / 60, value, 0, 0));
- 
+
         }
 
         private void UpdateChart(float update_time, double YValue, int sensor_number)
@@ -549,7 +712,7 @@ namespace GasSensor_GUI_v1._0
             }
         }
 
-        private void UpdateGridView(double sample_time_grid,double[] Value, int current_row, int sensor_number)
+        private void UpdateGridView(double sample_time_grid, double[] Value, int current_row, int sensor_number)
         {
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
@@ -602,7 +765,7 @@ namespace GasSensor_GUI_v1._0
                     dataGridView1.Rows[0].Cells[7].Value = Value[5];
                     try
                     {
-                        gridViewData =null;
+                        gridViewData = null;
                         for (int j = 0; j < columnCount; j++)
                         {
                             gridViewData += dataGridView1.Rows[0].Cells[j].Value.ToString() + ",";
@@ -624,7 +787,7 @@ namespace GasSensor_GUI_v1._0
             }
 
 
-            
+
         }
 
         private async void ButtonClear_Click(object sender, EventArgs e)
@@ -657,7 +820,7 @@ namespace GasSensor_GUI_v1._0
                 timer1.Interval = (Int32)Convert.ToDouble(textBoxSampleTime.Text) * 1000;
                 time = 0;
             }
-            catch(IOException)
+            catch (IOException)
             {
 
             }
@@ -693,7 +856,7 @@ namespace GasSensor_GUI_v1._0
 
         public async void SetMaxAxisYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            await Task.Run(() => Prompt1.ShowDialog("Max AxisY", "Set AxisY MaxMin",chart1));
+            await Task.Run(() => Prompt1.ShowDialog("Max AxisY", "Set AxisY MaxMin", chart1));
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -751,7 +914,7 @@ namespace GasSensor_GUI_v1._0
                         MessageBox.Show("Your max voltage value is not valid");
                     }
                 }
-                catch(FormatException)
+                catch (FormatException)
                 {
                     MessageBox.Show("Your max voltage value is not valid");
                 }
@@ -806,7 +969,7 @@ namespace GasSensor_GUI_v1._0
             }
 
         }
-        public bool CheckMaxMinValue(double maxValue,double minValue)
+        public bool CheckMaxMinValue(double maxValue, double minValue)
         {
             return maxValue > minValue;
         }
@@ -814,8 +977,8 @@ namespace GasSensor_GUI_v1._0
         private void Sensor1Enable_CheckedChanged(object sender, EventArgs e)
         {
 
-                chart1.Series["Sensor 1"].Enabled = Sensor1Enable.Checked;
-                dataGridView1.Columns[1 + 1].Visible = Sensor1Enable.Checked;
+            chart1.Series["Sensor 1"].Enabled = Sensor1Enable.Checked;
+            dataGridView1.Columns[1 + 1].Visible = Sensor1Enable.Checked;
 
         }
 
@@ -879,7 +1042,60 @@ namespace GasSensor_GUI_v1._0
 
             }
         }
-    }
+        double CompensateTemperature(Int32 adc_T)
+        {
+            double var1, var2, T;
+
+            var1 = (double)adc_T / 16384.0f - dig_T1 / 1024.0 * dig_T2;
+            var2 =(     (( (double)adc_T )/ 131072.0f - ((double)dig_T1 )/ 8192.0 * dig_T2)*
+                (((double) adc_T)/131072.0f- ((double)dig_T1) / 8192.0)  )* ((double)dig_T3);
+            t_fine = (Int32)(var1 + var2);
+            return (double)(var1 + var2) / 5120.0f;
+        }
+
+        double CompensateHumidity(Int32 adc_H)
+        {
+            double var_H;
+
+            var_H = (double)(t_fine - 76800.0f);
+
+
+            var_H = (adc_H - (((double)dig_H4) * 64.0f + ((double)dig_H5) / 16384.0f * var_H)) *
+                (((double)dig_H2) / 65536.0f * (1.0 + ((double)dig_H6) / 67108864.0f * var_H * (1.0f + ((double)dig_H3) / 67108864.0f * var_H)));
+
+            var_H = var_H * (1.0 - ((double)dig_H1) * var_H / 524288.0f);
+
+            if (var_H > 100)
+                var_H = 100;
+            else if (var_H < 0)
+                var_H = 0;
+
+            return var_H;
+        }
+
+            //double CompensatePressure(Int32 adc_P)
+            //{
+            //    double var1,var2,p;
+            //    var1 = ((double)t_fine / 2.0f) - 64000.0f;
+            //    var2 = var1 * var1 * ((double)dig_P6) / 32768.0f;
+            //    var2 = var2 + var1 * ((double)dig_P5) * 2.0f;
+
+            //    var2 = (var2) / 4 + (((double)dig_P4) * 65536.0f);
+            //    var1 = (((double)dig_P3 * var1 * var1 / 524288.0f + ((double)dig_P2) * var1) / 524288.0f);
+            //    var1 = (1.0 + var1 / 32768.0) * ((double)dig_P1);
+
+            //    if (var1 == 0)
+            //        return 0;
+            //    p = 1048576.0 - (double)adc_P;
+            //    p = (p - (var2 / 4096.0)) * 6250.0 / var1;
+            //    var1 = ((double)dig_P9 * p * p) / 2147483648.0f;
+            //    var2 = p * ((double)dig_P8 / 32768.0f);
+
+            //    p = p + (var1 + var2 + ((double)dig_P7)) / 16.0f;
+            //    return p;
+
+            //}
+        }
 
     public static class Prompt
     {
@@ -892,9 +1108,9 @@ namespace GasSensor_GUI_v1._0
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 Text = caption,
                 StartPosition = FormStartPosition.CenterScreen,
-                BackColor=Color.AliceBlue
+                BackColor = Color.AliceBlue
             };
-            Label textLabel = new Label() { Left = 60, Top = 15, Text = text,Width=150,Height=100 };
+            Label textLabel = new Label() { Left = 60, Top = 15, Text = text, Width = 150, Height = 100 };
             //TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
             Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
             confirmation.Click += (sender, e) => { prompt.Close(); };
@@ -907,10 +1123,10 @@ namespace GasSensor_GUI_v1._0
         }
     }
 
-    
+
     public static class Prompt1
     {
-        public static void ShowDialog(string text, string caption,Chart chart)
+        public static void ShowDialog(string text, string caption, Chart chart)
         {
             Form prompt = new Form()
             {
@@ -921,11 +1137,11 @@ namespace GasSensor_GUI_v1._0
                 StartPosition = FormStartPosition.CenterScreen
             };
             Label textLabelMaxAxisY = new Label() { Left = 30, Top = 20, Text = text };
-            TextBox textBoxMaxAxisY = new TextBox() { Left = 90, Top = 20, Width = 40,Text="5" };
+            TextBox textBoxMaxAxisY = new TextBox() { Left = 90, Top = 20, Width = 40, Text = "5" };
             Button confirmation = new Button() { Text = "Ok", Left = 30, Width = 100, Top = 70, DialogResult = DialogResult.OK };
 
             Label textLabelMinAxisY = new Label() { Left = 30, Top = 40, Text = "Min AxisY" };
-            TextBox textBoxMinAxisY = new TextBox() { Left = 90, Top = 40, Width = 40,Text="0" };
+            TextBox textBoxMinAxisY = new TextBox() { Left = 90, Top = 40, Width = 40, Text = "0" };
 
 
             confirmation.Click += (sender, e) => {
@@ -952,6 +1168,5 @@ namespace GasSensor_GUI_v1._0
             return; //prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
     }
-
 
 }
