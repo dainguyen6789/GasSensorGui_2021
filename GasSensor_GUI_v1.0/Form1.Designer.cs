@@ -58,7 +58,6 @@
             this.textBoxRefADCVoltage = new System.Windows.Forms.TextBox();
             this.buttonClear = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.Sensor5Enable = new System.Windows.Forms.CheckBox();
             this.Sensor4Enable = new System.Windows.Forms.CheckBox();
             this.Sensor6Enable = new System.Windows.Forms.CheckBox();
@@ -68,6 +67,7 @@
             this.lblMinYAxisPosition = new System.Windows.Forms.Label();
             this.lblMaxYAxisPosition = new System.Windows.Forms.Label();
             this.buttonClearChart = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -180,6 +180,7 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AccessibleRole = System.Windows.Forms.AccessibleRole.Cursor;
             this.dataGridView1.AllowDrop = true;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.SkyBlue;
             this.dataGridView1.ColumnHeadersHeight = 45;
@@ -202,6 +203,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(780, 490);
             this.dataGridView1.TabIndex = 3;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
             // 
             // Column7
             // 
@@ -434,15 +436,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Graph";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(644, 685);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // Sensor5Enable
             // 
             this.Sensor5Enable.AutoSize = true;
@@ -587,6 +580,15 @@
             this.buttonClearChart.Text = "Clear Chart";
             this.buttonClearChart.UseVisualStyleBackColor = true;
             this.buttonClearChart.Click += new System.EventHandler(this.ButtonClearChart_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(644, 685);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // serialPort1
             // 

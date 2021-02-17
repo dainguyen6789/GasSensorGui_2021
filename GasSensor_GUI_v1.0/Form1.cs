@@ -9,9 +9,6 @@ using System.Windows.Forms.DataVisualization.Charting;
 //using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using System.IO;
-using System.Management;
-using System.Text;
-
 
 namespace GasSensor_GUI_v1._0
 {
@@ -1038,6 +1035,11 @@ namespace GasSensor_GUI_v1._0
 
         }
 
+        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridView1.Columns[0].HeaderText = "";
+            //Cursor. = button1.PointToScreen(button1.Location); 
+        }
         private void Sensor4Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 4"].Enabled = Sensor4Enable.Checked;
@@ -1116,30 +1118,30 @@ namespace GasSensor_GUI_v1._0
             return var_H;
         }
 
-            //double CompensatePressure(Int32 adc_P)
-            //{
-            //    double var1,var2,p;
-            //    var1 = ((double)t_fine / 2.0f) - 64000.0f;
-            //    var2 = var1 * var1 * ((double)dig_P6) / 32768.0f;
-            //    var2 = var2 + var1 * ((double)dig_P5) * 2.0f;
+        //double CompensatePressure(Int32 adc_P)
+        //{
+        //    double var1,var2,p;
+        //    var1 = ((double)t_fine / 2.0f) - 64000.0f;
+        //    var2 = var1 * var1 * ((double)dig_P6) / 32768.0f;
+        //    var2 = var2 + var1 * ((double)dig_P5) * 2.0f;
 
-            //    var2 = (var2) / 4 + (((double)dig_P4) * 65536.0f);
-            //    var1 = (((double)dig_P3 * var1 * var1 / 524288.0f + ((double)dig_P2) * var1) / 524288.0f);
-            //    var1 = (1.0 + var1 / 32768.0) * ((double)dig_P1);
+        //    var2 = (var2) / 4 + (((double)dig_P4) * 65536.0f);
+        //    var1 = (((double)dig_P3 * var1 * var1 / 524288.0f + ((double)dig_P2) * var1) / 524288.0f);
+        //    var1 = (1.0 + var1 / 32768.0) * ((double)dig_P1);
 
-            //    if (var1 == 0)
-            //        return 0;
-            //    p = 1048576.0 - (double)adc_P;
-            //    p = (p - (var2 / 4096.0)) * 6250.0 / var1;
-            //    var1 = ((double)dig_P9 * p * p) / 2147483648.0f;
-            //    var2 = p * ((double)dig_P8 / 32768.0f);
+        //    if (var1 == 0)
+        //        return 0;
+        //    p = 1048576.0 - (double)adc_P;
+        //    p = (p - (var2 / 4096.0)) * 6250.0 / var1;
+        //    var1 = ((double)dig_P9 * p * p) / 2147483648.0f;
+        //    var2 = p * ((double)dig_P8 / 32768.0f);
 
-            //    p = p + (var1 + var2 + ((double)dig_P7)) / 16.0f;
-            //    return p;
+        //    p = p + (var1 + var2 + ((double)dig_P7)) / 16.0f;
+        //    return p;
 
-            //}
+        //}
 
-        }
+    }
 
     public static class Prompt
     {
