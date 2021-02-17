@@ -12,6 +12,7 @@ using System.IO;
 using System.Management;
 using System.Text;
 
+
 namespace GasSensor_GUI_v1._0
 {
 
@@ -50,7 +51,7 @@ namespace GasSensor_GUI_v1._0
         List<String> outputCsvList = new List<String>();
         string gridViewData;
         int columnCount, numOfSample = 1;
-
+        int graphUdate = 0;
 
         /*
         DIG_T1: unsigned short
@@ -67,7 +68,7 @@ namespace GasSensor_GUI_v1._0
         // signed short: 16-bit
         double dig_H2, dig_H4, dig_H5, dig_H6;
         Int32 t_fine;
-        
+
 
         private void ThreadTask()
         {
@@ -109,7 +110,8 @@ namespace GasSensor_GUI_v1._0
             InitializeComponent();
             chart1.Controls.Add(lblMaxYAxisPosition);
             chart1.Controls.Add(lblMinYAxisPosition);
-
+            Series serieHumidity = new Series("Humidity");
+            serieHumidity.YAxisType= AxisType.Secondary;
             //chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
             //chart1.Cursor = Cursors.IBeam;
             _uart = serialPort1;
@@ -128,34 +130,41 @@ namespace GasSensor_GUI_v1._0
             chart1.Series.Add("Sensor 4");
             chart1.Series.Add("Sensor 5");
             chart1.Series.Add("Sensor 6");
-            chart1.Series["Sensor 1"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series.Add("Humidity");
+
+            chart1.Series["Sensor 1"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             chart1.Series["Sensor 1"].BorderDashStyle = ChartDashStyle.Dash;
             chart1.Series["Sensor 1"].BorderWidth = 3;
 
-            chart1.Series["Sensor 2"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series["Sensor 2"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             chart1.Series["Sensor 2"].BorderWidth = 3;
 
-            chart1.Series["Sensor 3"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series["Sensor 3"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             chart1.Series["Sensor 3"].BorderWidth = 3;
             chart1.Series["Sensor 3"].BorderDashStyle = ChartDashStyle.DashDotDot;
             chart1.Series["Sensor 3"].MarkerStyle = MarkerStyle.Diamond;
 
-            chart1.Series["Sensor 4"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series["Sensor 4"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             chart1.Series["Sensor 4"].BorderWidth = 3;
 
-            chart1.Series["Sensor 5"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series["Sensor 5"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             chart1.Series["Sensor 5"].BorderWidth = 3;
 
-            chart1.Series["Sensor 6"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series["Sensor 6"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             chart1.Series["Sensor 6"].BorderDashStyle = ChartDashStyle.DashDotDot;
             chart1.Series["Sensor 6"].MarkerStyle = MarkerStyle.Diamond;
             chart1.Series["Sensor 6"].MarkerBorderWidth = 3;
             chart1.Series["Sensor 6"].BorderWidth = 3;
+
+
+            chart1.Series["Humidity"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+
             //chart1.Series["Sensor 1"].Points.AddXY(1, 2);
             //chart1.Series["Sensor 1"].Points.AddXY(3, 4);
             chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 0.5;
             chart1.ChartAreas[0].AxisY.MinorGrid.Interval = 0.1;
             //chart1.ChartAreas[0].AxisX.MajorGrid.Interval = 0.1;
+
 
             chart1.ChartAreas[0].AxisX.Maximum = double.NaN;
             ChartArea ca = chart1.ChartAreas[0];
@@ -172,6 +181,9 @@ namespace GasSensor_GUI_v1._0
             GetSerialPortName();
             // Instantiate the output CSV Header .
             InstantiateCSVHeader();
+
+            chart1.Series.SuspendUpdates();
+
 
         }
 
@@ -191,13 +203,18 @@ namespace GasSensor_GUI_v1._0
 
         public void GetSerialPortName()
         {
-            string[] ports = SerialPort.GetPortNames();
-
+            string[] ports = null;
+            ports = SerialPort.GetPortNames();
             foreach (string port in ports)
             {
-                comboBox1.Text = port;
-                comboBox1.Items.Add(port);
+                if (!comboBox1.Items.Contains(port)) // prevent UartCheckingTimer to enumerate duplicated ports.
+                { 
+                    //comboBox1.Text = port;
+                    comboBox1.Items.Add(port);
+                }
             }
+
+
         }
         public void mouseWheel(object sender, MouseEventArgs e)
         {
@@ -490,10 +507,14 @@ namespace GasSensor_GUI_v1._0
                                 {
                                     dig_H5 = Convert.ToDouble(realValue_serialPortReceivedData);
                                 }
+
+                                value[6] = CompensateHumidity((int)value[6]);
+
                                 break;
 
 
                         }
+                        // call this function when received all the humidity and compensation data.
                     }
 
                 }
@@ -657,7 +678,14 @@ namespace GasSensor_GUI_v1._0
             tableData_ClockTime.Add(rowData_ClockTime);
             //tableData.Add(rowData);
             tableData.Add(rowData);
-
+            graphUpdate++;
+            if (graphUpdate == (outputCsvList.Count>500 ? (int)outputCsvList.Count / 100:1))
+            {
+                chart1.Series.ResumeUpdates();
+                chart1.Series.Invalidate();
+                chart1.Series.SuspendUpdates();
+                graphUpdate = 0;
+            }
             if (time > 4)
                 textBox1.Text = tableData[1][1].ToString();
             await Task.Run(() => UpdateChartAndGrid());
@@ -763,6 +791,8 @@ namespace GasSensor_GUI_v1._0
                     dataGridView1.Rows[0].Cells[5].Value = Value[3];
                     dataGridView1.Rows[0].Cells[6].Value = Value[4];
                     dataGridView1.Rows[0].Cells[7].Value = Value[5];
+                    dataGridView1.Rows[0].Cells[8].Value = Value[6];
+
                     try
                     {
                         gridViewData = null;
@@ -803,6 +833,7 @@ namespace GasSensor_GUI_v1._0
             row_number = 0;
             time = 0;
             prev_time = 0;
+            outputCsvList.Clear();
         }
 
         private void ButtonSetADCRefVoltage_Click(object sender, EventArgs e)
@@ -989,6 +1020,17 @@ namespace GasSensor_GUI_v1._0
 
         }
 
+        private void UartCheckingTImer_Tick(object sender, EventArgs e)
+        {
+            GetSerialPortName();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string userName = Console.ReadLine();
+            button2.Text = userName;
+        }
+
         private void Sensor3Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 3"].Enabled = Sensor3Enable.Checked;
@@ -1047,8 +1089,8 @@ namespace GasSensor_GUI_v1._0
             double var1, var2, T;
 
             var1 = (double)adc_T / 16384.0f - dig_T1 / 1024.0 * dig_T2;
-            var2 =(     (( (double)adc_T )/ 131072.0f - ((double)dig_T1 )/ 8192.0 * dig_T2)*
-                (((double) adc_T)/131072.0f- ((double)dig_T1) / 8192.0)  )* ((double)dig_T3);
+            var2 = ((((double)adc_T) / 131072.0f - ((double)dig_T1) / 8192.0 * dig_T2) *
+                (((double)adc_T) / 131072.0f - ((double)dig_T1) / 8192.0)) * ((double)dig_T3);
             t_fine = (Int32)(var1 + var2);
             return (double)(var1 + var2) / 5120.0f;
         }
@@ -1061,7 +1103,8 @@ namespace GasSensor_GUI_v1._0
 
 
             var_H = (adc_H - (((double)dig_H4) * 64.0f + ((double)dig_H5) / 16384.0f * var_H)) *
-                (((double)dig_H2) / 65536.0f * (1.0 + ((double)dig_H6) / 67108864.0f * var_H * (1.0f + ((double)dig_H3) / 67108864.0f * var_H)));
+                (     ((double)dig_H2) / 65536.0f * (1.0 + ((double)dig_H6) / 67108864.0f * var_H * 
+                (1.0f + ((double)dig_H3) / 67108864.0f * var_H))        );
 
             var_H = var_H * (1.0 - ((double)dig_H1) * var_H / 524288.0f);
 
@@ -1095,6 +1138,7 @@ namespace GasSensor_GUI_v1._0
             //    return p;
 
             //}
+
         }
 
     public static class Prompt

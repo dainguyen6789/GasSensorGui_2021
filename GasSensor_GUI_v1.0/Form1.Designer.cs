@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
@@ -45,6 +45,7 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Humidity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.textBoxCount = new System.Windows.Forms.TextBox();
@@ -57,6 +58,7 @@
             this.textBoxRefADCVoltage = new System.Windows.Forms.TextBox();
             this.buttonClear = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.Sensor5Enable = new System.Windows.Forms.CheckBox();
             this.Sensor4Enable = new System.Windows.Forms.CheckBox();
             this.Sensor6Enable = new System.Windows.Forms.CheckBox();
@@ -89,6 +91,8 @@
             this.setMaxAxisYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.UartCheckingTImer = new System.Windows.Forms.Timer(this.components);
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -111,43 +115,45 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea7.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea7.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea7.AxisX.MajorGrid.Interval = 0D;
-            chartArea7.AxisX.MinorGrid.Enabled = true;
-            chartArea7.AxisX.Title = "Time (hour)";
-            chartArea7.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea7.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea7.AxisY.MajorGrid.Interval = 0D;
-            chartArea7.AxisY.MajorTickMark.Interval = 0D;
-            chartArea7.AxisY.Maximum = 6D;
-            chartArea7.AxisY.MinorGrid.Enabled = true;
-            chartArea7.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea7.AxisY.Title = "Voltage (V)";
-            chartArea7.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea7.BackColor = System.Drawing.Color.White;
-            chartArea7.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea7.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea7);
-            legend7.Alignment = System.Drawing.StringAlignment.Far;
-            legend7.DockedToChartArea = "ChartArea1";
-            legend7.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend7.IsTextAutoFit = false;
-            legend7.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend7.Name = "Legend1";
-            legend7.TextWrapThreshold = 50;
-            legend7.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend7);
+            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea1.AxisX.MajorGrid.Interval = 0D;
+            chartArea1.AxisX.MinorGrid.Enabled = true;
+            chartArea1.AxisX.Title = "Time (hour)";
+            chartArea1.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea1.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea1.AxisY.MajorGrid.Interval = 0D;
+            chartArea1.AxisY.MajorTickMark.Interval = 0D;
+            chartArea1.AxisY.Maximum = 6D;
+            chartArea1.AxisY.MinorGrid.Enabled = true;
+            chartArea1.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea1.AxisY.Title = "Voltage (V)";
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea1.AxisY2.Title = "RH (%)";
+            chartArea1.BackColor = System.Drawing.Color.White;
+            chartArea1.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
+            legend1.DockedToChartArea = "ChartArea1";
+            legend1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend1.IsTextAutoFit = false;
+            legend1.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend1.Name = "Legend1";
+            legend1.TextWrapThreshold = 50;
+            legend1.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title7.Name = "Sensor Voltage (V)";
-            title7.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title7);
+            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title1.Name = "Sensor Voltage (V)";
+            title1.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title1);
             // 
             // ButtonSave
             // 
@@ -185,7 +191,8 @@
             this.Column3,
             this.Column4,
             this.Column5,
-            this.Column6});
+            this.Column6,
+            this.Humidity});
             this.dataGridView1.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.dataGridView1.Location = new System.Drawing.Point(7, 22);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
@@ -205,9 +212,9 @@
             // 
             // SampleTime
             // 
-            dataGridViewCellStyle7.Format = "N3";
-            dataGridViewCellStyle7.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Format = "N3";
+            dataGridViewCellStyle1.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle1;
             this.SampleTime.HeaderText = "Time (min)";
             this.SampleTime.MinimumWidth = 6;
             this.SampleTime.Name = "SampleTime";
@@ -254,6 +261,13 @@
             this.Column6.MinimumWidth = 6;
             this.Column6.Name = "Column6";
             this.Column6.Width = 60;
+            // 
+            // Humidity
+            // 
+            this.Humidity.HeaderText = "RH(%)";
+            this.Humidity.MinimumWidth = 6;
+            this.Humidity.Name = "Humidity";
+            this.Humidity.Width = 125;
             // 
             // groupBox1
             // 
@@ -419,6 +433,15 @@
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Graph";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(644, 685);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // Sensor5Enable
             // 
@@ -592,7 +615,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1634, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1634, 28);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -783,17 +806,36 @@
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox1.Visible = false;
             // 
+            // UartCheckingTImer
+            // 
+            this.UartCheckingTImer.Enabled = true;
+            this.UartCheckingTImer.Interval = 1000;
+            this.UartCheckingTImer.Tick += new System.EventHandler(this.UartCheckingTImer_Tick);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(644, 658);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1634, 748);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
@@ -865,6 +907,13 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lblMaxYAxisPosition;
         private System.Windows.Forms.Label lblMinYAxisPosition;
+        private System.Windows.Forms.CheckBox Sensor5Enable;
+        private System.Windows.Forms.CheckBox Sensor4Enable;
+        private System.Windows.Forms.CheckBox Sensor6Enable;
+        private System.Windows.Forms.CheckBox Sensor3Enable;
+        private System.Windows.Forms.CheckBox Sensor2Enable;
+        private System.Windows.Forms.CheckBox Sensor1Enable;
+        private System.Windows.Forms.Timer UartCheckingTImer;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn SampleTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
@@ -873,12 +922,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.CheckBox Sensor5Enable;
-        private System.Windows.Forms.CheckBox Sensor4Enable;
-        private System.Windows.Forms.CheckBox Sensor6Enable;
-        private System.Windows.Forms.CheckBox Sensor3Enable;
-        private System.Windows.Forms.CheckBox Sensor2Enable;
-        private System.Windows.Forms.CheckBox Sensor1Enable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Humidity;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 
