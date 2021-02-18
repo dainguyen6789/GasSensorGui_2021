@@ -180,6 +180,7 @@ namespace GasSensor_GUI_v1._0
             InstantiateCSVHeader();
 
             chart1.Series.SuspendUpdates();
+            textBox1.Text = "Hello";
 
 
         }
@@ -275,7 +276,9 @@ namespace GasSensor_GUI_v1._0
             string realValue_serialPortReceivedData;
             serialPortReceiveddata = _uart.ReadLine();
             //realExistingValue_serialPortReceivedData = _uart.ReadExisting();
-            //richTextBox1.Text = serialPortReceiveddata;
+            textBox1.Text = "Hello 122324324342342324234";
+
+            textBox1.Text = serialPortReceiveddata;
             if (serialPortReceiveddata != null)
             {
                 realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
