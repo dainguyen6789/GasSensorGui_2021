@@ -33,7 +33,8 @@ namespace GasSensor_GUI_v1._0
         int zoom = 0;
         float zoom_size = 20f;
         //List<Double> value=new List<Double>();
-        double[] value = new double[8];// = 0, value2 = 0, value3 = 0, value4 = 0;
+        double[] value = new double[9];
+        double humidity;// = 0, value2 = 0, value3 = 0, value4 = 0;
         double refADCVoltage = 5;
         private Thread trd;
         private readonly Queue<float> _queue_time = new Queue<float>();
@@ -155,6 +156,8 @@ namespace GasSensor_GUI_v1._0
 
 
             chart1.Series["Humidity"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            chart1.Series["Humidity"].BorderWidth = 3;
+            chart1.Series["Humidity"].YAxisType = AxisType.Secondary;
 
             //chart1.Series["Sensor 1"].Points.AddXY(1, 2);
             //chart1.Series["Sensor 1"].Points.AddXY(3, 4);
@@ -276,9 +279,9 @@ namespace GasSensor_GUI_v1._0
             string realValue_serialPortReceivedData;
             serialPortReceiveddata = _uart.ReadLine();
             //realExistingValue_serialPortReceivedData = _uart.ReadExisting();
-            textBox1.Text = "Hello 122324324342342324234";
+            //textBox1.Text = "Hello 122324324342342324234";
 
-            textBox1.Text = serialPortReceiveddata;
+            //textBox1.Text = serialPortReceiveddata;
             if (serialPortReceiveddata != null)
             {
                 realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
@@ -379,145 +382,106 @@ namespace GasSensor_GUI_v1._0
                     Console.WriteLine(realValue_serialPortReceivedData + "(V)");
                     //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
                     //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
-                    value[6] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    humidity = Convert.ToDouble(realValue_serialPortReceivedData);
+                    //value[5] = value[5] / 5 * refADCVoltage;
+
+                    //current_gridviewrow_sensor4++;
+                    //addrow_gridview = 6;
+                }
+                else if (serialPortReceiveddata[0] == 'E')
+                {
+                    Console.WriteLine("Data from Temperature");
+                    Console.WriteLine(serialPortReceiveddata);
+                    Console.WriteLine(realValue_serialPortReceivedData + "Temp");
+                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
+                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
+                    value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
                     //value[5] = value[5] / 5 * refADCVoltage;
 
                     //current_gridviewrow_sensor4++;
                     //addrow_gridview = 6;
                 }
                 // For compensation data
+                
                 else
-                {
-
-                    /*
-                    DIG_T1: unsigned short
-                    DIG_T2/3: signed short
-                    */
-
-                    //unsigned short dig_T1;
-                    //signed short dig_T2, dig_T3;
-
-
-                    //// humidity compensation data
-                    ////unsigned char: 8-bit
-                    //unsigned char dig_H1 = 0x89, dig_H3;
-                    //// signed short: 16-bit
-                    //signed short dig_H2 = 0xF911, dig_H4 = 0x1234, dig_H5;
-                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(3, serialPortReceiveddata.Length - 1);
-
-                    // temperature compensation data
-                    if (serialPortReceiveddata[0] == 'T')
                     {
-                        switch (serialPortReceiveddata[1])
+                        realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
+
+                        // temperature compensation data
+                        if (serialPortReceiveddata[0] == 'T')
                         {
-                            //  dig_T1
-                            case '1':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_T1 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+                            switch (serialPortReceiveddata[1])
+                            {
+                                //  dig_T1
+                                case '1':
+
                                     dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                break;
-                            //  dig_T1
-                            case '2':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_T2 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+
+                                    break;
+                                //  dig_T1
+                                case '2':
+
                                     dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                break;
 
-                            //  dig_T1
-                            case '3':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_T3 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+                                    break;
+
+                                //  dig_T1
+                                case '3':
+
                                     dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                break;
+
+                                    break;
 
 
+                            }
                         }
-                    }
-                    if (serialPortReceiveddata[0] == 'H')
-                    {
-                        switch (serialPortReceiveddata[1])
+                        if (serialPortReceiveddata[0] == 'H')
                         {
-                            //  dig_T1
-                            case '1':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_H1 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+                            switch (serialPortReceiveddata[1])
+                            {
+                                //  dig_T1
+                                case '1':
+
                                     dig_H1 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                break;
-                            //  dig_T1
-                            case '2':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_H2 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+
+                                    break;
+                                //  dig_T1
+                                case '2':
+
                                     dig_H2 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                break;
 
-                            //  dig_T1
-                            case '3':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_H3 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+                                    break;
+
+                                //  dig_T1
+                                case '3':
+
                                     dig_H3 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                break;
-                            //  dig_T1
-                            case '4':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_H4 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+
+                                    break;
+                                //  dig_T1
+                                case '4':
                                     dig_H4 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                break;
-                            //  dig_T1
-                            case '5':
-                                if (serialPortReceiveddata[2] == 'N')
-                                {
-                                    dig_H5 = (-1) * Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
-                                else if (serialPortReceiveddata[2] == 'P')
-                                {
+                                    break;
+                                //  dig_T1
+                                case '5':
+
                                     dig_H5 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                }
 
-                                value[6] = CompensateHumidity((int)value[6]);
+                                    break;
+                                case '6':
+                                    dig_H6 = Convert.ToDouble(realValue_serialPortReceivedData);
+                                    value[7] = CompensateTemperature((int)value[7]);
+                                    //t_fine is used to  CompensateHumidity
+                                    value[6] = CompensateHumidity((int)humidity);
 
-                                break;
+                                    break;
 
-
+                            }
+                            // call this function when received all the humidity and compensation data.
                         }
-                        // call this function when received all the humidity and compensation data.
-                    }
 
-                }
+                    }
+                
             }
         }
 
@@ -701,6 +665,7 @@ namespace GasSensor_GUI_v1._0
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4));
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[4], 5));
             await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[5], 6));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[6], 7));//humidity value RH%
 
             //addrow_gridview = 0;
 
@@ -736,6 +701,8 @@ namespace GasSensor_GUI_v1._0
 
                 else if (sensor_number == 6)
                     chart1.Series["Sensor 6"].Points.AddXY((update_time / 60), YValue);
+                else if (sensor_number == 7)
+                    chart1.Series["Humidity"].Points.AddXY((update_time / 60), YValue);
 
             }
         }
@@ -1093,9 +1060,9 @@ namespace GasSensor_GUI_v1._0
         {
             double var1, var2, T;
 
-            var1 = (double)adc_T / 16384.0f - dig_T1 / 1024.0 * dig_T2;
-            var2 = ((((double)adc_T) / 131072.0f - ((double)dig_T1) / 8192.0 * dig_T2) *
-                (((double)adc_T) / 131072.0f - ((double)dig_T1) / 8192.0)) * ((double)dig_T3);
+            var1 = (((double)adc_T) / 16384.0f - ((double)dig_T1) / 1024.0)        *        ((double) dig_T2);
+            var2 = (        (((double)adc_T) / 131072.0f - ((double)dig_T1) / 8192.0 ) *
+                (((double)adc_T) / 131072.0f - ((double)dig_T1) / 8192.0)          ) * ((double)dig_T3);
             t_fine = (Int32)(var1 + var2);
             return (double)(var1 + var2) / 5120.0f;
         }
@@ -1107,9 +1074,9 @@ namespace GasSensor_GUI_v1._0
             var_H = (double)(t_fine - 76800.0f);
 
 
-            var_H = (adc_H - (((double)dig_H4) * 64.0f + ((double)dig_H5) / 16384.0f * var_H)) *
-                (     ((double)dig_H2) / 65536.0f * (1.0 + ((double)dig_H6) / 67108864.0f * var_H * 
-                (1.0f + ((double)dig_H3) / 67108864.0f * var_H))        );
+            var_H = (     adc_H - (    ((double)dig_H4) * 64.0f + ((double)dig_H5) / 16384.0f * var_H    )       ) *
+                (     ((double)dig_H2) / 65536.0f *           
+                   (   1.0 + ((double)dig_H6) / 67108864.0f * var_H * (1.0f + ((double)dig_H3) / 67108864.0f * var_H)    )        );
 
             var_H = var_H * (1.0 - ((double)dig_H1) * var_H / 524288.0f);
 
