@@ -22,6 +22,7 @@ namespace GasSensor_GUI_v1._0
                                             int current_row, int sensor_number);
         delegate void CloseUartCallback(int i);
         System.Threading.Thread CloseDown;
+        #region VariableDefinition
         // Timer timer = timer1;
         float time = 0, count = 0;
         float prev_time = 0;
@@ -53,6 +54,18 @@ namespace GasSensor_GUI_v1._0
         int columnCount, numOfSample = 1;
         int graphUdate = 0;
 
+        enum SENSOR_NUMBER
+        {
+            ZERO,
+            ONE,
+            TWO,
+            THREE,
+            FOUR,
+            FIVE,
+            SIX
+        } 
+        #endregion
+        #region Compenasation Data From BME280
         /*
         DIG_T1: unsigned short
         DIG_T2/3: signed short
@@ -67,7 +80,8 @@ namespace GasSensor_GUI_v1._0
         double dig_H1, dig_H3;
         // signed short: 16-bit
         double dig_H2, dig_H4, dig_H5, dig_H6;
-        Int32 t_fine;
+        Int32 t_fine; 
+        #endregion
 
 
         private void ThreadTask()
@@ -85,92 +99,270 @@ namespace GasSensor_GUI_v1._0
         }
 
         SerialPort _uart;
+        #region textBox to change Max/Min X/YAxis
         TextBox tb = new TextBox();
         TextBox tb_minYAxis = new TextBox();
 
         TextBox tb_minXAxis = new TextBox();
-        TextBox tb_maxXAxis = new TextBox();
+        TextBox tb_maxXAxis = new TextBox(); 
+        #endregion
 
 
 
         public Form1()
         {
             InitializeComponent();
+            SetupUart();
+            InitializeChart();
+            GetSerialPortName();
+            InstantiateCSVHeader();
+            chart1.Series.SuspendUpdates();
+            SetupComboBoxSensorColor();
+        }
+
+        #region SetupUart and Its Event Handler
+        private void SetupUart()
+        {
+            _uart = serialPort1;
+            _uart.DataReceived += _uart_DataReceived;
+        }
+        public void GetSerialPortName()
+        {
+            string[] ports = null;
+            ports = SerialPort.GetPortNames();
+            foreach (string port in ports)
+            {
+                if (!comboBox1.Items.Contains(port)) // prevent UartCheckingTimer to enumerate duplicated ports.
+                {
+                    //comboBox1.Text = port;
+                    comboBox1.Items.Add(port);
+                }
+            }
+
+
+        }
+        private void _uart_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            string serialPortReceiveddata;
+            string realValue_serialPortReceivedData;
+            serialPortReceiveddata = _uart.ReadLine();
+
+            if (serialPortReceiveddata != null)
+            {
+                realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
+                //  uController encoder
+                //  ASCII 1 denotes sensor #1 data
+                //  ASCII 2 denotes sensor #2 data
+                //  ASCII 3 demotes sensor #3 data
+                //  ASCII 4 denotes sensor #4 data
+                //  DataPoint datapoint = new DataPoint(0, Convert.ToDouble(realValue_serialPortReceivedData));
+                //  data is received every second.
+                if (serialPortReceiveddata[0] == '1')
+                {
+                    UpdateSensor1Data(realValue_serialPortReceivedData);
+                }
+                else if (serialPortReceiveddata[0] == '2')
+                {
+
+                    value[1] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[1] = value[1] / 5 * refADCVoltage;
+                    addrow_gridview = 2;
+
+                }
+                else if (serialPortReceiveddata[0] == '3')
+                {
+
+                    value[2] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[2] = value[2] / 5 * refADCVoltage;
+                    addrow_gridview = 3;
+                }
+                else if (serialPortReceiveddata[0] == '4')
+                {
+                    value[3] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[3] = value[3] / 5 * refADCVoltage;
+                    addrow_gridview = 4;
+                }
+                else if (serialPortReceiveddata[0] == '5')
+                {
+
+                    value[4] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[4] = value[4] / 5 * refADCVoltage;
+                    addrow_gridview = 5;
+                }
+                else if (serialPortReceiveddata[0] == '6')
+                {
+                    value[5] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[5] = value[5] / 5 * refADCVoltage;
+                    addrow_gridview = 6;
+                }
+                else if (serialPortReceiveddata[0] == 'U')
+                {
+                    humidity = Convert.ToDouble(realValue_serialPortReceivedData);
+                }
+                else if (serialPortReceiveddata[0] == 'E')
+                {
+                    value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
+                }
+                // For compensation data
+
+                else
+                {
+                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
+
+                    // temperature compensation data
+                    if (serialPortReceiveddata[0] == 'T')
+                    {
+                        ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+                    }
+                    if (serialPortReceiveddata[0] == 'H')
+                    {
+                        ReadHumidityCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+                        // call this function when received all the humidity and compensation data.
+                    }
+
+                }
+
+            }
+        }
+
+        private void UpdateSensor1Data(string realValue_serialPortReceivedData)
+        {
+            value[0] = Convert.ToDouble(realValue_serialPortReceivedData);
+            value[0] = value[0] / 5 * refADCVoltage;
+            addrow_gridview = 1;
+        }
+
+        private void ReadHumidityCompensationData(string serialPortReceiveddata, string realValue_serialPortReceivedData)
+        {
+            switch (serialPortReceiveddata[1])
+            {
+                //  dig_T1
+                case '1':
+
+                    dig_H1 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+                //  dig_T1
+                case '2':
+
+                    dig_H2 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+
+                //  dig_T1
+                case '3':
+
+                    dig_H3 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+                //  dig_T1
+                case '4':
+                    dig_H4 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    break;
+                //  dig_T1
+                case '5':
+
+                    dig_H5 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+                case '6':
+                    dig_H6 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[7] = CompensateTemperature((int)value[7]);
+                    //t_fine is used to  CompensateHumidity
+                    value[6] = Math.Round(CompensateHumidity((int)humidity), 0);
+
+                    break;
+
+            }
+        }
+
+        private void ReadTempCompensationData(string serialPortReceiveddata, string realValue_serialPortReceivedData)
+        {
+            switch (serialPortReceiveddata[1])
+            {
+                //  dig_T1
+                case '1':
+
+                    dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+                //  dig_T1
+                case '2':
+
+                    dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+
+                //  dig_T1
+                case '3':
+
+                    dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+
+
+            }
+        }
+        #endregion
+
+
+
+        #region FunctionToInitChartSeries
+        private void InitializeChart()
+        {
+            AddMaxMinXYLabelLocationToChart();
+
+            CreateChartSerie((int)SENSOR_NUMBER.ONE);
+            CreateChartSerie((int)SENSOR_NUMBER.TWO);
+            CreateChartSerie((int)SENSOR_NUMBER.THREE);
+            CreateChartSerie((int)SENSOR_NUMBER.FOUR);
+            CreateChartSerie((int)SENSOR_NUMBER.FIVE);
+            CreateChartSerie((int)SENSOR_NUMBER.SIX);
+            CreateHumiditySerie();
+
+            InitMouseClickAndWheelEvent();
+            SetupXYAxisGridAndFormat();
+
+        }
+
+        private void InitMouseClickAndWheelEvent()
+        {
+            chart1.MouseClick += mouseDownEvent;
+            chart1.MouseWheel += mouseWheel;
+        }
+
+        private void CreateHumiditySerie()
+        {
+            chart1.Series.Add("Humidity");
+            chart1.Series["Humidity"].YAxisType=AxisType.Secondary; ;
+            chart1.Series["Humidity"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            chart1.Series["Humidity"].BorderWidth = 3;
+            chart1.Series["Humidity"].YAxisType = AxisType.Secondary;
+        }
+
+        private void CreateChartSerie(int sensorNumber)
+        {
+            chart1.Series.Add("Sensor " + sensorNumber.ToString());
+            chart1.Series["Sensor " + sensorNumber.ToString()].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            chart1.Series["Sensor " + sensorNumber.ToString()].BorderWidth = 3;
+        }
+        private void SetupXYAxisGridAndFormat()
+        {
+            chart1.ChartAreas[0].AxisY.MajorTickMark.Interval = 1;
+            chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 0.5;
+            chart1.ChartAreas[0].AxisY.MinorGrid.Interval = 0.1;
+            chart1.ChartAreas[0].AxisX.LabelStyle.Format = "0.0000";
+            chart1.ChartAreas[0].AxisX.Maximum = double.NaN;
+
+        }
+        private void AddMaxMinXYLabelLocationToChart()
+        {
             chart1.Controls.Add(lblMaxYAxisPosition);
             chart1.Controls.Add(lblMinYAxisPosition);
             chart1.Controls.Add(lblMaxXAxisPosition);
             chart1.Controls.Add(lblMinXAxisPosition);
-            Series serieHumidity = new Series("Humidity");
-            serieHumidity.YAxisType= AxisType.Secondary;
-            //chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
-            //chart1.Cursor = Cursors.IBeam;
-            _uart = serialPort1;
-            _uart.DataReceived += _uart_DataReceived;
-
-            chart1.Series.Add("Sensor 1");
-            chart1.Series.Add("Sensor 2");
-            chart1.Series.Add("Sensor 3");
-            chart1.Series.Add("Sensor 4");
-            chart1.Series.Add("Sensor 5");
-            chart1.Series.Add("Sensor 6");
-            chart1.Series.Add("Humidity");
-
-            chart1.Series["Sensor 1"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            chart1.Series["Sensor 1"].BorderDashStyle = ChartDashStyle.Dash;
-            chart1.Series["Sensor 1"].BorderWidth = 3;
-
-            chart1.Series["Sensor 2"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            chart1.Series["Sensor 2"].BorderWidth = 3;
-
-            chart1.Series["Sensor 3"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            chart1.Series["Sensor 3"].BorderWidth = 3;
-            chart1.Series["Sensor 3"].BorderDashStyle = ChartDashStyle.DashDotDot;
-            chart1.Series["Sensor 3"].MarkerStyle = MarkerStyle.Diamond;
-
-            chart1.Series["Sensor 4"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            chart1.Series["Sensor 4"].BorderWidth = 3;
-
-            chart1.Series["Sensor 5"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            chart1.Series["Sensor 5"].BorderWidth = 3;
-
-            chart1.Series["Sensor 6"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            chart1.Series["Sensor 6"].BorderDashStyle = ChartDashStyle.DashDotDot;
-            chart1.Series["Sensor 6"].MarkerStyle = MarkerStyle.Diamond;
-            chart1.Series["Sensor 6"].MarkerBorderWidth = 3;
-            chart1.Series["Sensor 6"].BorderWidth = 3;
-
-
-            chart1.Series["Humidity"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            chart1.Series["Humidity"].BorderWidth = 3;
-            chart1.Series["Humidity"].YAxisType = AxisType.Secondary;
-
-
-            chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 0.5;
-            chart1.ChartAreas[0].AxisY.MinorGrid.Interval = 0.1;
-
-
-            chart1.ChartAreas[0].AxisX.Maximum = double.NaN;
-            ChartArea ca = chart1.ChartAreas[0];
-
-            Axis ax = ca.AxisX;
-            Axis ay = ca.AxisY;
-            ay.MajorGrid.Interval = 0.5;
-            ay.MajorTickMark.Interval = 1;
-            ax.LabelStyle.Format = "0.0000";
-            chart1.Series[0].ChartType = SeriesChartType.FastLine;
-
-            chart1.MouseClick += mouseDownEvent;
-            chart1.MouseWheel += mouseWheel;
-            GetSerialPortName();
-            // Instantiate the output CSV Header .
-            InstantiateCSVHeader();
-
-            chart1.Series.SuspendUpdates();
-            textBox1.Text = "Hello";
-            SetupComboBoxSensorColor();
-
-
         }
+        #endregion
 
         private void InstantiateCSVHeader()
         {
@@ -186,21 +378,7 @@ namespace GasSensor_GUI_v1._0
             outputCsvList.Add(gridViewData);
         }
 
-        public void GetSerialPortName()
-        {
-            string[] ports = null;
-            ports = SerialPort.GetPortNames();
-            foreach (string port in ports)
-            {
-                if (!comboBox1.Items.Contains(port)) // prevent UartCheckingTimer to enumerate duplicated ports.
-                { 
-                    //comboBox1.Text = port;
-                    comboBox1.Items.Add(port);
-                }
-            }
-
-
-        }
+        #region MouseClickAndMouseWheelEvent
         public void mouseWheel(object sender, MouseEventArgs e)
         {
             zoom_size = (float)chart1.ChartAreas[0].AxisX.Maximum;
@@ -252,228 +430,14 @@ namespace GasSensor_GUI_v1._0
                 await Task.Run(() => UpdateChart1());
                 //chart1.ContextMenuStrip = contextMenuStrip1;
             }
-        }
+        } 
+        #endregion
+
+
         private async void UpdateChart1()
         {
             chart1.ContextMenuStrip = contextMenuStrip1;
         }
-        private void _uart_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            string serialPortReceiveddata;
-            string realValue_serialPortReceivedData;
-            serialPortReceiveddata = _uart.ReadLine();
-
-            if (serialPortReceiveddata != null)
-            {
-                realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
-                //  uController encoder
-                //  ASCII 1 denotes sensor #1 data
-                //  ASCII 2 denotes sensor #2 data
-                //  ASCII 3 demotes sensor #3 data
-                //  ASCII 4 denotes sensor #4 data
-                //  DataPoint datapoint = new DataPoint(0, Convert.ToDouble(realValue_serialPortReceivedData));
-                //  data is received every second.
-                if (serialPortReceiveddata[0] == '1')
-                {
-                    Console.WriteLine("Data from sensor 1");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
-                    //Console.WriteLine(realExistingValue_serialPortReceivedData);
-                    //chart1.Series["Sensor 1"].Points.AddXY(time/60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    value[0] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[0] = value[0] / 5 * refADCVoltage;
-                    //current_gridviewrow_sensor1++;
-                    //current_gridviewrow_sensor1++;
-                    //DataGridViewRow gridviewrow = (DataGridViewRow) dataGridView1.Rows[0].Clone();
-                    addrow_gridview = 1;
-                    //gridviewrow.Cells[0].Value = 1;
-                    //dataGridView1.Rows.Add(gridviewrow);
-                    // chart1.Series.
-                }
-                else if (serialPortReceiveddata[0] == '2')
-                {
-                    Console.WriteLine("Data from sensor 2");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
-                    // chart1.Series["Sensor 2"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 2);
-                    value[1] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[1] = value[1] / 5 * refADCVoltage;
-
-                    //current_gridviewrow_sensor2++;
-                    addrow_gridview = 2;
-
-                }
-                else if (serialPortReceiveddata[0] == '3')
-                {
-                    Console.WriteLine("Data from sensor 3");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
-                    // chart1.Series["Sensor 3"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 3);
-                    value[2] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[2] = value[2] / 5 * refADCVoltage;
-
-                    //current_gridviewrow_sensor3++;
-                    addrow_gridview = 3;
-                }
-                else if (serialPortReceiveddata[0] == '4')
-                {
-                    Console.WriteLine("Data from sensor 4");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
-                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
-                    value[3] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[3] = value[3] / 5 * refADCVoltage;
-
-                    //current_gridviewrow_sensor4++;
-                    addrow_gridview = 4;
-                }
-                else if (serialPortReceiveddata[0] == '5')
-                {
-                    Console.WriteLine("Data from sensor 5");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
-                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
-                    value[4] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[4] = value[4] / 5 * refADCVoltage;
-
-                    //current_gridviewrow_sensor4++;
-                    addrow_gridview = 5;
-                }
-                else if (serialPortReceiveddata[0] == '6')
-                {
-                    Console.WriteLine("Data from sensor 6");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
-                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
-                    value[5] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[5] = value[5] / 5 * refADCVoltage;
-
-                    //current_gridviewrow_sensor4++;
-                    addrow_gridview = 6;
-                }
-                else if (serialPortReceiveddata[0] == 'U')
-                {
-                    Console.WriteLine("Data from Humidity Sensor");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "(V)");
-                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
-                    humidity = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                }
-                else if (serialPortReceiveddata[0] == 'E')
-                {
-                    Console.WriteLine("Data from Temperature");
-                    Console.WriteLine(serialPortReceiveddata);
-                    Console.WriteLine(realValue_serialPortReceivedData + "Temp");
-                    //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
-                    //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
-                    value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    //value[5] = value[5] / 5 * refADCVoltage;
-
-                    //current_gridviewrow_sensor4++;
-                    //addrow_gridview = 6;
-                }
-                // For compensation data
-                
-                else
-                    {
-                        realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
-
-                        // temperature compensation data
-                        if (serialPortReceiveddata[0] == 'T')
-                        {
-                            switch (serialPortReceiveddata[1])
-                            {
-                                //  dig_T1
-                                case '1':
-
-                                    dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                    break;
-                                //  dig_T1
-                                case '2':
-
-                                    dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                    break;
-
-                                //  dig_T1
-                                case '3':
-
-                                    dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                    break;
-
-
-                            }
-                        }
-                        if (serialPortReceiveddata[0] == 'H')
-                        {
-                            switch (serialPortReceiveddata[1])
-                            {
-                                //  dig_T1
-                                case '1':
-
-                                    dig_H1 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                    break;
-                                //  dig_T1
-                                case '2':
-
-                                    dig_H2 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                    break;
-
-                                //  dig_T1
-                                case '3':
-
-                                    dig_H3 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                    break;
-                                //  dig_T1
-                                case '4':
-                                    dig_H4 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                    break;
-                                //  dig_T1
-                                case '5':
-
-                                    dig_H5 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                    break;
-                                case '6':
-                                    dig_H6 = Convert.ToDouble(realValue_serialPortReceivedData);
-                                    value[7] = CompensateTemperature((int)value[7]);
-                                    //t_fine is used to  CompensateHumidity
-                                    value[6] =Math.Round(  CompensateHumidity((int)humidity),0   );
-
-                                    break;
-
-                            }
-                            // call this function when received all the humidity and compensation data.
-                        }
-
-                    }
-                
-            }
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog saveFile = saveFileDialog1;
-            if (saveFile.ShowDialog() == DialogResult.OK)
-            {
-                chart1.SaveImage(saveFile.FileName, ChartImageFormat.Png);
-            }
-
-            //if(saveFile.save)
-        }
-
 
 
         private void SaveFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -483,9 +447,11 @@ namespace GasSensor_GUI_v1._0
 
         }
 
-        private void ButtonExit_Click(object sender, EventArgs e)
+
+        #region DROP_DOWN_MENU_REGION
+        private async void ToolStripMenuItemSetAutoScale_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            chart1.ChartAreas[0].AxisX.Maximum = double.NaN;
         }
 
         private void Version10ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -493,55 +459,7 @@ namespace GasSensor_GUI_v1._0
             Prompt.ShowDialog("This is Gas Sensor GUI\nVersion 2.0", "Feb2021");
         }
 
-        private void ConnectSerialPort_Click(object sender, EventArgs e)
-        {
-            timer1.Enabled = true;
-            try
-            {
-                if (!_uart.IsOpen)
-                {
-                    _uart.PortName = comboBox1.Text;
-                    _uart.Open();
-                }
-                if (_uart.IsOpen)
-                {
-                    labelSerialPortStatus.Text = "Connected";
-                    labelSerialPortStatus.BackColor = Color.Lime;
-                    panelSerialPortStatus.BackColor = Color.Lime;
-                }
-                else
-                {
-                    labelSerialPortStatus.Text = "Disconnected";
-                    labelSerialPortStatus.BackColor = Color.Red;
-                    panelSerialPortStatus.BackColor = Color.Red;
-                }
 
-            }
-            catch (Exception ex)
-            {
-                timer1.Enabled = false;
-
-                MessageBox.Show("Your Serial Port is invalid");
-
-            }
-
-        }
-
-        private void DisconnectSerialPort_Click(object sender, EventArgs e)
-        {
-            CloseDown = new System.Threading.Thread(new System.Threading.ThreadStart(CloseSerialOnExit));
-
-
-            CloseDown.Start();
-            timer1.Enabled = false;
-
-            labelSerialPortStatus.Text = "Disconnected";
-            labelSerialPortStatus.BackColor = Color.Red;
-            panelSerialPortStatus.BackColor = Color.Red;
-
-
-
-        }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -556,7 +474,8 @@ namespace GasSensor_GUI_v1._0
                 chart1.SaveImage(sv.FileName, ChartImageFormat.Png);
             }
 
-        }
+        } 
+        #endregion
 
         private void copyAlltoClipboard()
         {
@@ -566,40 +485,6 @@ namespace GasSensor_GUI_v1._0
                 Clipboard.SetDataObject(dataObj);
         }
 
-        private void ButtonSaveAsXlxs_Click(object sender, EventArgs e)
-        {
-
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "(*.csv)|*.csv";
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                using (var stream = File.CreateText(dlg.FileName + ".csv"))
-                {
-                    try
-                    {
-
-                        //for (int i = 1; (i) < dataGridView1.Rows.Count; i++)
-                        //{
-                        //    for (int j = 0; j < columnCount; j++)
-                        //    {
-                        //        outputCsv[i] += dataGridView1.Rows[i - 1].Cells[j].Value.ToString() + ",";
-                        //    }
-                        //}
-                        //foreach(var lineText in outputCsvList)
-                        File.WriteAllLines(dlg.FileName, outputCsvList);
-
-
-                        MessageBox.Show("Data Exported Successfully !!!", "Info");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error :" + ex.Message);
-                    }
-
-                }
-
-            }
-        }
 
         private async void Timer1_Tick(object sender, EventArgs e)
         {
@@ -765,6 +650,96 @@ namespace GasSensor_GUI_v1._0
 
         }
 
+        #region BUTTON_CLICK_EVENT
+        private void ButtonExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void ButtonSaveAsXlxs_Click(object sender, EventArgs e)
+        {
+
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "(*.csv)|*.csv";
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (var stream = File.CreateText(dlg.FileName + ".csv"))
+                {
+                    try
+                    {
+
+                        //for (int i = 1; (i) < dataGridView1.Rows.Count; i++)
+                        //{
+                        //    for (int j = 0; j < columnCount; j++)
+                        //    {
+                        //        outputCsv[i] += dataGridView1.Rows[i - 1].Cells[j].Value.ToString() + ",";
+                        //    }
+                        //}
+                        //foreach(var lineText in outputCsvList)
+                        File.WriteAllLines(dlg.FileName, outputCsvList);
+
+
+                        MessageBox.Show("Data Exported Successfully !!!", "Info");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error :" + ex.Message);
+                    }
+
+                }
+
+            }
+        }
+
+        private void ConnectSerialPort_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
+            try
+            {
+                if (!_uart.IsOpen)
+                {
+                    _uart.PortName = comboBox1.Text;
+                    _uart.Open();
+                }
+                if (_uart.IsOpen)
+                {
+                    labelSerialPortStatus.Text = "Connected";
+                    labelSerialPortStatus.BackColor = Color.Lime;
+                    panelSerialPortStatus.BackColor = Color.Lime;
+                }
+                else
+                {
+                    labelSerialPortStatus.Text = "Disconnected";
+                    labelSerialPortStatus.BackColor = Color.Red;
+                    panelSerialPortStatus.BackColor = Color.Red;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                timer1.Enabled = false;
+
+                MessageBox.Show("Your Serial Port is invalid");
+
+            }
+
+        }
+
+        private void DisconnectSerialPort_Click(object sender, EventArgs e)
+        {
+            CloseDown = new System.Threading.Thread(new System.Threading.ThreadStart(CloseSerialOnExit));
+
+
+            CloseDown.Start();
+            timer1.Enabled = false;
+
+            labelSerialPortStatus.Text = "Disconnected";
+            labelSerialPortStatus.BackColor = Color.Red;
+            panelSerialPortStatus.BackColor = Color.Red;
+
+
+
+        }
         private async void ButtonClear_Click(object sender, EventArgs e)
         {
 
@@ -802,8 +777,6 @@ namespace GasSensor_GUI_v1._0
             }
         }
 
-
-
         private void ButtonClearChart_Click(object sender, EventArgs e)
         {
             chart1.Series["Sensor 1"].Points.Clear();
@@ -812,12 +785,9 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Sensor 4"].Points.Clear();
             chart1.Series["Sensor 5"].Points.Clear();
             chart1.Series["Sensor 6"].Points.Clear();
-        }
+        } 
+        #endregion
 
-        private async void ToolStripMenuItemSetAutoScale_Click(object sender, EventArgs e)
-        {
-            chart1.ChartAreas[0].AxisX.Maximum = double.NaN;
-        }
 
         //private int DoThis()
         //{
@@ -833,11 +803,6 @@ namespace GasSensor_GUI_v1._0
         public async void SetMaxAxisYToolStripMenuItem_Click(object sender, EventArgs e)
         {
             await Task.Run(() => Prompt1.ShowDialog("Max AxisY", "Set AxisY MaxMin", chart1));
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void chart1_Click(object sender, EventArgs e)
@@ -949,20 +914,7 @@ namespace GasSensor_GUI_v1._0
             return maxValue > minValue;
         }
 
-        private void Sensor1Enable_CheckedChanged(object sender, EventArgs e)
-        {
-
-            chart1.Series["Sensor 1"].Enabled = Sensor1Enable.Checked;
-            dataGridView1.Columns[1 + 1].Visible = Sensor1Enable.Checked;
-
-        }
-
-        private void Sensor2Enable_CheckedChanged(object sender, EventArgs e)
-        {
-            chart1.Series["Sensor 2"].Enabled = Sensor2Enable.Checked;
-            dataGridView1.Columns[1 + 2].Visible = Sensor2Enable.Checked;
-
-        }
+      
 
         private void UartCheckingTImer_Tick(object sender, EventArgs e)
         {
@@ -975,12 +927,6 @@ namespace GasSensor_GUI_v1._0
             button2.Text = userName;
         }
 
-        private void Sensor3Enable_CheckedChanged(object sender, EventArgs e)
-        {
-            chart1.Series["Sensor 3"].Enabled = Sensor3Enable.Checked;
-            dataGridView1.Columns[1 + 3].Visible = Sensor3Enable.Checked;
-
-        }
 
         private void MouseDoubleClick_MinXAxis(object sender, MouseEventArgs e)
         {
@@ -1088,53 +1034,13 @@ namespace GasSensor_GUI_v1._0
                 this.comboBoxSensor4Color.Items.Add(c.Name);
                 this.comboBoxSensor5Color.Items.Add(c.Name);
                 this.comboBoxSensor6Color.Items.Add(c.Name);
-
             }
         }
 
-        private void comboBoxSensor1Color_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Rectangle rect = e.Bounds;
-            ((ComboBox)sender).ForeColor = Color.Black;
-            ((ComboBox)sender).BackColor = Color.White;
-            if (e.Index >= 0)
-            {
-                string n = ((ComboBox)sender).Items[e.Index].ToString();
-                Font f = new Font("Arial", 5, FontStyle.Regular);
-                Color c = Color.FromName(n);
-                if(c!=Color.Transparent)
-                { 
-                    Brush b = new SolidBrush(c);
-                    g.FillRectangle(b, rect.X, rect.Y + 5,
-                                    rect.Width - 10, rect.Height - 10);
-                    chart1.Series["Sensor 1"].Color = c;
-                }
-            }
-        }
-
-        private void comboBoxSensor1Color_TextUpdate(object sender, EventArgs e)
-        {
-            //((ComboBox)sender).Text = e.ToString() ;
-
-        }
-
-        private void comboBoxSensor1Color_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Graphics g= g = this.CreateGraphics();
-           
-            //((ComboBox)sender).Text = e.ToString();
-            //Color c = Color.FromName(e.ToString());
-            //Rectangle rect = new Rectangle();
-            //rect.Location = ((ComboBox)sender).Location;
-            //Brush b = new SolidBrush(c);
-
-            //g.FillRectangle(b, rect);
 
 
-        }
-
-        private void comboBoxSensor2Color_DrawItem(object sender, DrawItemEventArgs e)
+        #region  Update ComboBox And Chart Series Color
+        private void UpdateComboBoxAndChartColor(object sender, DrawItemEventArgs e, string sensor_number)
         {
             Graphics g = e.Graphics;
             Rectangle rect = e.Bounds;
@@ -1150,105 +1056,70 @@ namespace GasSensor_GUI_v1._0
                     Brush b = new SolidBrush(c);
                     g.FillRectangle(b, rect.X, rect.Y + 5,
                                     rect.Width - 10, rect.Height - 10);
-                    chart1.Series["Sensor 2"].Color = c;
+                    chart1.Series[sensor_number].Color = c;
                 }
             }
+        }
+        private void comboBoxSensor1Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            UpdateComboBoxAndChartColor(sender, e, "Sensor 1");
+        }
+        private void comboBoxSensor2Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            UpdateComboBoxAndChartColor(sender, e, "Sensor 2");
         }
 
         private void comboBoxSensor3Color_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Rectangle rect = e.Bounds;
-            ((ComboBox)sender).ForeColor = Color.Black;
-            ((ComboBox)sender).BackColor = Color.White;
-            if (e.Index >= 0)
-            {
-                string n = ((ComboBox)sender).Items[e.Index].ToString();
-                Font f = new Font("Arial", 5, FontStyle.Regular);
-                Color c = Color.FromName(n);
-                if (c != Color.Transparent)
-                {
-                    Brush b = new SolidBrush(c);
-                    g.FillRectangle(b, rect.X, rect.Y + 5,
-                                    rect.Width - 10, rect.Height - 10);
-                    chart1.Series["Sensor 3"].Color = c;
-                }
-            }
-        }
-
-        private void comboBoxSensor4Color_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            UpdateComboBoxAndChartColor(sender, e, "Sensor 3");
         }
 
         private void comboBoxSensor4Color_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Rectangle rect = e.Bounds;
-            ((ComboBox)sender).ForeColor = Color.Black;
-            ((ComboBox)sender).BackColor = Color.White;
-            if (e.Index >= 0)
-            {
-                string n = ((ComboBox)sender).Items[e.Index].ToString();
-                Font f = new Font("Arial", 5, FontStyle.Regular);
-                Color c = Color.FromName(n);
-                if (c != Color.Transparent)
-                {
-                    Brush b = new SolidBrush(c);
-                    g.FillRectangle(b, rect.X, rect.Y + 5,
-                                    rect.Width - 10, rect.Height - 10);
-                    chart1.Series["Sensor 4"].Color = c;
-                }
-            }
+            UpdateComboBoxAndChartColor(sender, e, "Sensor 4");
         }
 
         private void comboBoxSensor5Color_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Rectangle rect = e.Bounds;
-            ((ComboBox)sender).ForeColor = Color.Black;
-            ((ComboBox)sender).BackColor = Color.White;
-            if (e.Index >= 0)
-            {
-                string n = ((ComboBox)sender).Items[e.Index].ToString();
-                Font f = new Font("Arial", 5, FontStyle.Regular);
-                Color c = Color.FromName(n);
-                if (c != Color.Transparent)
-                {
-                    Brush b = new SolidBrush(c);
-                    g.FillRectangle(b, rect.X, rect.Y + 5,
-                                    rect.Width - 10, rect.Height - 10);
-                    chart1.Series["Sensor 5"].Color = c;
-                }
-            }
+            UpdateComboBoxAndChartColor(sender, e, "Sensor 5");
         }
 
         private void comboBoxSensor6Color_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Rectangle rect = e.Bounds;
-            ((ComboBox)sender).ForeColor = Color.Black;
-            ((ComboBox)sender).BackColor = Color.White;
-            if (e.Index >= 0)
-            {
-                string n = ((ComboBox)sender).Items[e.Index].ToString();
-                Font f = new Font("Arial", 5, FontStyle.Regular);
-                Color c = Color.FromName(n);
-                if (c != Color.Transparent)
-                {
-                    Brush b = new SolidBrush(c);
-                    g.FillRectangle(b, rect.X, rect.Y + 5,
-                                    rect.Width - 10, rect.Height - 10);
-                    chart1.Series["Sensor 6"].Color = c;
-                }
-            }
-        }
+            UpdateComboBoxAndChartColor(sender, e, "Sensor 6");
+        } 
+        #endregion
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             dataGridView1.Columns[0].HeaderText = "";
             //Cursor. = button1.PointToScreen(button1.Location); 
         }
+
+
+        #region Disable/Enable Sensor#1..6
+        private void Sensor1Enable_CheckedChanged(object sender, EventArgs e)
+        {
+
+            chart1.Series["Sensor 1"].Enabled = Sensor1Enable.Checked;
+            dataGridView1.Columns[1 + 1].Visible = Sensor1Enable.Checked;
+
+        }
+
+        private void Sensor2Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            chart1.Series["Sensor 2"].Enabled = Sensor2Enable.Checked;
+            dataGridView1.Columns[1 + 2].Visible = Sensor2Enable.Checked;
+
+        }
+
+        private void Sensor3Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            chart1.Series["Sensor 3"].Enabled = Sensor3Enable.Checked;
+            dataGridView1.Columns[1 + 3].Visible = Sensor3Enable.Checked;
+
+        }
+
         private void Sensor4Enable_CheckedChanged(object sender, EventArgs e)
         {
             chart1.Series["Sensor 4"].Enabled = Sensor4Enable.Checked;
@@ -1268,7 +1139,8 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Sensor 6"].Enabled = Sensor6Enable.Checked;
             dataGridView1.Columns[1 + 6].Visible = Sensor6Enable.Checked;
 
-        }
+        } 
+        #endregion
 
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -1351,6 +1223,7 @@ namespace GasSensor_GUI_v1._0
         //}
 
     }
+    #region MISC
 
     public static class Prompt
     {
@@ -1399,7 +1272,8 @@ namespace GasSensor_GUI_v1._0
             TextBox textBoxMinAxisY = new TextBox() { Left = 90, Top = 40, Width = 40, Text = "0" };
 
 
-            confirmation.Click += (sender, e) => {
+            confirmation.Click += (sender, e) =>
+            {
                 try
                 {
                     chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(textBoxMaxAxisY.Text);
@@ -1409,7 +1283,8 @@ namespace GasSensor_GUI_v1._0
                 {
                 }
 
-                prompt.Close(); };
+                prompt.Close();
+            };
             prompt.Controls.Add(textBoxMaxAxisY);
             prompt.Controls.Add(confirmation);
             prompt.Controls.Add(textLabelMaxAxisY);
@@ -1422,6 +1297,7 @@ namespace GasSensor_GUI_v1._0
 
             return; //prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
-    }
+    } 
+    #endregion
 
 }

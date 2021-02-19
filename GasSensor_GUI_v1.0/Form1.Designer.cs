@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title5 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
@@ -126,45 +126,45 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea5.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea5.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea5.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea5.AxisX.MajorGrid.Interval = 0D;
-            chartArea5.AxisX.MinorGrid.Enabled = true;
-            chartArea5.AxisX.Title = "Time (hour)";
-            chartArea5.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea5.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea5.AxisY.MajorGrid.Interval = 0D;
-            chartArea5.AxisY.MajorTickMark.Interval = 0D;
-            chartArea5.AxisY.Maximum = 6D;
-            chartArea5.AxisY.MinorGrid.Enabled = true;
-            chartArea5.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea5.AxisY.Title = "Voltage (V)";
-            chartArea5.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea5.AxisY2.Title = "RH (%)";
-            chartArea5.BackColor = System.Drawing.Color.White;
-            chartArea5.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea5.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea5);
-            legend5.Alignment = System.Drawing.StringAlignment.Far;
-            legend5.DockedToChartArea = "ChartArea1";
-            legend5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend5.IsTextAutoFit = false;
-            legend5.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend5.Name = "Legend1";
-            legend5.TextWrapThreshold = 50;
-            legend5.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend5);
+            chartArea7.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea7.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea7.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea7.AxisX.MajorGrid.Interval = 0D;
+            chartArea7.AxisX.MinorGrid.Enabled = true;
+            chartArea7.AxisX.Title = "Time (hour)";
+            chartArea7.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea7.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea7.AxisY.MajorGrid.Interval = 0D;
+            chartArea7.AxisY.MajorTickMark.Interval = 0D;
+            chartArea7.AxisY.Maximum = 6D;
+            chartArea7.AxisY.MinorGrid.Enabled = true;
+            chartArea7.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea7.AxisY.Title = "Voltage (V)";
+            chartArea7.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea7.AxisY2.Title = "RH (%)";
+            chartArea7.BackColor = System.Drawing.Color.White;
+            chartArea7.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea7.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea7);
+            legend7.Alignment = System.Drawing.StringAlignment.Far;
+            legend7.DockedToChartArea = "ChartArea1";
+            legend7.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend7.IsTextAutoFit = false;
+            legend7.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend7.Name = "Legend1";
+            legend7.TextWrapThreshold = 50;
+            legend7.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend7);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title5.Name = "Sensor Voltage (V)";
-            title5.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title5);
+            title7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title7.Name = "Sensor Voltage (V)";
+            title7.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title7);
             // 
             // ButtonSave
             // 
@@ -177,7 +177,6 @@
             this.ButtonSave.TabIndex = 1;
             this.ButtonSave.Text = "Save Chart";
             this.ButtonSave.UseVisualStyleBackColor = true;
-            this.ButtonSave.Click += new System.EventHandler(this.Button1_Click);
             // 
             // ButtonExit
             // 
@@ -214,7 +213,6 @@
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dataGridView1.Size = new System.Drawing.Size(780, 490);
             this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
             // 
             // Column7
@@ -226,9 +224,9 @@
             // 
             // SampleTime
             // 
-            dataGridViewCellStyle5.Format = "N3";
-            dataGridViewCellStyle5.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle7.Format = "N3";
+            dataGridViewCellStyle7.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle7;
             this.SampleTime.HeaderText = "Time (min)";
             this.SampleTime.MinimumWidth = 6;
             this.SampleTime.Name = "SampleTime";
@@ -469,8 +467,6 @@
             this.comboBoxSensor6Color.Size = new System.Drawing.Size(76, 23);
             this.comboBoxSensor6Color.TabIndex = 15;
             this.comboBoxSensor6Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor6Color_DrawItem);
-            this.comboBoxSensor6Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
-            this.comboBoxSensor6Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
             // 
             // comboBoxSensor5Color
             // 
@@ -486,8 +482,6 @@
             this.comboBoxSensor5Color.Size = new System.Drawing.Size(76, 23);
             this.comboBoxSensor5Color.TabIndex = 15;
             this.comboBoxSensor5Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor5Color_DrawItem);
-            this.comboBoxSensor5Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
-            this.comboBoxSensor5Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
             // 
             // comboBoxSensor4Color
             // 
@@ -503,8 +497,6 @@
             this.comboBoxSensor4Color.Size = new System.Drawing.Size(76, 23);
             this.comboBoxSensor4Color.TabIndex = 15;
             this.comboBoxSensor4Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor4Color_DrawItem);
-            this.comboBoxSensor4Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor4Color_SelectedIndexChanged);
-            this.comboBoxSensor4Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
             // 
             // comboBoxSensor3Color
             // 
@@ -520,8 +512,6 @@
             this.comboBoxSensor3Color.Size = new System.Drawing.Size(76, 23);
             this.comboBoxSensor3Color.TabIndex = 15;
             this.comboBoxSensor3Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor3Color_DrawItem);
-            this.comboBoxSensor3Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
-            this.comboBoxSensor3Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
             // 
             // comboBoxSensor2Color
             // 
@@ -537,8 +527,6 @@
             this.comboBoxSensor2Color.Size = new System.Drawing.Size(76, 23);
             this.comboBoxSensor2Color.TabIndex = 15;
             this.comboBoxSensor2Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor2Color_DrawItem);
-            this.comboBoxSensor2Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
-            this.comboBoxSensor2Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
             // 
             // comboBoxSensor1Color
             // 
@@ -554,8 +542,6 @@
             this.comboBoxSensor1Color.Size = new System.Drawing.Size(76, 23);
             this.comboBoxSensor1Color.TabIndex = 15;
             this.comboBoxSensor1Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor1Color_DrawItem);
-            this.comboBoxSensor1Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
-            this.comboBoxSensor1Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
             // 
             // lblMaxXAxisPosition
             // 
