@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title5 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
@@ -58,6 +58,14 @@
             this.textBoxRefADCVoltage = new System.Windows.Forms.TextBox();
             this.buttonClear = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBoxSensor6Color = new System.Windows.Forms.ComboBox();
+            this.comboBoxSensor5Color = new System.Windows.Forms.ComboBox();
+            this.comboBoxSensor4Color = new System.Windows.Forms.ComboBox();
+            this.comboBoxSensor3Color = new System.Windows.Forms.ComboBox();
+            this.comboBoxSensor2Color = new System.Windows.Forms.ComboBox();
+            this.comboBoxSensor1Color = new System.Windows.Forms.ComboBox();
+            this.lblMaxXAxisPosition = new System.Windows.Forms.Label();
+            this.lblMinXAxisPosition = new System.Windows.Forms.Label();
             this.Sensor5Enable = new System.Windows.Forms.CheckBox();
             this.Sensor4Enable = new System.Windows.Forms.CheckBox();
             this.Sensor6Enable = new System.Windows.Forms.CheckBox();
@@ -93,6 +101,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.UartCheckingTImer = new System.Windows.Forms.Timer(this.components);
             this.button2 = new System.Windows.Forms.Button();
+            this.colorDialog_ChangeChartSeriesColor = new System.Windows.Forms.ColorDialog();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -105,6 +115,7 @@
             this.groupBox3.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart1
@@ -115,61 +126,62 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea1.AxisX.MajorGrid.Interval = 0D;
-            chartArea1.AxisX.MinorGrid.Enabled = true;
-            chartArea1.AxisX.Title = "Time (hour)";
-            chartArea1.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea1.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea1.AxisY.MajorGrid.Interval = 0D;
-            chartArea1.AxisY.MajorTickMark.Interval = 0D;
-            chartArea1.AxisY.Maximum = 6D;
-            chartArea1.AxisY.MinorGrid.Enabled = true;
-            chartArea1.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea1.AxisY.Title = "Voltage (V)";
-            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea1.AxisY2.Title = "RH (%)";
-            chartArea1.BackColor = System.Drawing.Color.White;
-            chartArea1.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Alignment = System.Drawing.StringAlignment.Far;
-            legend1.DockedToChartArea = "ChartArea1";
-            legend1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend1.IsTextAutoFit = false;
-            legend1.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend1.Name = "Legend1";
-            legend1.TextWrapThreshold = 50;
-            legend1.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend1);
+            chartArea5.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea5.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea5.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea5.AxisX.MajorGrid.Interval = 0D;
+            chartArea5.AxisX.MinorGrid.Enabled = true;
+            chartArea5.AxisX.Title = "Time (hour)";
+            chartArea5.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea5.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea5.AxisY.MajorGrid.Interval = 0D;
+            chartArea5.AxisY.MajorTickMark.Interval = 0D;
+            chartArea5.AxisY.Maximum = 6D;
+            chartArea5.AxisY.MinorGrid.Enabled = true;
+            chartArea5.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea5.AxisY.Title = "Voltage (V)";
+            chartArea5.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea5.AxisY2.Title = "RH (%)";
+            chartArea5.BackColor = System.Drawing.Color.White;
+            chartArea5.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea5.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea5);
+            legend5.Alignment = System.Drawing.StringAlignment.Far;
+            legend5.DockedToChartArea = "ChartArea1";
+            legend5.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend5.IsTextAutoFit = false;
+            legend5.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend5.Name = "Legend1";
+            legend5.TextWrapThreshold = 50;
+            legend5.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend5);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title1.Name = "Sensor Voltage (V)";
-            title1.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title1);
+            title5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title5.Name = "Sensor Voltage (V)";
+            title5.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title5);
             // 
             // ButtonSave
             // 
             this.ButtonSave.AllowDrop = true;
-            this.ButtonSave.Location = new System.Drawing.Point(20, 673);
+            this.ButtonSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ButtonSave.Location = new System.Drawing.Point(20, 657);
             this.ButtonSave.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonSave.Name = "ButtonSave";
-            this.ButtonSave.Size = new System.Drawing.Size(200, 28);
+            this.ButtonSave.Size = new System.Drawing.Size(122, 28);
             this.ButtonSave.TabIndex = 1;
-            this.ButtonSave.Text = "Save Chart as png";
+            this.ButtonSave.Text = "Save Chart";
             this.ButtonSave.UseVisualStyleBackColor = true;
             this.ButtonSave.Click += new System.EventHandler(this.Button1_Click);
             // 
             // ButtonExit
             // 
-            this.ButtonExit.Location = new System.Drawing.Point(252, 673);
+            this.ButtonExit.Location = new System.Drawing.Point(664, 540);
             this.ButtonExit.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonExit.Name = "ButtonExit";
             this.ButtonExit.Size = new System.Drawing.Size(100, 28);
@@ -214,9 +226,9 @@
             // 
             // SampleTime
             // 
-            dataGridViewCellStyle1.Format = "N3";
-            dataGridViewCellStyle1.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Format = "N3";
+            dataGridViewCellStyle5.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle5;
             this.SampleTime.HeaderText = "Time (min)";
             this.SampleTime.MinimumWidth = 6;
             this.SampleTime.Name = "SampleTime";
@@ -278,6 +290,7 @@
             this.groupBox1.Controls.Add(this.groupBox6);
             this.groupBox1.Controls.Add(this.buttonSaveAsXlxs);
             this.groupBox1.Controls.Add(this.dataGridView1);
+            this.groupBox1.Controls.Add(this.ButtonExit);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(4, 37);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
@@ -293,7 +306,7 @@
             this.groupBox7.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.groupBox7.Controls.Add(this.textBoxCount);
             this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox7.Location = new System.Drawing.Point(435, 521);
+            this.groupBox7.Location = new System.Drawing.Point(501, 522);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
@@ -400,19 +413,29 @@
             // 
             this.buttonClear.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.buttonClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.buttonClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonClear.ForeColor = System.Drawing.Color.Red;
-            this.buttonClear.Location = new System.Drawing.Point(680, 672);
+            this.buttonClear.Location = new System.Drawing.Point(26, 11);
             this.buttonClear.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(223, 28);
+            this.buttonClear.Size = new System.Drawing.Size(138, 46);
             this.buttonClear.TabIndex = 3;
-            this.buttonClear.Text = "Clear Chart and Data";
+            this.buttonClear.Text = "Clear Chart\r\n and Data";
             this.buttonClear.UseVisualStyleBackColor = true;
             this.buttonClear.Click += new System.EventHandler(this.ButtonClear_Click);
             // 
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.MintCream;
+            this.groupBox2.Controls.Add(this.ButtonSave);
+            this.groupBox2.Controls.Add(this.comboBoxSensor6Color);
+            this.groupBox2.Controls.Add(this.comboBoxSensor5Color);
+            this.groupBox2.Controls.Add(this.comboBoxSensor4Color);
+            this.groupBox2.Controls.Add(this.comboBoxSensor3Color);
+            this.groupBox2.Controls.Add(this.comboBoxSensor2Color);
+            this.groupBox2.Controls.Add(this.comboBoxSensor1Color);
+            this.groupBox2.Controls.Add(this.lblMaxXAxisPosition);
+            this.groupBox2.Controls.Add(this.lblMinXAxisPosition);
             this.groupBox2.Controls.Add(this.Sensor5Enable);
             this.groupBox2.Controls.Add(this.Sensor4Enable);
             this.groupBox2.Controls.Add(this.Sensor6Enable);
@@ -422,10 +445,6 @@
             this.groupBox2.Controls.Add(this.lblMinYAxisPosition);
             this.groupBox2.Controls.Add(this.lblMaxYAxisPosition);
             this.groupBox2.Controls.Add(this.chart1);
-            this.groupBox2.Controls.Add(this.buttonClearChart);
-            this.groupBox2.Controls.Add(this.buttonClear);
-            this.groupBox2.Controls.Add(this.ButtonSave);
-            this.groupBox2.Controls.Add(this.ButtonExit);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(836, 37);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
@@ -436,6 +455,136 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Graph";
             // 
+            // comboBoxSensor6Color
+            // 
+            this.comboBoxSensor6Color.BackColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor6Color.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxSensor6Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSensor6Color.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBoxSensor6Color.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxSensor6Color.ForeColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor6Color.FormattingEnabled = true;
+            this.comboBoxSensor6Color.Location = new System.Drawing.Point(792, 652);
+            this.comboBoxSensor6Color.Name = "comboBoxSensor6Color";
+            this.comboBoxSensor6Color.Size = new System.Drawing.Size(76, 23);
+            this.comboBoxSensor6Color.TabIndex = 15;
+            this.comboBoxSensor6Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor6Color_DrawItem);
+            this.comboBoxSensor6Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
+            this.comboBoxSensor6Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
+            // 
+            // comboBoxSensor5Color
+            // 
+            this.comboBoxSensor5Color.BackColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor5Color.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxSensor5Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSensor5Color.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBoxSensor5Color.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxSensor5Color.ForeColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor5Color.FormattingEnabled = true;
+            this.comboBoxSensor5Color.Location = new System.Drawing.Point(664, 651);
+            this.comboBoxSensor5Color.Name = "comboBoxSensor5Color";
+            this.comboBoxSensor5Color.Size = new System.Drawing.Size(76, 23);
+            this.comboBoxSensor5Color.TabIndex = 15;
+            this.comboBoxSensor5Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor5Color_DrawItem);
+            this.comboBoxSensor5Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
+            this.comboBoxSensor5Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
+            // 
+            // comboBoxSensor4Color
+            // 
+            this.comboBoxSensor4Color.BackColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor4Color.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxSensor4Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSensor4Color.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBoxSensor4Color.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxSensor4Color.ForeColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor4Color.FormattingEnabled = true;
+            this.comboBoxSensor4Color.Location = new System.Drawing.Point(544, 651);
+            this.comboBoxSensor4Color.Name = "comboBoxSensor4Color";
+            this.comboBoxSensor4Color.Size = new System.Drawing.Size(76, 23);
+            this.comboBoxSensor4Color.TabIndex = 15;
+            this.comboBoxSensor4Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor4Color_DrawItem);
+            this.comboBoxSensor4Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor4Color_SelectedIndexChanged);
+            this.comboBoxSensor4Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
+            // 
+            // comboBoxSensor3Color
+            // 
+            this.comboBoxSensor3Color.BackColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor3Color.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxSensor3Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSensor3Color.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBoxSensor3Color.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxSensor3Color.ForeColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor3Color.FormattingEnabled = true;
+            this.comboBoxSensor3Color.Location = new System.Drawing.Point(426, 651);
+            this.comboBoxSensor3Color.Name = "comboBoxSensor3Color";
+            this.comboBoxSensor3Color.Size = new System.Drawing.Size(76, 23);
+            this.comboBoxSensor3Color.TabIndex = 15;
+            this.comboBoxSensor3Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor3Color_DrawItem);
+            this.comboBoxSensor3Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
+            this.comboBoxSensor3Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
+            // 
+            // comboBoxSensor2Color
+            // 
+            this.comboBoxSensor2Color.BackColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor2Color.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxSensor2Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSensor2Color.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBoxSensor2Color.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxSensor2Color.ForeColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor2Color.FormattingEnabled = true;
+            this.comboBoxSensor2Color.Location = new System.Drawing.Point(298, 651);
+            this.comboBoxSensor2Color.Name = "comboBoxSensor2Color";
+            this.comboBoxSensor2Color.Size = new System.Drawing.Size(76, 23);
+            this.comboBoxSensor2Color.TabIndex = 15;
+            this.comboBoxSensor2Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor2Color_DrawItem);
+            this.comboBoxSensor2Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
+            this.comboBoxSensor2Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
+            // 
+            // comboBoxSensor1Color
+            // 
+            this.comboBoxSensor1Color.BackColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor1Color.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxSensor1Color.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSensor1Color.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.comboBoxSensor1Color.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxSensor1Color.ForeColor = System.Drawing.SystemColors.Info;
+            this.comboBoxSensor1Color.FormattingEnabled = true;
+            this.comboBoxSensor1Color.Location = new System.Drawing.Point(173, 652);
+            this.comboBoxSensor1Color.Name = "comboBoxSensor1Color";
+            this.comboBoxSensor1Color.Size = new System.Drawing.Size(76, 23);
+            this.comboBoxSensor1Color.TabIndex = 15;
+            this.comboBoxSensor1Color.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.comboBoxSensor1Color_DrawItem);
+            this.comboBoxSensor1Color.SelectedIndexChanged += new System.EventHandler(this.comboBoxSensor1Color_SelectedIndexChanged);
+            this.comboBoxSensor1Color.TextUpdate += new System.EventHandler(this.comboBoxSensor1Color_TextUpdate);
+            // 
+            // lblMaxXAxisPosition
+            // 
+            this.lblMaxXAxisPosition.AutoSize = true;
+            this.lblMaxXAxisPosition.BackColor = System.Drawing.Color.Transparent;
+            this.lblMaxXAxisPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMaxXAxisPosition.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lblMaxXAxisPosition.Location = new System.Drawing.Point(782, 570);
+            this.lblMaxXAxisPosition.Name = "lblMaxXAxisPosition";
+            this.lblMaxXAxisPosition.Size = new System.Drawing.Size(69, 29);
+            this.lblMaxXAxisPosition.TabIndex = 14;
+            this.lblMaxXAxisPosition.Text = "        ";
+            this.lblMaxXAxisPosition.UseMnemonic = false;
+            this.lblMaxXAxisPosition.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MouseDoubleClick_MaxXAxis);
+            // 
+            // lblMinXAxisPosition
+            // 
+            this.lblMinXAxisPosition.AutoSize = true;
+            this.lblMinXAxisPosition.BackColor = System.Drawing.Color.Transparent;
+            this.lblMinXAxisPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMinXAxisPosition.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lblMinXAxisPosition.Location = new System.Drawing.Point(80, 570);
+            this.lblMinXAxisPosition.Name = "lblMinXAxisPosition";
+            this.lblMinXAxisPosition.Size = new System.Drawing.Size(69, 29);
+            this.lblMinXAxisPosition.TabIndex = 13;
+            this.lblMinXAxisPosition.Text = "        ";
+            this.lblMinXAxisPosition.UseMnemonic = false;
+            this.lblMinXAxisPosition.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MouseDoubleClick_MinXAxis);
+            // 
             // Sensor5Enable
             // 
             this.Sensor5Enable.AutoSize = true;
@@ -444,7 +593,7 @@
             this.Sensor5Enable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Sensor5Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor5Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sensor5Enable.Location = new System.Drawing.Point(595, 650);
+            this.Sensor5Enable.Location = new System.Drawing.Point(664, 681);
             this.Sensor5Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor5Enable.Name = "Sensor5Enable";
             this.Sensor5Enable.Size = new System.Drawing.Size(76, 21);
@@ -461,7 +610,7 @@
             this.Sensor4Enable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Sensor4Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor4Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sensor4Enable.Location = new System.Drawing.Point(475, 650);
+            this.Sensor4Enable.Location = new System.Drawing.Point(544, 681);
             this.Sensor4Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor4Enable.Name = "Sensor4Enable";
             this.Sensor4Enable.Size = new System.Drawing.Size(76, 21);
@@ -478,7 +627,7 @@
             this.Sensor6Enable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Sensor6Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor6Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sensor6Enable.Location = new System.Drawing.Point(723, 650);
+            this.Sensor6Enable.Location = new System.Drawing.Point(792, 681);
             this.Sensor6Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor6Enable.Name = "Sensor6Enable";
             this.Sensor6Enable.Size = new System.Drawing.Size(76, 21);
@@ -495,7 +644,7 @@
             this.Sensor3Enable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Sensor3Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor3Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sensor3Enable.Location = new System.Drawing.Point(357, 650);
+            this.Sensor3Enable.Location = new System.Drawing.Point(426, 681);
             this.Sensor3Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor3Enable.Name = "Sensor3Enable";
             this.Sensor3Enable.Size = new System.Drawing.Size(76, 21);
@@ -512,7 +661,7 @@
             this.Sensor2Enable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Sensor2Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor2Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sensor2Enable.Location = new System.Drawing.Point(229, 650);
+            this.Sensor2Enable.Location = new System.Drawing.Point(298, 681);
             this.Sensor2Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor2Enable.Name = "Sensor2Enable";
             this.Sensor2Enable.Size = new System.Drawing.Size(76, 21);
@@ -529,7 +678,7 @@
             this.Sensor1Enable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Sensor1Enable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Sensor1Enable.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Sensor1Enable.Location = new System.Drawing.Point(104, 650);
+            this.Sensor1Enable.Location = new System.Drawing.Point(173, 681);
             this.Sensor1Enable.Margin = new System.Windows.Forms.Padding(4);
             this.Sensor1Enable.Name = "Sensor1Enable";
             this.Sensor1Enable.Size = new System.Drawing.Size(76, 21);
@@ -544,7 +693,7 @@
             this.lblMinYAxisPosition.BackColor = System.Drawing.Color.Transparent;
             this.lblMinYAxisPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMinYAxisPosition.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.lblMinYAxisPosition.Location = new System.Drawing.Point(73, 544);
+            this.lblMinYAxisPosition.Location = new System.Drawing.Point(73, 540);
             this.lblMinYAxisPosition.Name = "lblMinYAxisPosition";
             this.lblMinYAxisPosition.Size = new System.Drawing.Size(69, 29);
             this.lblMinYAxisPosition.TabIndex = 6;
@@ -572,10 +721,10 @@
             this.buttonClearChart.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.buttonClearChart.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
             this.buttonClearChart.ForeColor = System.Drawing.Color.Red;
-            this.buttonClearChart.Location = new System.Drawing.Point(429, 672);
+            this.buttonClearChart.Location = new System.Drawing.Point(32, 65);
             this.buttonClearChart.Margin = new System.Windows.Forms.Padding(4);
             this.buttonClearChart.Name = "buttonClearChart";
-            this.buttonClearChart.Size = new System.Drawing.Size(223, 28);
+            this.buttonClearChart.Size = new System.Drawing.Size(132, 28);
             this.buttonClearChart.TabIndex = 4;
             this.buttonClearChart.Text = "Clear Chart";
             this.buttonClearChart.UseVisualStyleBackColor = true;
@@ -589,6 +738,7 @@
             this.button1.TabIndex = 13;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // serialPort1
             // 
@@ -617,7 +767,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1634, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1710, 28);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -627,7 +777,7 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
@@ -649,7 +799,7 @@
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.version10ToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // version10ToolStripMenuItem
@@ -822,19 +972,31 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // groupBox9
+            // 
+            this.groupBox9.BackColor = System.Drawing.Color.MintCream;
+            this.groupBox9.Controls.Add(this.buttonClearChart);
+            this.groupBox9.Controls.Add(this.buttonClear);
+            this.groupBox9.Location = new System.Drawing.Point(636, 635);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(200, 107);
+            this.groupBox9.TabIndex = 14;
+            this.groupBox9.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1634, 748);
+            this.ClientSize = new System.Drawing.Size(1710, 748);
+            this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.textBox1);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -858,6 +1020,7 @@
             this.groupBox3.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            this.groupBox9.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -925,6 +1088,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Humidity;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ColorDialog colorDialog_ChangeChartSeriesColor;
+        private System.Windows.Forms.Label lblMaxXAxisPosition;
+        private System.Windows.Forms.Label lblMinXAxisPosition;
+        private System.Windows.Forms.ComboBox comboBoxSensor1Color;
+        private System.Windows.Forms.ComboBox comboBoxSensor6Color;
+        private System.Windows.Forms.ComboBox comboBoxSensor5Color;
+        private System.Windows.Forms.ComboBox comboBoxSensor4Color;
+        private System.Windows.Forms.ComboBox comboBoxSensor3Color;
+        private System.Windows.Forms.ComboBox comboBoxSensor2Color;
+        private System.Windows.Forms.GroupBox groupBox9;
     }
 }
 

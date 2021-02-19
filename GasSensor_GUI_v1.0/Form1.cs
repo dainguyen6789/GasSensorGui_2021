@@ -9,6 +9,8 @@ using System.Windows.Forms.DataVisualization.Charting;
 //using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using System.IO;
+using System.Collections;
+using System.Reflection;
 
 namespace GasSensor_GUI_v1._0
 {
@@ -78,50 +80,33 @@ namespace GasSensor_GUI_v1._0
                 inThreadTime = _queue_time.Dequeue();
                 if (_queue_time.Count > 0)
                     inThreadPrevTime = _queue_prev_time.Dequeue();
-                //var timer = new System.Threading.Timer((e) =>
-                //{
-                //    MyMethod();
-                //}, null, startTimeSpan, periodTimeSpan);
-                //// this.Invoke(new Action(() => { buttonClearChart.Click(object sender, EventArgs e); }));
-
-                //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[0], 1);
-                //UpdateChart((float)inThreadPrevTime + inThreadTime   / 60, value[1], 2);
-                //UpdateChart((float)inThreadPrevTime + inThreadTime / 60, value[2], 3);
-                //UpdateChart((float)inThreadPrevTime + inThreadTime  / 60, value[3], 4);
-                //UpdateGridView((float)inThreadPrevTime + inThreadTime  / 60, value[0], value[1], value[2], value[3], 0, 0);
 
             }
         }
-        //public void MyMethod()
-        //{
-        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1);
-        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2);
-        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3);
-        //    UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4);
-        //}
+
         SerialPort _uart;
         TextBox tb = new TextBox();
         TextBox tb_minYAxis = new TextBox();
+
+        TextBox tb_minXAxis = new TextBox();
+        TextBox tb_maxXAxis = new TextBox();
+
+
 
         public Form1()
         {
             InitializeComponent();
             chart1.Controls.Add(lblMaxYAxisPosition);
             chart1.Controls.Add(lblMinYAxisPosition);
+            chart1.Controls.Add(lblMaxXAxisPosition);
+            chart1.Controls.Add(lblMinXAxisPosition);
             Series serieHumidity = new Series("Humidity");
             serieHumidity.YAxisType= AxisType.Secondary;
             //chart1.ChartAreas[0].AxisX.IsMarginVisible = false;
             //chart1.Cursor = Cursors.IBeam;
             _uart = serialPort1;
-            // _uart = new SerialPort() ;
-            //_uart.BaudRate = 115200;
-            //_uart.Parity = Parity.None;
-            //_uart.StopBits = StopBits.One;
-            //_uart.DataBits = 8;
-            //_uart.Handshake = Handshake.None;
-            //_uart.RtsEnable = true;
             _uart.DataReceived += _uart_DataReceived;
-            //chart1.Titles = "Sensor Voltage (V)";
+
             chart1.Series.Add("Sensor 1");
             chart1.Series.Add("Sensor 2");
             chart1.Series.Add("Sensor 3");
@@ -159,11 +144,9 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Humidity"].BorderWidth = 3;
             chart1.Series["Humidity"].YAxisType = AxisType.Secondary;
 
-            //chart1.Series["Sensor 1"].Points.AddXY(1, 2);
-            //chart1.Series["Sensor 1"].Points.AddXY(3, 4);
+
             chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 0.5;
             chart1.ChartAreas[0].AxisY.MinorGrid.Interval = 0.1;
-            //chart1.ChartAreas[0].AxisX.MajorGrid.Interval = 0.1;
 
 
             chart1.ChartAreas[0].AxisX.Maximum = double.NaN;
@@ -184,6 +167,7 @@ namespace GasSensor_GUI_v1._0
 
             chart1.Series.SuspendUpdates();
             textBox1.Text = "Hello";
+            SetupComboBoxSensorColor();
 
 
         }
@@ -278,10 +262,7 @@ namespace GasSensor_GUI_v1._0
             string serialPortReceiveddata;
             string realValue_serialPortReceivedData;
             serialPortReceiveddata = _uart.ReadLine();
-            //realExistingValue_serialPortReceivedData = _uart.ReadExisting();
-            //textBox1.Text = "Hello 122324324342342324234";
 
-            //textBox1.Text = serialPortReceiveddata;
             if (serialPortReceiveddata != null)
             {
                 realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
@@ -383,10 +364,7 @@ namespace GasSensor_GUI_v1._0
                     //chart1.Series["Sensor 1"].Points.AddXY(time / 60, Convert.ToDouble(realValue_serialPortReceivedData));
                     //UpdateChart(time / 60, Convert.ToDouble(realValue_serialPortReceivedData), 4);
                     humidity = Convert.ToDouble(realValue_serialPortReceivedData);
-                    //value[5] = value[5] / 5 * refADCVoltage;
 
-                    //current_gridviewrow_sensor4++;
-                    //addrow_gridview = 6;
                 }
                 else if (serialPortReceiveddata[0] == 'E')
                 {
@@ -472,7 +450,7 @@ namespace GasSensor_GUI_v1._0
                                     dig_H6 = Convert.ToDouble(realValue_serialPortReceivedData);
                                     value[7] = CompensateTemperature((int)value[7]);
                                     //t_fine is used to  CompensateHumidity
-                                    value[6] = CompensateHumidity((int)humidity);
+                                    value[6] =Math.Round(  CompensateHumidity((int)humidity),0   );
 
                                     break;
 
@@ -934,8 +912,7 @@ namespace GasSensor_GUI_v1._0
             //tb.Location = new Point((int)chart1.ChartAreas[0].Position.X, (int) chart1.ChartAreas[0].Position.Y);
 
 
-            tb_minYAxis.KeyDown += new KeyEventHandler(tb_MinYAxis_KeyDown
-                );
+            tb_minYAxis.KeyDown += new KeyEventHandler(tb_MinYAxis_KeyDown);
             //TextBox YAxisMaxValue = new TextBox();
             //Console.WriteLine("TextBOX");
             //YAxisMaxValue.Location=lblMaxYAxisPosition.Location;
@@ -1003,6 +980,268 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Sensor 3"].Enabled = Sensor3Enable.Checked;
             dataGridView1.Columns[1 + 3].Visible = Sensor3Enable.Checked;
 
+        }
+
+        private void MouseDoubleClick_MinXAxis(object sender, MouseEventArgs e)
+        {
+            lblMinXAxisPosition.Cursor = Cursors.IBeam;
+            tb_minXAxis.Visible = true;
+
+            //tb.Location = chart1.Location;
+            //tb.Location = new System.Drawing.Point(94, 93);
+            tb_minXAxis.Width = 55;
+            chart1.Controls.Add(tb_minXAxis);
+            tb_minXAxis.BringToFront();
+            tb_minXAxis.Location = lblMinXAxisPosition.Location;
+            //tb.Location = new Point((int)chart1.ChartAreas[0].Position.X, (int) chart1.ChartAreas[0].Position.Y);
+
+
+            tb_minXAxis.KeyDown += new KeyEventHandler(tb_MinXAxis_KeyDown);
+            //TextBox YAxisMaxValue = new TextBox();
+            //Console.WriteLine("TextBOX");
+            //YAxisMaxValue.Location=lblMaxYAxisPosition.Location;
+        }
+        public void tb_MinXAxis_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    Double d = Double.Parse(this.tb_minXAxis.Text);
+                    if (CheckMaxMinValue(chart1.ChartAreas[0].AxisX.Maximum, d))
+                    {
+                        chart1.ChartAreas[0].AxisX.Minimum = Double.Parse(this.tb_minXAxis.Text);
+                        tb_minXAxis.Visible = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Your min time is not valid");
+
+                    }
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Your min time is not valid");
+                }
+            }
+
+        }
+
+
+        private void MouseDoubleClick_MaxXAxis(object sender, MouseEventArgs e)
+        {
+            lblMaxXAxisPosition.Cursor = Cursors.IBeam;
+            tb_maxXAxis.Visible = true;
+
+            //tb.Location = chart1.Location;
+            //tb.Location = new System.Drawing.Point(94, 93);
+            tb_maxXAxis.Width = 55;
+            chart1.Controls.Add(tb_maxXAxis);
+            tb_maxXAxis.BringToFront();
+            tb_maxXAxis.Location = lblMaxXAxisPosition.Location;
+            //tb.Location = new Point((int)chart1.ChartAreas[0].Position.X, (int) chart1.ChartAreas[0].Position.Y);
+
+
+            tb_maxXAxis.KeyDown += new KeyEventHandler(tb_MaxXAxis_KeyDown);
+        }
+        public void tb_MaxXAxis_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    Double d = Double.Parse(this.tb_maxXAxis.Text);
+                    if (CheckMaxMinValue(d, chart1.ChartAreas[0].AxisX.Minimum))
+                    {
+                        chart1.ChartAreas[0].AxisX.Maximum = Double.Parse(this.tb_maxXAxis.Text);
+                        tb_maxXAxis.Visible = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Your max time is not valid");
+                    }
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Your max time is not valid");
+                }
+            }
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+            
+        }
+        private void SetupComboBoxSensorColor()
+        {
+            ArrayList ColorList = new ArrayList();
+            Type colorType = typeof(System.Drawing.Color);
+            PropertyInfo[] propInfoList = colorType.GetProperties(BindingFlags.Static |
+                                          BindingFlags.DeclaredOnly | BindingFlags.Public);
+            foreach (PropertyInfo c in propInfoList)
+            {
+                this.comboBoxSensor1Color.Items.Add(c.Name);
+                this.comboBoxSensor2Color.Items.Add(c.Name);
+                this.comboBoxSensor3Color.Items.Add(c.Name);
+                this.comboBoxSensor4Color.Items.Add(c.Name);
+                this.comboBoxSensor5Color.Items.Add(c.Name);
+                this.comboBoxSensor6Color.Items.Add(c.Name);
+
+            }
+        }
+
+        private void comboBoxSensor1Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            ((ComboBox)sender).ForeColor = Color.Black;
+            ((ComboBox)sender).BackColor = Color.White;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Font f = new Font("Arial", 5, FontStyle.Regular);
+                Color c = Color.FromName(n);
+                if(c!=Color.Transparent)
+                { 
+                    Brush b = new SolidBrush(c);
+                    g.FillRectangle(b, rect.X, rect.Y + 5,
+                                    rect.Width - 10, rect.Height - 10);
+                    chart1.Series["Sensor 1"].Color = c;
+                }
+            }
+        }
+
+        private void comboBoxSensor1Color_TextUpdate(object sender, EventArgs e)
+        {
+            //((ComboBox)sender).Text = e.ToString() ;
+
+        }
+
+        private void comboBoxSensor1Color_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Graphics g= g = this.CreateGraphics();
+           
+            //((ComboBox)sender).Text = e.ToString();
+            //Color c = Color.FromName(e.ToString());
+            //Rectangle rect = new Rectangle();
+            //rect.Location = ((ComboBox)sender).Location;
+            //Brush b = new SolidBrush(c);
+
+            //g.FillRectangle(b, rect);
+
+
+        }
+
+        private void comboBoxSensor2Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            ((ComboBox)sender).ForeColor = Color.Black;
+            ((ComboBox)sender).BackColor = Color.White;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Font f = new Font("Arial", 5, FontStyle.Regular);
+                Color c = Color.FromName(n);
+                if (c != Color.Transparent)
+                {
+                    Brush b = new SolidBrush(c);
+                    g.FillRectangle(b, rect.X, rect.Y + 5,
+                                    rect.Width - 10, rect.Height - 10);
+                    chart1.Series["Sensor 2"].Color = c;
+                }
+            }
+        }
+
+        private void comboBoxSensor3Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            ((ComboBox)sender).ForeColor = Color.Black;
+            ((ComboBox)sender).BackColor = Color.White;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Font f = new Font("Arial", 5, FontStyle.Regular);
+                Color c = Color.FromName(n);
+                if (c != Color.Transparent)
+                {
+                    Brush b = new SolidBrush(c);
+                    g.FillRectangle(b, rect.X, rect.Y + 5,
+                                    rect.Width - 10, rect.Height - 10);
+                    chart1.Series["Sensor 3"].Color = c;
+                }
+            }
+        }
+
+        private void comboBoxSensor4Color_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBoxSensor4Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            ((ComboBox)sender).ForeColor = Color.Black;
+            ((ComboBox)sender).BackColor = Color.White;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Font f = new Font("Arial", 5, FontStyle.Regular);
+                Color c = Color.FromName(n);
+                if (c != Color.Transparent)
+                {
+                    Brush b = new SolidBrush(c);
+                    g.FillRectangle(b, rect.X, rect.Y + 5,
+                                    rect.Width - 10, rect.Height - 10);
+                    chart1.Series["Sensor 4"].Color = c;
+                }
+            }
+        }
+
+        private void comboBoxSensor5Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            ((ComboBox)sender).ForeColor = Color.Black;
+            ((ComboBox)sender).BackColor = Color.White;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Font f = new Font("Arial", 5, FontStyle.Regular);
+                Color c = Color.FromName(n);
+                if (c != Color.Transparent)
+                {
+                    Brush b = new SolidBrush(c);
+                    g.FillRectangle(b, rect.X, rect.Y + 5,
+                                    rect.Width - 10, rect.Height - 10);
+                    chart1.Series["Sensor 5"].Color = c;
+                }
+            }
+        }
+
+        private void comboBoxSensor6Color_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = e.Bounds;
+            ((ComboBox)sender).ForeColor = Color.Black;
+            ((ComboBox)sender).BackColor = Color.White;
+            if (e.Index >= 0)
+            {
+                string n = ((ComboBox)sender).Items[e.Index].ToString();
+                Font f = new Font("Arial", 5, FontStyle.Regular);
+                Color c = Color.FromName(n);
+                if (c != Color.Transparent)
+                {
+                    Brush b = new SolidBrush(c);
+                    g.FillRectangle(b, rect.X, rect.Y + 5,
+                                    rect.Width - 10, rect.Height - 10);
+                    chart1.Series["Sensor 6"].Color = c;
+                }
+            }
         }
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
