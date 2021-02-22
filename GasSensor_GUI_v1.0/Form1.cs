@@ -203,30 +203,7 @@ namespace GasSensor_GUI_v1._0
                     if (serialPortReceiveddata[0] == 'T')
                     {
                         ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
-                        switch (serialPortReceiveddata[1])
-                        {
-                            //  dig_T1
-                            case '1':
-
-                                dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                break;
-                            //  dig_T1
-                            case '2':
-
-                                dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                break;
-
-                            //  dig_T1
-                            case '3':
-
-                                dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                                break;
-
-
-                        }
+                       
                     }
                     if (serialPortReceiveddata[0] == 'H')
                     {
@@ -292,7 +269,30 @@ namespace GasSensor_GUI_v1._0
 
         private void ReadTempCompensationData(string serialPortReceiveddata, string realValue_serialPortReceivedData)
         {
-            
+            switch (serialPortReceiveddata[1])
+            {
+                //  dig_T1
+                case '1':
+
+                    dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+                //  dig_T1
+                case '2':
+
+                    dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+
+                //  dig_T1
+                case '3':
+
+                    dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    break;
+
+
+            }
         }
         #endregion
 
@@ -1101,6 +1101,11 @@ namespace GasSensor_GUI_v1._0
         {
             chart1.Series["Sensor 2"].Enabled = Sensor2Enable.Checked;
             dataGridView1.Columns[1 + 2].Visible = Sensor2Enable.Checked;
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
         }
 

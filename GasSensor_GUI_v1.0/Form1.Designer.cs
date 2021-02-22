@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title6 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title4 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
@@ -126,45 +126,45 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea6.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea6.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea6.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea6.AxisX.MajorGrid.Interval = 0D;
-            chartArea6.AxisX.MinorGrid.Enabled = true;
-            chartArea6.AxisX.Title = "Time (hour)";
-            chartArea6.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea6.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea6.AxisY.MajorGrid.Interval = 0D;
-            chartArea6.AxisY.MajorTickMark.Interval = 0D;
-            chartArea6.AxisY.Maximum = 6D;
-            chartArea6.AxisY.MinorGrid.Enabled = true;
-            chartArea6.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea6.AxisY.Title = "Voltage (V)";
-            chartArea6.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea6.AxisY2.Title = "RH (%)";
-            chartArea6.BackColor = System.Drawing.Color.White;
-            chartArea6.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea6.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea6);
-            legend6.Alignment = System.Drawing.StringAlignment.Far;
-            legend6.DockedToChartArea = "ChartArea1";
-            legend6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend6.IsTextAutoFit = false;
-            legend6.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend6.Name = "Legend1";
-            legend6.TextWrapThreshold = 50;
-            legend6.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend6);
+            chartArea4.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea4.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea4.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea4.AxisX.MajorGrid.Interval = 0D;
+            chartArea4.AxisX.MinorGrid.Enabled = true;
+            chartArea4.AxisX.Title = "Time (hour)";
+            chartArea4.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea4.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea4.AxisY.MajorGrid.Interval = 0D;
+            chartArea4.AxisY.MajorTickMark.Interval = 0D;
+            chartArea4.AxisY.Maximum = 6D;
+            chartArea4.AxisY.MinorGrid.Enabled = true;
+            chartArea4.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea4.AxisY.Title = "Voltage (V)";
+            chartArea4.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea4.AxisY2.Title = "RH (%)";
+            chartArea4.BackColor = System.Drawing.Color.White;
+            chartArea4.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Alignment = System.Drawing.StringAlignment.Far;
+            legend4.DockedToChartArea = "ChartArea1";
+            legend4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend4.IsTextAutoFit = false;
+            legend4.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend4.Name = "Legend1";
+            legend4.TextWrapThreshold = 50;
+            legend4.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title6.Name = "Sensor Voltage (V)";
-            title6.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title6);
+            title4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title4.Name = "Sensor Voltage (V)";
+            title4.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title4);
             // 
             // ButtonSave
             // 
@@ -224,9 +224,9 @@
             // 
             // SampleTime
             // 
-            dataGridViewCellStyle6.Format = "N3";
-            dataGridViewCellStyle6.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.Format = "N3";
+            dataGridViewCellStyle4.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle4;
             this.SampleTime.HeaderText = "Time (min)";
             this.SampleTime.MinimumWidth = 6;
             this.SampleTime.Name = "SampleTime";
@@ -730,11 +730,14 @@
             // 
             this.serialPort1.BaudRate = 115200;
             this.serialPort1.DiscardNull = true;
+            this.serialPort1.DtrEnable = true;
             this.serialPort1.ParityReplace = ((byte)(0));
             this.serialPort1.PortName = "COM6";
             this.serialPort1.ReadBufferSize = 8;
             this.serialPort1.ReceivedBytesThreshold = 9;
+            this.serialPort1.RtsEnable = true;
             this.serialPort1.WriteBufferSize = 64;
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this._uart_DataReceived);
             // 
             // saveFileDialog1
             // 
@@ -988,6 +991,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Gas Sensor GUI v1.0";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
