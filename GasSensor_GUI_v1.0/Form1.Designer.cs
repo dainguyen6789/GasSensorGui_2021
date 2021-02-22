@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title7 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title6 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
@@ -126,45 +126,45 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea7.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea7.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea7.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea7.AxisX.MajorGrid.Interval = 0D;
-            chartArea7.AxisX.MinorGrid.Enabled = true;
-            chartArea7.AxisX.Title = "Time (hour)";
-            chartArea7.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea7.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea7.AxisY.MajorGrid.Interval = 0D;
-            chartArea7.AxisY.MajorTickMark.Interval = 0D;
-            chartArea7.AxisY.Maximum = 6D;
-            chartArea7.AxisY.MinorGrid.Enabled = true;
-            chartArea7.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea7.AxisY.Title = "Voltage (V)";
-            chartArea7.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea7.AxisY2.Title = "RH (%)";
-            chartArea7.BackColor = System.Drawing.Color.White;
-            chartArea7.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea7.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea7);
-            legend7.Alignment = System.Drawing.StringAlignment.Far;
-            legend7.DockedToChartArea = "ChartArea1";
-            legend7.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend7.IsTextAutoFit = false;
-            legend7.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend7.Name = "Legend1";
-            legend7.TextWrapThreshold = 50;
-            legend7.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend7);
+            chartArea6.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea6.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea6.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea6.AxisX.MajorGrid.Interval = 0D;
+            chartArea6.AxisX.MinorGrid.Enabled = true;
+            chartArea6.AxisX.Title = "Time (hour)";
+            chartArea6.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea6.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea6.AxisY.MajorGrid.Interval = 0D;
+            chartArea6.AxisY.MajorTickMark.Interval = 0D;
+            chartArea6.AxisY.Maximum = 6D;
+            chartArea6.AxisY.MinorGrid.Enabled = true;
+            chartArea6.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea6.AxisY.Title = "Voltage (V)";
+            chartArea6.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea6.AxisY2.Title = "RH (%)";
+            chartArea6.BackColor = System.Drawing.Color.White;
+            chartArea6.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea6.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea6);
+            legend6.Alignment = System.Drawing.StringAlignment.Far;
+            legend6.DockedToChartArea = "ChartArea1";
+            legend6.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend6.IsTextAutoFit = false;
+            legend6.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend6.Name = "Legend1";
+            legend6.TextWrapThreshold = 50;
+            legend6.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend6);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title7.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title7.Name = "Sensor Voltage (V)";
-            title7.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title7);
+            title6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title6.Name = "Sensor Voltage (V)";
+            title6.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title6);
             // 
             // ButtonSave
             // 
@@ -224,9 +224,9 @@
             // 
             // SampleTime
             // 
-            dataGridViewCellStyle7.Format = "N3";
-            dataGridViewCellStyle7.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle6.Format = "N3";
+            dataGridViewCellStyle6.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle6;
             this.SampleTime.HeaderText = "Time (min)";
             this.SampleTime.MinimumWidth = 6;
             this.SampleTime.Name = "SampleTime";
@@ -549,7 +549,7 @@
             this.lblMaxXAxisPosition.BackColor = System.Drawing.Color.Transparent;
             this.lblMaxXAxisPosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMaxXAxisPosition.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.lblMaxXAxisPosition.Location = new System.Drawing.Point(782, 570);
+            this.lblMaxXAxisPosition.Location = new System.Drawing.Point(745, 560);
             this.lblMaxXAxisPosition.Name = "lblMaxXAxisPosition";
             this.lblMaxXAxisPosition.Size = new System.Drawing.Size(69, 29);
             this.lblMaxXAxisPosition.TabIndex = 14;

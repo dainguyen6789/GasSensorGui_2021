@@ -159,41 +159,32 @@ namespace GasSensor_GUI_v1._0
                 //  data is received every second.
                 if (serialPortReceiveddata[0] == '1')
                 {
-                    UpdateSensor1Data(realValue_serialPortReceivedData);
+                    UpdateSensorData(realValue_serialPortReceivedData,(int)SENSOR_NUMBER.ONE);
                 }
                 else if (serialPortReceiveddata[0] == '2')
                 {
-
-                    value[1] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[1] = value[1] / 5 * refADCVoltage;
-                    addrow_gridview = 2;
-
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.TWO);
                 }
                 else if (serialPortReceiveddata[0] == '3')
                 {
 
-                    value[2] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[2] = value[2] / 5 * refADCVoltage;
-                    addrow_gridview = 3;
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.THREE);
+
                 }
                 else if (serialPortReceiveddata[0] == '4')
                 {
-                    value[3] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[3] = value[3] / 5 * refADCVoltage;
-                    addrow_gridview = 4;
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FOUR);
+
                 }
                 else if (serialPortReceiveddata[0] == '5')
                 {
 
-                    value[4] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[4] = value[4] / 5 * refADCVoltage;
-                    addrow_gridview = 5;
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FIVE);
+
                 }
                 else if (serialPortReceiveddata[0] == '6')
                 {
-                    value[5] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[5] = value[5] / 5 * refADCVoltage;
-                    addrow_gridview = 6;
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.SIX);
                 }
                 else if (serialPortReceiveddata[0] == 'U')
                 {
@@ -204,7 +195,6 @@ namespace GasSensor_GUI_v1._0
                     value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
                 }
                 // For compensation data
-
                 else
                 {
                     realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
@@ -213,6 +203,30 @@ namespace GasSensor_GUI_v1._0
                     if (serialPortReceiveddata[0] == 'T')
                     {
                         ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+                        switch (serialPortReceiveddata[1])
+                        {
+                            //  dig_T1
+                            case '1':
+
+                                dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                                break;
+                            //  dig_T1
+                            case '2':
+
+                                dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                                break;
+
+                            //  dig_T1
+                            case '3':
+
+                                dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
+
+                                break;
+
+
+                        }
                     }
                     if (serialPortReceiveddata[0] == 'H')
                     {
@@ -225,11 +239,11 @@ namespace GasSensor_GUI_v1._0
             }
         }
 
-        private void UpdateSensor1Data(string realValue_serialPortReceivedData)
+        private void UpdateSensorData(string realValue_serialPortReceivedData,int sensorNumber)
         {
-            value[0] = Convert.ToDouble(realValue_serialPortReceivedData);
-            value[0] = value[0] / 5 * refADCVoltage;
-            addrow_gridview = 1;
+            value[sensorNumber-1] = Convert.ToDouble(realValue_serialPortReceivedData);
+            value[sensorNumber - 1] = value[sensorNumber - 1] / 5 * refADCVoltage;
+            addrow_gridview = sensorNumber;
         }
 
         private void ReadHumidityCompensationData(string serialPortReceiveddata, string realValue_serialPortReceivedData)
@@ -278,30 +292,7 @@ namespace GasSensor_GUI_v1._0
 
         private void ReadTempCompensationData(string serialPortReceiveddata, string realValue_serialPortReceivedData)
         {
-            switch (serialPortReceiveddata[1])
-            {
-                //  dig_T1
-                case '1':
-
-                    dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                    break;
-                //  dig_T1
-                case '2':
-
-                    dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                    break;
-
-                //  dig_T1
-                case '3':
-
-                    dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
-
-                    break;
-
-
-            }
+            
         }
         #endregion
 
