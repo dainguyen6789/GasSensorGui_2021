@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title8 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
@@ -103,6 +103,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.colorDialog_ChangeChartSeriesColor = new System.Windows.Forms.ColorDialog();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.lblIpAddress = new System.Windows.Forms.Label();
+            this.btnTcpStart = new System.Windows.Forms.Button();
+            this.txtBoxTcpData = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -126,45 +129,45 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea8.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea8.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea8.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea8.AxisX.MajorGrid.Interval = 0D;
-            chartArea8.AxisX.MinorGrid.Enabled = true;
-            chartArea8.AxisX.Title = "Time (hour)";
-            chartArea8.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea8.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea8.AxisY.MajorGrid.Interval = 0D;
-            chartArea8.AxisY.MajorTickMark.Interval = 0D;
-            chartArea8.AxisY.Maximum = 6D;
-            chartArea8.AxisY.MinorGrid.Enabled = true;
-            chartArea8.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea8.AxisY.Title = "Voltage (V)";
-            chartArea8.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea8.AxisY2.Title = "RH (%)";
-            chartArea8.BackColor = System.Drawing.Color.White;
-            chartArea8.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea8.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea8);
-            legend8.Alignment = System.Drawing.StringAlignment.Far;
-            legend8.DockedToChartArea = "ChartArea1";
-            legend8.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend8.IsTextAutoFit = false;
-            legend8.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend8.Name = "Legend1";
-            legend8.TextWrapThreshold = 50;
-            legend8.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend8);
+            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea1.AxisX.MajorGrid.Interval = 0D;
+            chartArea1.AxisX.MinorGrid.Enabled = true;
+            chartArea1.AxisX.Title = "Time (hour)";
+            chartArea1.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea1.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea1.AxisY.MajorGrid.Interval = 0D;
+            chartArea1.AxisY.MajorTickMark.Interval = 0D;
+            chartArea1.AxisY.Maximum = 6D;
+            chartArea1.AxisY.MinorGrid.Enabled = true;
+            chartArea1.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea1.AxisY.Title = "Voltage (V)";
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.AxisY2.Title = "RH (%)";
+            chartArea1.BackColor = System.Drawing.Color.White;
+            chartArea1.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
+            legend1.DockedToChartArea = "ChartArea1";
+            legend1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend1.IsTextAutoFit = false;
+            legend1.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend1.Name = "Legend1";
+            legend1.TextWrapThreshold = 50;
+            legend1.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title8.Name = "Sensor Voltage (V)";
-            title8.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title8);
+            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title1.Name = "Sensor Voltage (V)";
+            title1.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title1);
             // 
             // ButtonSave
             // 
@@ -224,9 +227,9 @@
             // 
             // SampleTime
             // 
-            dataGridViewCellStyle8.Format = "N3";
-            dataGridViewCellStyle8.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.Format = "N3";
+            dataGridViewCellStyle1.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle1;
             this.SampleTime.HeaderText = "Time (min)";
             this.SampleTime.MinimumWidth = 6;
             this.SampleTime.Name = "SampleTime";
@@ -284,6 +287,9 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.LightSeaGreen;
+            this.groupBox1.Controls.Add(this.txtBoxTcpData);
+            this.groupBox1.Controls.Add(this.btnTcpStart);
+            this.groupBox1.Controls.Add(this.lblIpAddress);
             this.groupBox1.Controls.Add(this.groupBox7);
             this.groupBox1.Controls.Add(this.groupBox6);
             this.groupBox1.Controls.Add(this.buttonSaveAsXlxs);
@@ -304,7 +310,7 @@
             this.groupBox7.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.groupBox7.Controls.Add(this.textBoxCount);
             this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox7.Location = new System.Drawing.Point(501, 522);
+            this.groupBox7.Location = new System.Drawing.Point(580, 519);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
@@ -756,7 +762,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1710, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1710, 30);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -766,7 +772,7 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
@@ -788,7 +794,7 @@
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.version10ToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // version10ToolStripMenuItem
@@ -972,6 +978,35 @@
             this.groupBox9.TabIndex = 14;
             this.groupBox9.TabStop = false;
             // 
+            // lblIpAddress
+            // 
+            this.lblIpAddress.AccessibleName = "";
+            this.lblIpAddress.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.lblIpAddress.AutoSize = true;
+            this.lblIpAddress.Location = new System.Drawing.Point(392, 548);
+            this.lblIpAddress.Name = "lblIpAddress";
+            this.lblIpAddress.Size = new System.Drawing.Size(91, 24);
+            this.lblIpAddress.TabIndex = 11;
+            this.lblIpAddress.Text = "IP Address";
+            this.lblIpAddress.UseCompatibleTextRendering = true;
+            // 
+            // btnTcpStart
+            // 
+            this.btnTcpStart.Location = new System.Drawing.Point(392, 519);
+            this.btnTcpStart.Name = "btnTcpStart";
+            this.btnTcpStart.Size = new System.Drawing.Size(136, 27);
+            this.btnTcpStart.TabIndex = 12;
+            this.btnTcpStart.Text = "Start TCP";
+            this.btnTcpStart.UseVisualStyleBackColor = true;
+            this.btnTcpStart.Click += new System.EventHandler(this.btnTcpStart_Click);
+            // 
+            // txtBoxTcpData
+            // 
+            this.txtBoxTcpData.Location = new System.Drawing.Point(17, 556);
+            this.txtBoxTcpData.Name = "txtBoxTcpData";
+            this.txtBoxTcpData.Size = new System.Drawing.Size(100, 26);
+            this.txtBoxTcpData.TabIndex = 13;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -995,6 +1030,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -1088,6 +1124,9 @@
         private System.Windows.Forms.ComboBox comboBoxSensor3Color;
         private System.Windows.Forms.ComboBox comboBoxSensor2Color;
         private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label lblIpAddress;
+        private System.Windows.Forms.Button btnTcpStart;
+        private System.Windows.Forms.TextBox txtBoxTcpData;
     }
 }
 

@@ -11,6 +11,12 @@ using System.Threading;
 using System.IO;
 using System.Collections;
 using System.Reflection;
+// For Simple TCP
+
+using System.Net;      //required
+using System.Net.Sockets;    //required
+using SimpleTCP;
+using System.Text;
 
 namespace GasSensor_GUI_v1._0
 {
@@ -104,9 +110,11 @@ namespace GasSensor_GUI_v1._0
         TextBox tb_minYAxis = new TextBox();
 
         TextBox tb_minXAxis = new TextBox();
-        TextBox tb_maxXAxis = new TextBox(); 
+        TextBox tb_maxXAxis = new TextBox();
         #endregion
-
+        SimpleTcpServer simpleTcpServer; //= new SimpleTcpServer();
+        string myIP, hostName;
+        string simpleTcpPort = "80";
 
 
         public Form1()
@@ -118,6 +126,39 @@ namespace GasSensor_GUI_v1._0
             InstantiateCSVHeader();
             chart1.Series.SuspendUpdates();
             SetupComboBoxSensorColor();
+
+            InitTcpServer();
+
+        }
+
+        public void InitTcpServer()
+        {
+            //TcpListener server = new TcpListener(IPAddress.Any, 9999);
+            //server.Start();  // this will start the server
+            simpleTcpServer = new SimpleTcpServer();
+            simpleTcpServer.Delimiter = 0x13;
+            simpleTcpServer.StringEncoder = Encoding.UTF8;
+            simpleTcpServer.DataReceived += ReceivedSimpleTCPData;
+
+            hostName = Dns.GetHostName(); // Retrive the Name of HOST  
+            Console.WriteLine(hostName);
+            // Get the IP  
+            myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+            Console.WriteLine("My IP Address is :" + myIP);
+        }
+
+        private void btnTcpStart_Click(object sender, EventArgs e)
+        {
+            simpleTcpServer.Stop();
+            System.Net.IPAddress ip = System.Net.IPAddress.Parse(myIP);
+            simpleTcpServer.Start(ip, Convert.ToInt32(simpleTcpPort));
+            lblIpAddress.Text = "IP: " + myIP+ "\nPort:"+ simpleTcpPort;
+            lblIpAddress.BackColor = Color.Green;
+        }
+
+        private void ReceivedSimpleTCPData(object sender, SimpleTCP.Message e)
+        {
+            txtBoxTcpData.Text += e.MessageString;
         }
 
         #region SetupUart and Its Event Handler
@@ -1103,6 +1144,8 @@ namespace GasSensor_GUI_v1._0
             dataGridView1.Columns[1 + 2].Visible = Sensor2Enable.Checked;
 
         }
+
+
 
         private void Form1_Load(object sender, EventArgs e)
         {

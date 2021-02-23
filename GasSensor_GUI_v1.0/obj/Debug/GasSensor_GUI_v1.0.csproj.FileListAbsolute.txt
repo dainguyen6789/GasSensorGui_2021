@@ -44,3 +44,5 @@ C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v
 C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.exe
 C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.pdb
 C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.csprojAssemblyReference.cache
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\bin\Debug\SimpleTCP.dll
+C:\Users\Utilisateur\Desktop\Work from Home\5_Hardware_EASTAG\12_GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\GasSensor_GUI_v1.0\obj\Debug\GasSensor_GUI_v1.0.csproj.CopyComplete

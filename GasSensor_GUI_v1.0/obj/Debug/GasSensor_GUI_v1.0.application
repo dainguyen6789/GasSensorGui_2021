@@ -7,14 +7,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="GasSensor_GUI_v1.0.exe.manifest" size="4626">
+    <dependentAssembly dependencyType="install" codebase="GasSensor_GUI_v1.0.exe.manifest" size="5263">
       <assemblyIdentity name="GasSensor_GUI_v1.0.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>7Oxar1Xw99uhpDvbgwz8aYqnvkv3RElhgJulgrltMNQ=</dsig:DigestValue>
+        <dsig:DigestValue>1YJO/o726wbUoSMdp0AA2aYBesgy36MoZJHMgyZBz/Y=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

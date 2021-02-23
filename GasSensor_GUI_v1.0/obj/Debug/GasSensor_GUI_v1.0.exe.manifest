@@ -42,14 +42,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GasSensor_GUI_v1.0.exe" size="56320">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GasSensor_GUI_v1.0.exe" size="58368">
       <assemblyIdentity name="GasSensor_GUI_v1.0" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>turnEcXO//StCHz8mtMZunb8F7yfCAUMduJlUSkaL9k=</dsig:DigestValue>
+        <dsig:DigestValue>EEn9PRUZWyp94YNTVueGVAcF7kLmiZvVNzuo6t/VeXQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SimpleTCP.dll" size="20480">
+      <assemblyIdentity name="SimpleTCP" version="1.0.24.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>Y0FlWWcKuXinFxMVkQhigTGo0Wpy+OmclfbuuH/B5Hw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
