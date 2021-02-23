@@ -126,25 +126,20 @@ namespace GasSensor_GUI_v1._0
             InstantiateCSVHeader();
             chart1.Series.SuspendUpdates();
             SetupComboBoxSensorColor();
-
             InitTcpServer();
-
         }
 
+        #region TcpServer
         public void InitTcpServer()
         {
-            //TcpListener server = new TcpListener(IPAddress.Any, 9999);
-            //server.Start();  // this will start the server
             simpleTcpServer = new SimpleTcpServer();
-            simpleTcpServer.Delimiter = 0x13;
-            simpleTcpServer.StringEncoder = Encoding.UTF8;
+            simpleTcpServer.Delimiter = 0x13;//       013  015  0x0D  00001101   CR  (Carriage Return)
+            //simpleTcpServer.StringEncoder = Encoding.UTF8;
             simpleTcpServer.DataReceived += ReceivedSimpleTCPData;
-
             hostName = Dns.GetHostName(); // Retrive the Name of HOST  
-            Console.WriteLine(hostName);
             // Get the IP  
             myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
-            Console.WriteLine("My IP Address is :" + myIP);
+
         }
 
         private void btnTcpStart_Click(object sender, EventArgs e)
@@ -152,14 +147,92 @@ namespace GasSensor_GUI_v1._0
             simpleTcpServer.Stop();
             System.Net.IPAddress ip = System.Net.IPAddress.Parse(myIP);
             simpleTcpServer.Start(ip, Convert.ToInt32(simpleTcpPort));
-            lblIpAddress.Text = "IP: " + myIP+ "\nPort:"+ simpleTcpPort;
+            lblIpAddress.Text = "IP: " + myIP + "\nPort:" + simpleTcpPort;
             lblIpAddress.BackColor = Color.Green;
         }
 
         private void ReceivedSimpleTCPData(object sender, SimpleTCP.Message e)
         {
-            txtBoxTcpData.Text += e.MessageString;
-        }
+            #region TcpDataProcessing
+            string serialPortReceiveddata;
+            //string realValue_serialPortReceivedData;
+            serialPortReceiveddata = e.MessageString;
+
+            //if (serialPortReceiveddata != null)
+            //{
+            //    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length-1);
+            //    //  uController encoder
+            //    //  ASCII 1 denotes sensor #1 data
+            //    //  ASCII 2 denotes sensor #2 data
+            //    //  ASCII 3 demotes sensor #3 data
+            //    //  ASCII 4 denotes sensor #4 data
+            //    //  DataPoint datapoint = new DataPoint(0, Convert.ToDouble(realValue_serialPortReceivedData));
+            //    //  data is received every second.
+            //    if (serialPortReceiveddata[0] == '1')
+            //    {
+            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.ONE);
+            //    }
+            //    else if (serialPortReceiveddata[0] == '2')
+            //    {
+            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.TWO);
+            //    }
+            //    else if (serialPortReceiveddata[0] == '3')
+            //    {
+
+            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.THREE);
+
+            //    }
+            //    else if (serialPortReceiveddata[0] == '4')
+            //    {
+            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FOUR);
+
+            //    }
+            //    else if (serialPortReceiveddata[0] == '5')
+            //    {
+
+            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FIVE);
+
+            //    }
+            //    else if (serialPortReceiveddata[0] == '6')
+            //    {
+            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.SIX);
+            //    }
+            //    else if (serialPortReceiveddata[0] == 'U')
+            //    {
+            //        humidity = Convert.ToDouble(realValue_serialPortReceivedData);
+            //    }
+            //    else if (serialPortReceiveddata[0] == 'E')
+            //    {
+            //        value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
+            //    }
+            //    // For compensation data
+            //    else
+            //    {
+            //        realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
+
+            //        // temperature compensation data
+            //        if (serialPortReceiveddata[0] == 'T')
+            //        {
+            //            ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+
+            //        }
+            //        if (serialPortReceiveddata[0] == 'H')
+            //        {
+            //            ReadHumidityCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+            //            // call this function when received all the humidity and compensation data.
+            //        }
+
+            //    }
+
+            //}
+            #endregion
+
+            txtBoxTcpData.Invoke((MethodInvoker)delegate ()
+            {
+                txtBoxTcpData.Text = serialPortReceiveddata;// serialPortReceiveddata.Substring(0, serialPortReceiveddata.Length - 1); ;
+            });
+        } 
+        #endregion
 
         #region SetupUart and Its Event Handler
         private void SetupUart()
