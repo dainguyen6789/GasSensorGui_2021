@@ -133,7 +133,7 @@ namespace GasSensor_GUI_v1._0
         public void InitTcpServer()
         {
             simpleTcpServer = new SimpleTcpServer();
-            simpleTcpServer.Delimiter = 0x13;//       013  015  0x0D  00001101   CR  (Carriage Return)
+            simpleTcpServer.Delimiter = 0x12;//0x13;//       013  015  0x0D  00001101   CR  (Carriage Return)
             //simpleTcpServer.StringEncoder = Encoding.UTF8;
             simpleTcpServer.DataReceived += ReceivedSimpleTCPData;
             hostName = Dns.GetHostName(); // Retrive the Name of HOST  
@@ -155,12 +155,143 @@ namespace GasSensor_GUI_v1._0
         {
             #region TcpDataProcessing
             string serialPortReceiveddata;
-            //string realValue_serialPortReceivedData;
+            string realValue_serialPortReceivedData;
             serialPortReceiveddata = e.MessageString;
+
+            if (serialPortReceiveddata != null)
+            {
+                realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
+                //  uController encoder
+                //  ASCII 1 denotes sensor #1 data
+                //  ASCII 2 denotes sensor #2 data
+                //  ASCII 3 demotes sensor #3 data
+                //  ASCII 4 denotes sensor #4 data
+                //  DataPoint datapoint = new DataPoint(0, Convert.ToDouble(realValue_serialPortReceivedData));
+                //  data is received every second.
+                if (serialPortReceiveddata[0] == '1')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.ONE);
+                }
+                else if (serialPortReceiveddata[0] == '2')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.TWO);
+                }
+                else if (serialPortReceiveddata[0] == '3')
+                {
+
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.THREE);
+
+                }
+                else if (serialPortReceiveddata[0] == '4')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FOUR);
+
+                }
+                else if (serialPortReceiveddata[0] == '5')
+                {
+
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FIVE);
+
+                }
+                else if (serialPortReceiveddata[0] == '6')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.SIX);
+                }
+                #region DEbugLAter
+
+                else if (serialPortReceiveddata[0] == 'U')
+                {
+                    //
+                    try 
+                    { 
+                        humidity = Convert.ToDouble(realValue_serialPortReceivedData);
+                    }
+                    catch(Exception)
+                    { }
+                }
+                else if (serialPortReceiveddata[0] == 'E')
+                {
+                    try
+                    {
+                        value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
+                    }
+                    catch(Exception)
+                    { }
+                }
+                // For compensation data
+                else
+                {
+                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
+
+                    // temperature compensation data
+                    if (serialPortReceiveddata[0] == 'T')
+                    {
+                        try
+                        {
+                            ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+                        }
+                        catch(Exception)
+                        { 
+
+                        }
+
+                    }
+                    if (serialPortReceiveddata[0] == 'H')
+                    {
+                        try
+                        {
+                            ReadHumidityCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+                            // call this function when received all the humidity and compensation data.
+                        }
+                        catch(Exception)
+                        { }
+                    }
+
+                }
+                #endregion
+
+            }
+            #endregion
+
+            txtBoxTcpData.Invoke((MethodInvoker)delegate ()
+            {
+                //txtBoxTcpData.Text = null;
+                txtBoxTcpData.Text += serialPortReceiveddata;// serialPortReceiveddata.Substring(0, serialPortReceiveddata.Length - 1); ;
+            });
+        } 
+        #endregion
+
+        #region SetupUart and Its Event Handler
+        private void SetupUart()
+        {
+            _uart = serialPort1;
+            _uart.DataReceived += _uart_DataReceived;
+        }
+        public void GetSerialPortName()
+        {
+            string[] ports = null;
+            ports = SerialPort.GetPortNames();
+            foreach (string port in ports)
+            {
+                if (!comboBox1.Items.Contains(port)) // prevent UartCheckingTimer to enumerate duplicated ports.
+                {
+                    //comboBox1.Text = port;
+                    comboBox1.Items.Add(port);
+                }
+            }
+
+
+        }
+        private void _uart_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            #region UARTDATARECEIVE
+            //string serialPortReceiveddata;
+            //string realValue_serialPortReceivedData;
+            //serialPortReceiveddata = _uart.ReadLine();
 
             //if (serialPortReceiveddata != null)
             //{
-            //    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length-1);
+            //    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
             //    //  uController encoder
             //    //  ASCII 1 denotes sensor #1 data
             //    //  ASCII 2 denotes sensor #2 data
@@ -224,117 +355,20 @@ namespace GasSensor_GUI_v1._0
 
             //    }
 
+                #endregion
             //}
-            #endregion
-
-            txtBoxTcpData.Invoke((MethodInvoker)delegate ()
-            {
-                txtBoxTcpData.Text = serialPortReceiveddata;// serialPortReceiveddata.Substring(0, serialPortReceiveddata.Length - 1); ;
-            });
-        } 
-        #endregion
-
-        #region SetupUart and Its Event Handler
-        private void SetupUart()
-        {
-            _uart = serialPort1;
-            _uart.DataReceived += _uart_DataReceived;
-        }
-        public void GetSerialPortName()
-        {
-            string[] ports = null;
-            ports = SerialPort.GetPortNames();
-            foreach (string port in ports)
-            {
-                if (!comboBox1.Items.Contains(port)) // prevent UartCheckingTimer to enumerate duplicated ports.
-                {
-                    //comboBox1.Text = port;
-                    comboBox1.Items.Add(port);
-                }
-            }
-
-
-        }
-        private void _uart_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            string serialPortReceiveddata;
-            string realValue_serialPortReceivedData;
-            serialPortReceiveddata = _uart.ReadLine();
-
-            if (serialPortReceiveddata != null)
-            {
-                realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
-                //  uController encoder
-                //  ASCII 1 denotes sensor #1 data
-                //  ASCII 2 denotes sensor #2 data
-                //  ASCII 3 demotes sensor #3 data
-                //  ASCII 4 denotes sensor #4 data
-                //  DataPoint datapoint = new DataPoint(0, Convert.ToDouble(realValue_serialPortReceivedData));
-                //  data is received every second.
-                if (serialPortReceiveddata[0] == '1')
-                {
-                    UpdateSensorData(realValue_serialPortReceivedData,(int)SENSOR_NUMBER.ONE);
-                }
-                else if (serialPortReceiveddata[0] == '2')
-                {
-                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.TWO);
-                }
-                else if (serialPortReceiveddata[0] == '3')
-                {
-
-                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.THREE);
-
-                }
-                else if (serialPortReceiveddata[0] == '4')
-                {
-                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FOUR);
-
-                }
-                else if (serialPortReceiveddata[0] == '5')
-                {
-
-                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FIVE);
-
-                }
-                else if (serialPortReceiveddata[0] == '6')
-                {
-                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.SIX);
-                }
-                else if (serialPortReceiveddata[0] == 'U')
-                {
-                    humidity = Convert.ToDouble(realValue_serialPortReceivedData);
-                }
-                else if (serialPortReceiveddata[0] == 'E')
-                {
-                    value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
-                }
-                // For compensation data
-                else
-                {
-                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
-
-                    // temperature compensation data
-                    if (serialPortReceiveddata[0] == 'T')
-                    {
-                        ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
-                       
-                    }
-                    if (serialPortReceiveddata[0] == 'H')
-                    {
-                        ReadHumidityCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
-                        // call this function when received all the humidity and compensation data.
-                    }
-
-                }
-
-            }
         }
 
         private void UpdateSensorData(string realValue_serialPortReceivedData,int sensorNumber)
         {
-            value[sensorNumber-1] = Convert.ToDouble(realValue_serialPortReceivedData);
-            value[sensorNumber - 1] = value[sensorNumber - 1] / 5 * refADCVoltage;
-            addrow_gridview = sensorNumber;
+            try
+            {
+                value[sensorNumber - 1] = Convert.ToDouble(realValue_serialPortReceivedData);
+                value[sensorNumber - 1] = value[sensorNumber - 1] / 5 * refADCVoltage;
+                addrow_gridview = sensorNumber;
+            }
+            catch(Exception)
+            { }
         }
 
         private void ReadHumidityCompensationData(string serialPortReceiveddata, string realValue_serialPortReceivedData)
