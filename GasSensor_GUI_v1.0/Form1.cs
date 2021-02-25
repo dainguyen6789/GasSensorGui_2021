@@ -133,7 +133,8 @@ namespace GasSensor_GUI_v1._0
         public void InitTcpServer()
         {
             simpleTcpServer = new SimpleTcpServer();
-            simpleTcpServer.Delimiter = 0x12;//0x13;//       013  015  0x0D  00001101   CR  (Carriage Return)
+            simpleTcpServer.Delimiter = 0x13;//       013  015  0x0D  00001101   CR  (Carriage Return)
+            simpleTcpServer.AutoTrimStrings = true;
             //simpleTcpServer.StringEncoder = Encoding.UTF8;
             simpleTcpServer.DataReceived += ReceivedSimpleTCPData;
             hostName = Dns.GetHostName(); // Retrive the Name of HOST  
@@ -151,16 +152,36 @@ namespace GasSensor_GUI_v1._0
             lblIpAddress.BackColor = Color.Green;
         }
 
+        String GetRealTcpData(string inputString)
+        {
+            String outputString;
+            int i;
+            for (i=0;i<inputString.Length;i++)
+            {
+                if (inputString[i] == 0x13)// space character
+                    break;
+
+            }
+            outputString= inputString.Substring(0, i-2);
+
+            return outputString;
+
+        }
         private void ReceivedSimpleTCPData(object sender, SimpleTCP.Message e)
         {
             #region TcpDataProcessing
             string serialPortReceiveddata;
             string realValue_serialPortReceivedData;
-            serialPortReceiveddata = e.MessageString;
 
-            if (serialPortReceiveddata != null)
+
+            serialPortReceiveddata = (e.MessageString);
+            //serialPortReceiveddata = (e.MessageString);
+
+            if (serialPortReceiveddata != null && serialPortReceiveddata.Length>3)
             {
-                realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
+                //serialPortReceiveddata = GetRealTcpData(e.MessageString);
+
+                realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length-1);
                 //  uController encoder
                 //  ASCII 1 denotes sensor #1 data
                 //  ASCII 2 denotes sensor #2 data
@@ -202,49 +223,40 @@ namespace GasSensor_GUI_v1._0
                 else if (serialPortReceiveddata[0] == 'U')
                 {
                     //
-                    try 
                     { 
                         humidity = Convert.ToDouble(realValue_serialPortReceivedData);
                     }
-                    catch(Exception)
-                    { }
+                
                 }
                 else if (serialPortReceiveddata[0] == 'E')
                 {
-                    try
                     {
                         value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
                     }
-                    catch(Exception)
-                    { }
+
                 }
                 // For compensation data
                 else
                 {
-                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
+                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length-2);
 
                     // temperature compensation data
                     if (serialPortReceiveddata[0] == 'T')
                     {
-                        try
+                        
                         {
-                            ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+                            ReadTempCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
                         }
-                        catch(Exception)
-                        { 
-
-                        }
+                      
 
                     }
                     if (serialPortReceiveddata[0] == 'H')
                     {
-                        try
                         {
-                            ReadHumidityCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+                            ReadHumidityCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
                             // call this function when received all the humidity and compensation data.
                         }
-                        catch(Exception)
-                        { }
+                       
                     }
 
                 }
@@ -361,14 +373,12 @@ namespace GasSensor_GUI_v1._0
 
         private void UpdateSensorData(string realValue_serialPortReceivedData,int sensorNumber)
         {
-            try
             {
                 value[sensorNumber - 1] = Convert.ToDouble(realValue_serialPortReceivedData);
                 value[sensorNumber - 1] = value[sensorNumber - 1] / 5 * refADCVoltage;
                 addrow_gridview = sensorNumber;
             }
-            catch(Exception)
-            { }
+          
         }
 
         private void ReadHumidityCompensationData(string serialPortReceiveddata, string realValue_serialPortReceivedData)

@@ -47,6 +47,9 @@
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Humidity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtBoxTcpData = new System.Windows.Forms.TextBox();
+            this.btnTcpStart = new System.Windows.Forms.Button();
+            this.lblIpAddress = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.textBoxCount = new System.Windows.Forms.TextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -103,9 +106,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.colorDialog_ChangeChartSeriesColor = new System.Windows.Forms.ColorDialog();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.lblIpAddress = new System.Windows.Forms.Label();
-            this.btnTcpStart = new System.Windows.Forms.Button();
-            this.txtBoxTcpData = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -305,6 +305,35 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Gas Sensor Voltage (V)";
             // 
+            // txtBoxTcpData
+            // 
+            this.txtBoxTcpData.Location = new System.Drawing.Point(17, 474);
+            this.txtBoxTcpData.Name = "txtBoxTcpData";
+            this.txtBoxTcpData.Size = new System.Drawing.Size(331, 26);
+            this.txtBoxTcpData.TabIndex = 13;
+            // 
+            // btnTcpStart
+            // 
+            this.btnTcpStart.Location = new System.Drawing.Point(392, 519);
+            this.btnTcpStart.Name = "btnTcpStart";
+            this.btnTcpStart.Size = new System.Drawing.Size(136, 27);
+            this.btnTcpStart.TabIndex = 12;
+            this.btnTcpStart.Text = "Start TCP";
+            this.btnTcpStart.UseVisualStyleBackColor = true;
+            this.btnTcpStart.Click += new System.EventHandler(this.btnTcpStart_Click);
+            // 
+            // lblIpAddress
+            // 
+            this.lblIpAddress.AccessibleName = "";
+            this.lblIpAddress.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.lblIpAddress.AutoSize = true;
+            this.lblIpAddress.Location = new System.Drawing.Point(392, 548);
+            this.lblIpAddress.Name = "lblIpAddress";
+            this.lblIpAddress.Size = new System.Drawing.Size(91, 24);
+            this.lblIpAddress.TabIndex = 11;
+            this.lblIpAddress.Text = "IP Address";
+            this.lblIpAddress.UseCompatibleTextRendering = true;
+            // 
             // groupBox7
             // 
             this.groupBox7.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
@@ -363,7 +392,7 @@
             this.textBoxSampleTime.Name = "textBoxSampleTime";
             this.textBoxSampleTime.Size = new System.Drawing.Size(27, 23);
             this.textBoxSampleTime.TabIndex = 0;
-            this.textBoxSampleTime.Text = "5";
+            this.textBoxSampleTime.Text = "1";
             this.textBoxSampleTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // buttonSaveAsXlxs
@@ -762,7 +791,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1710, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1710, 28);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -772,7 +801,7 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
@@ -794,7 +823,7 @@
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.version10ToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // version10ToolStripMenuItem
@@ -806,7 +835,7 @@
             // 
             // timer1
             // 
-            this.timer1.Interval = 5000;
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // connectSerialPort
@@ -977,35 +1006,6 @@
             this.groupBox9.Size = new System.Drawing.Size(200, 107);
             this.groupBox9.TabIndex = 14;
             this.groupBox9.TabStop = false;
-            // 
-            // lblIpAddress
-            // 
-            this.lblIpAddress.AccessibleName = "";
-            this.lblIpAddress.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.lblIpAddress.AutoSize = true;
-            this.lblIpAddress.Location = new System.Drawing.Point(392, 548);
-            this.lblIpAddress.Name = "lblIpAddress";
-            this.lblIpAddress.Size = new System.Drawing.Size(91, 24);
-            this.lblIpAddress.TabIndex = 11;
-            this.lblIpAddress.Text = "IP Address";
-            this.lblIpAddress.UseCompatibleTextRendering = true;
-            // 
-            // btnTcpStart
-            // 
-            this.btnTcpStart.Location = new System.Drawing.Point(392, 519);
-            this.btnTcpStart.Name = "btnTcpStart";
-            this.btnTcpStart.Size = new System.Drawing.Size(136, 27);
-            this.btnTcpStart.TabIndex = 12;
-            this.btnTcpStart.Text = "Start TCP";
-            this.btnTcpStart.UseVisualStyleBackColor = true;
-            this.btnTcpStart.Click += new System.EventHandler(this.btnTcpStart_Click);
-            // 
-            // txtBoxTcpData
-            // 
-            this.txtBoxTcpData.Location = new System.Drawing.Point(17, 560);
-            this.txtBoxTcpData.Name = "txtBoxTcpData";
-            this.txtBoxTcpData.Size = new System.Drawing.Size(331, 26);
-            this.txtBoxTcpData.TabIndex = 13;
             // 
             // Form1
             // 
