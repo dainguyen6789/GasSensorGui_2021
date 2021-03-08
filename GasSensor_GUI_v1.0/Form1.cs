@@ -17,7 +17,7 @@ namespace GasSensor_GUI_v1._0
 
     public partial class Form1 : Form
     {
-        delegate void UpdateChartCallback(float update_time, double YValue, int sensor_number);
+        delegate void UpdateChartCallback(double update_time, double YValue, int sensor_number);
         delegate void UpdateGridViewCallback(double sample_time_grid, double[] Value,
                                             int current_row, int sensor_number);
         delegate void CloseUartCallback(int i);
@@ -64,6 +64,7 @@ namespace GasSensor_GUI_v1._0
             FIVE,
             SIX
         } 
+        DateTime startTime;
         #endregion
         #region Compenasation Data From BME280
         /*
@@ -513,13 +514,13 @@ namespace GasSensor_GUI_v1._0
         private async void UpdateChartAndGrid()
         {
 
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[4], 5));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[5], 6));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[6], 7));//humidity value RH%
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[0], 1));
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[1], 2));
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[2], 3));
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[3], 4));
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[4], 5));
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[5], 6));
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[6], 7));//humidity value RH%
 
             //addrow_gridview = 0;
 
@@ -527,7 +528,7 @@ namespace GasSensor_GUI_v1._0
 
         }
 
-        private void UpdateChart(float update_time, double YValue, int sensor_number)
+        private void UpdateChart(double update_time, double YValue, int sensor_number)
         {
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
@@ -540,23 +541,23 @@ namespace GasSensor_GUI_v1._0
             else
             {
                 if (sensor_number == 1)
-                    chart1.Series["Sensor 1"].Points.AddXY((update_time / 60), YValue);
+                    chart1.Series["Sensor 1"].Points.AddXY((update_time), YValue);
                 else if (sensor_number == 2)
-                    chart1.Series["Sensor 2"].Points.AddXY((update_time / 60), YValue);
+                    chart1.Series["Sensor 2"].Points.AddXY((update_time), YValue);
 
                 else if (sensor_number == 3)
-                    chart1.Series["Sensor 3"].Points.AddXY((update_time / 60), YValue);
+                    chart1.Series["Sensor 3"].Points.AddXY((update_time), YValue);
 
                 else if (sensor_number == 4)
-                    chart1.Series["Sensor 4"].Points.AddXY((update_time / 60), YValue);
+                    chart1.Series["Sensor 4"].Points.AddXY((update_time), YValue);
 
                 else if (sensor_number == 5)
-                    chart1.Series["Sensor 5"].Points.AddXY((update_time / 60), YValue);
+                    chart1.Series["Sensor 5"].Points.AddXY((update_time), YValue);
 
                 else if (sensor_number == 6)
-                    chart1.Series["Sensor 6"].Points.AddXY((update_time / 60), YValue);
+                    chart1.Series["Sensor 6"].Points.AddXY((update_time), YValue);
                 else if (sensor_number == 7)
-                    chart1.Series["Humidity"].Points.AddXY((update_time / 60), YValue);
+                    chart1.Series["Humidity"].Points.AddXY((update_time), YValue);
 
             }
         }
@@ -605,7 +606,8 @@ namespace GasSensor_GUI_v1._0
                     }
                     dataGridView1.Rows[0].Cells[0].Value = DateTime.Now.ToString("HH:mm:ss MM/dd/yy");
 
-                    dataGridView1.Rows[0].Cells[1].Value = sample_time_grid;
+                    //dataGridView1.Rows[0].Cells[1].Value = sample_time_grid;
+                    dataGridView1.Rows[0].Cells[1].Value=(DateTime.Now.Subtract(startTime).TotalMinutes);
                     dataGridView1.Rows[0].Cells[2].Value = Value[0];
                     dataGridView1.Rows[0].Cells[3].Value = Value[1];
                     dataGridView1.Rows[0].Cells[4].Value = Value[2];
@@ -685,6 +687,8 @@ namespace GasSensor_GUI_v1._0
         private void ConnectSerialPort_Click(object sender, EventArgs e)
         {
             timer1.Enabled = true;
+            startTime=DateTime.Now;
+
             try
             {
                 if (!_uart.IsOpen)
