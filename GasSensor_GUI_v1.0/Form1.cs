@@ -43,7 +43,7 @@ namespace GasSensor_GUI_v1._0
         float zoom_size = 20f;
         //List<Double> value=new List<Double>();
         double[] value = new double[9];
-        double humidity;// = 0, value2 = 0, value3 = 0, value4 = 0;
+        double humidity,temperature;// = 0, value2 = 0, value3 = 0, value4 = 0;
         double refADCVoltage = 5;
         private Thread trd;
         private readonly Queue<float> _queue_time = new Queue<float>();
@@ -68,7 +68,9 @@ namespace GasSensor_GUI_v1._0
             THREE,
             FOUR,
             FIVE,
-            SIX
+            SIX,
+            HUMIDITY,
+            TEMPERATURE,
         } 
         #endregion
         #region Compenasation Data From BME280
@@ -134,8 +136,8 @@ namespace GasSensor_GUI_v1._0
         {
             simpleTcpServer = new SimpleTcpServer();
             simpleTcpServer.Delimiter = 0x13;//       013  015  0x0D  00001101   CR  (Carriage Return)
-            simpleTcpServer.AutoTrimStrings = true;
-            //simpleTcpServer.StringEncoder = Encoding.UTF8;
+            //simpleTcpServer.AutoTrimStrings = true;
+            simpleTcpServer.StringEncoder = Encoding.UTF8;
             simpleTcpServer.DataReceived += ReceivedSimpleTCPData;
             hostName = Dns.GetHostName(); // Retrive the Name of HOST  
             // Get the IP  
@@ -150,6 +152,8 @@ namespace GasSensor_GUI_v1._0
             simpleTcpServer.Start(ip, Convert.ToInt32(simpleTcpPort));
             lblIpAddress.Text = "IP: " + myIP + "\nPort:" + simpleTcpPort;
             lblIpAddress.BackColor = Color.Green;
+            timer1.Enabled = true;
+
         }
 
         String GetRealTcpData(string inputString)
@@ -176,6 +180,7 @@ namespace GasSensor_GUI_v1._0
 
             serialPortReceiveddata = (e.MessageString);
             //serialPortReceiveddata = (e.MessageString);
+            
 
             if (serialPortReceiveddata != null && serialPortReceiveddata.Length>3)
             {
@@ -199,64 +204,46 @@ namespace GasSensor_GUI_v1._0
                 }
                 else if (serialPortReceiveddata[0] == '3')
                 {
-
                     UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.THREE);
-
                 }
                 else if (serialPortReceiveddata[0] == '4')
                 {
                     UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FOUR);
-
                 }
                 else if (serialPortReceiveddata[0] == '5')
                 {
-
                     UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FIVE);
-
                 }
                 else if (serialPortReceiveddata[0] == '6')
                 {
                     UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.SIX);
                 }
                 #region DEbugLAter
-
-                else if (serialPortReceiveddata[0] == 'U')
-                {
-                    //
-                    { 
-                        humidity = Convert.ToDouble(realValue_serialPortReceivedData);
-                    }
-                
-                }
                 else if (serialPortReceiveddata[0] == 'E')
                 {
-                    {
-                        value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
-                    }
-
+                    temperature = Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[7] = CompensateTemperature((int)temperature);
                 }
+                else if (serialPortReceiveddata[0] == 'U')
+                { 
+                    humidity = Convert.ToDouble(realValue_serialPortReceivedData);
+                    //t_fine is used to  CompensateHumidity
+                    value[6] = Math.Round(CompensateHumidity((int)humidity), 0);
+                }
+
                 // For compensation data
                 else
                 {
                     realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length-2);
-
                     // temperature compensation data
                     if (serialPortReceiveddata[0] == 'T')
-                    {
-                        
-                        {
-                            ReadTempCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
-                        }
-                      
-
+                    {  
+                        ReadTempCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
                     }
-                    if (serialPortReceiveddata[0] == 'H')
-                    {
-                        {
-                            ReadHumidityCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
+                    if (serialPortReceiveddata[0] == 'H' )
+                    {    
+                        ReadHumidityCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
                             // call this function when received all the humidity and compensation data.
-                        }
-                       
                     }
 
                 }
@@ -265,11 +252,11 @@ namespace GasSensor_GUI_v1._0
             }
             #endregion
 
-            txtBoxTcpData.Invoke((MethodInvoker)delegate ()
-            {
-                //txtBoxTcpData.Text = null;
-                txtBoxTcpData.Text += serialPortReceiveddata;// serialPortReceiveddata.Substring(0, serialPortReceiveddata.Length - 1); ;
-            });
+            //txtBoxTcpData.Invoke((MethodInvoker)delegate ()
+            //{
+            //    txtBoxTcpData.Text = null;
+            //    txtBoxTcpData.Text += serialPortReceiveddata;// serialPortReceiveddata.Substring(0, serialPortReceiveddata.Length - 1); ;
+            //});
         } 
         #endregion
 
@@ -387,36 +374,36 @@ namespace GasSensor_GUI_v1._0
             {
                 //  dig_T1
                 case '1':
-
-                    dig_H1 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    ///dig_H1 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_H1 = Double.Parse(realValue_serialPortReceivedData);
 
                     break;
                 //  dig_T1
                 case '2':
 
-                    dig_H2 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_H2 = Double.Parse(realValue_serialPortReceivedData); ;// Convert.ToDouble(realValue_serialPortReceivedData);
 
                     break;
 
                 //  dig_T1
                 case '3':
 
-                    dig_H3 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_H3 = Double.Parse(realValue_serialPortReceivedData); ;//Convert.ToDouble(realValue_serialPortReceivedData);
 
                     break;
                 //  dig_T1
                 case '4':
-                    dig_H4 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_H4 = Double.Parse(realValue_serialPortReceivedData); ;//Convert.ToDouble(realValue_serialPortReceivedData);
                     break;
                 //  dig_T1
                 case '5':
 
-                    dig_H5 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_H5 = Double.Parse(realValue_serialPortReceivedData); ;// Convert.ToDouble(realValue_serialPortReceivedData);
 
                     break;
                 case '6':
-                    dig_H6 = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[7] = CompensateTemperature((int)value[7]);
+                    dig_H6 = Double.Parse(realValue_serialPortReceivedData); ;//Convert.ToDouble(realValue_serialPortReceivedData);
+                    value[7] = CompensateTemperature((int)temperature);
                     //t_fine is used to  CompensateHumidity
                     value[6] = Math.Round(CompensateHumidity((int)humidity), 0);
 
@@ -432,20 +419,20 @@ namespace GasSensor_GUI_v1._0
                 //  dig_T1
                 case '1':
 
-                    dig_T1 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_T1 = Double.Parse(realValue_serialPortReceivedData); ;//Convert.ToDouble(realValue_serialPortReceivedData);
 
                     break;
                 //  dig_T1
                 case '2':
 
-                    dig_T2 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_T2 = Double.Parse(realValue_serialPortReceivedData); ;//Convert.ToDouble(realValue_serialPortReceivedData);
 
                     break;
 
                 //  dig_T1
                 case '3':
 
-                    dig_T3 = Convert.ToDouble(realValue_serialPortReceivedData);
+                    dig_T3 = Double.Parse(realValue_serialPortReceivedData); ;//Convert.ToDouble(realValue_serialPortReceivedData);
 
                     break;
 
@@ -468,7 +455,7 @@ namespace GasSensor_GUI_v1._0
             CreateChartSerie((int)SENSOR_NUMBER.FIVE);
             CreateChartSerie((int)SENSOR_NUMBER.SIX);
             CreateHumiditySerie();
-
+            CreateTempSerie();
             InitMouseClickAndWheelEvent();
             SetupXYAxisGridAndFormat();
 
@@ -487,6 +474,14 @@ namespace GasSensor_GUI_v1._0
             chart1.Series["Humidity"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             chart1.Series["Humidity"].BorderWidth = 3;
             chart1.Series["Humidity"].YAxisType = AxisType.Secondary;
+        }
+        private void CreateTempSerie()
+        {
+            chart1.Series.Add("Temp");
+            chart1.Series["Temp"].YAxisType = AxisType.Secondary; ;
+            chart1.Series["Temp"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            chart1.Series["Temp"].BorderWidth = 3;
+            chart1.Series["Temp"].YAxisType = AxisType.Secondary;
         }
 
         private void CreateChartSerie(int sensorNumber)
@@ -671,13 +666,14 @@ namespace GasSensor_GUI_v1._0
         private async void UpdateChartAndGrid()
         {
 
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], 1));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], 2));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], 3));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], 4));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[4], 5));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[5], 6));
-            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[6], 7));//humidity value RH%
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[0], (int)SENSOR_NUMBER.ONE));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[1], (int)SENSOR_NUMBER.TWO));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[2], (int)SENSOR_NUMBER.THREE));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[3], (int)SENSOR_NUMBER.FOUR));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[4], (int)SENSOR_NUMBER.FIVE));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[5], (int)SENSOR_NUMBER.SIX));
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[6], (int)SENSOR_NUMBER.HUMIDITY));//humidity value RH%
+            await Task.Run(() => UpdateChart((float)prev_time + time * (timer1.Interval / 1000) / 60, value[7], (int)SENSOR_NUMBER.TEMPERATURE));//Temprature
 
             //addrow_gridview = 0;
 
@@ -697,24 +693,26 @@ namespace GasSensor_GUI_v1._0
             }
             else
             {
-                if (sensor_number == 1)
+                if (sensor_number == (int)SENSOR_NUMBER.ONE)
                     chart1.Series["Sensor 1"].Points.AddXY((update_time / 60), YValue);
-                else if (sensor_number == 2)
+                else if (sensor_number == (int)SENSOR_NUMBER.TWO)
                     chart1.Series["Sensor 2"].Points.AddXY((update_time / 60), YValue);
 
-                else if (sensor_number == 3)
+                else if (sensor_number == (int)SENSOR_NUMBER.THREE)
                     chart1.Series["Sensor 3"].Points.AddXY((update_time / 60), YValue);
 
-                else if (sensor_number == 4)
+                else if (sensor_number == (int)SENSOR_NUMBER.FOUR)
                     chart1.Series["Sensor 4"].Points.AddXY((update_time / 60), YValue);
 
-                else if (sensor_number == 5)
+                else if (sensor_number == (int)SENSOR_NUMBER.FIVE)
                     chart1.Series["Sensor 5"].Points.AddXY((update_time / 60), YValue);
 
-                else if (sensor_number == 6)
+                else if (sensor_number == (int)SENSOR_NUMBER.SIX)
                     chart1.Series["Sensor 6"].Points.AddXY((update_time / 60), YValue);
-                else if (sensor_number == 7)
+                else if (sensor_number ==(int) SENSOR_NUMBER.HUMIDITY)
                     chart1.Series["Humidity"].Points.AddXY((update_time / 60), YValue);
+                else if (sensor_number == (int)SENSOR_NUMBER.TEMPERATURE)
+                    chart1.Series["Temp"].Points.AddXY((update_time / 60), YValue);
 
             }
         }
@@ -770,7 +768,8 @@ namespace GasSensor_GUI_v1._0
                     dataGridView1.Rows[0].Cells[5].Value = Value[3];
                     dataGridView1.Rows[0].Cells[6].Value = Value[4];
                     dataGridView1.Rows[0].Cells[7].Value = Value[5];
-                    dataGridView1.Rows[0].Cells[8].Value = Value[6];
+                    dataGridView1.Rows[0].Cells[8].Value = Value[6];// humidity
+                    dataGridView1.Rows[0].Cells[9].Value = Value[7];// temperature
 
                     try
                     {
