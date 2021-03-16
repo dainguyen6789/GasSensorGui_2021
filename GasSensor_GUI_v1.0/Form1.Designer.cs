@@ -29,14 +29,24 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.ButtonSave = new System.Windows.Forms.Button();
             this.ButtonExit = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SampleTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Temp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.labelSerialPortStatus = new System.Windows.Forms.Label();
@@ -97,16 +107,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.colorDialog_ChangeChartSeriesColor = new System.Windows.Forms.ColorDialog();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SampleTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Temp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -131,45 +131,45 @@
             this.chart1.BorderSkin.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.LeftRight;
             this.chart1.BorderSkin.BackHatchStyle = System.Windows.Forms.DataVisualization.Charting.ChartHatchStyle.BackwardDiagonal;
             this.chart1.BorderSkin.PageColor = System.Drawing.Color.DimGray;
-            chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
-            chartArea2.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
-            chartArea2.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
-            chartArea2.AxisX.MajorGrid.Interval = 0D;
-            chartArea2.AxisX.MinorGrid.Enabled = true;
-            chartArea2.AxisX.Title = "Time (hour)";
-            chartArea2.AxisY.LabelAutoFitMaxFontSize = 12;
-            chartArea2.AxisY.LabelAutoFitMinFontSize = 10;
-            chartArea2.AxisY.MajorGrid.Interval = 0D;
-            chartArea2.AxisY.MajorTickMark.Interval = 0D;
-            chartArea2.AxisY.Maximum = 6D;
-            chartArea2.AxisY.MinorGrid.Enabled = true;
-            chartArea2.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
-            chartArea2.AxisY.Title = "Voltage (V)";
-            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            chartArea2.AxisY2.Title = "RH (%)/Temp (*C)";
-            chartArea2.BackColor = System.Drawing.Color.White;
-            chartArea2.BackSecondaryColor = System.Drawing.Color.White;
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Alignment = System.Drawing.StringAlignment.Far;
-            legend2.DockedToChartArea = "ChartArea1";
-            legend2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            legend2.IsTextAutoFit = false;
-            legend2.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
-            legend2.Name = "Legend1";
-            legend2.TextWrapThreshold = 50;
-            legend2.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
-            this.chart1.Legends.Add(legend2);
+            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea1.AxisX.MajorGrid.Interval = 0D;
+            chartArea1.AxisX.MinorGrid.Enabled = true;
+            chartArea1.AxisX.Title = "Time (hour)";
+            chartArea1.AxisY.LabelAutoFitMaxFontSize = 12;
+            chartArea1.AxisY.LabelAutoFitMinFontSize = 10;
+            chartArea1.AxisY.MajorGrid.Interval = 0D;
+            chartArea1.AxisY.MajorTickMark.Interval = 0D;
+            chartArea1.AxisY.Maximum = 6D;
+            chartArea1.AxisY.MinorGrid.Enabled = true;
+            chartArea1.AxisY.MinorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dot;
+            chartArea1.AxisY.Title = "Voltage (V)";
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea1.AxisY2.Title = "RH (%)/Temp (*C)";
+            chartArea1.BackColor = System.Drawing.Color.White;
+            chartArea1.BackSecondaryColor = System.Drawing.Color.White;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
+            legend1.DockedToChartArea = "ChartArea1";
+            legend1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            legend1.IsTextAutoFit = false;
+            legend1.LegendStyle = System.Windows.Forms.DataVisualization.Charting.LegendStyle.Column;
+            legend1.Name = "Legend1";
+            legend1.TextWrapThreshold = 50;
+            legend1.TitleForeColor = System.Drawing.Color.BlanchedAlmond;
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(21, 26);
             this.chart1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(877, 645);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title2.Name = "Sensor Voltage (V)";
-            title2.Text = "Sensor Voltage (V)";
-            this.chart1.Titles.Add(title2);
+            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title1.Name = "Sensor Voltage (V)";
+            title1.Text = "Sensor Voltage (V)";
+            this.chart1.Titles.Add(title1);
             // 
             // ButtonSave
             // 
@@ -220,6 +220,79 @@
             this.dataGridView1.Size = new System.Drawing.Size(802, 490);
             this.dataGridView1.TabIndex = 3;
             this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "Clock Time";
+            this.Column7.MinimumWidth = 10;
+            this.Column7.Name = "Column7";
+            this.Column7.Width = 80;
+            // 
+            // SampleTime
+            // 
+            dataGridViewCellStyle1.Format = "N3";
+            dataGridViewCellStyle1.NullValue = null;
+            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle1;
+            this.SampleTime.HeaderText = "Time (min)";
+            this.SampleTime.MinimumWidth = 6;
+            this.SampleTime.Name = "SampleTime";
+            this.SampleTime.Width = 50;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Sensor #1";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 60;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Sensor #2";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 60;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Sensor #3";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 60;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Sensor #4";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "Column4";
+            this.Column4.Width = 60;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "Sensor #5";
+            this.Column5.MinimumWidth = 6;
+            this.Column5.Name = "Column5";
+            this.Column5.Width = 60;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Sensor #6";
+            this.Column6.MinimumWidth = 6;
+            this.Column6.Name = "Column6";
+            this.Column6.Width = 60;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "RH(%)";
+            this.Column8.MinimumWidth = 6;
+            this.Column8.Name = "Column8";
+            this.Column8.Width = 60;
+            // 
+            // Temp
+            // 
+            this.Temp.HeaderText = "Temp (Degree)";
+            this.Temp.MinimumWidth = 6;
+            this.Temp.Name = "Temp";
+            this.Temp.Width = 60;
             // 
             // groupBox1
             // 
@@ -375,7 +448,6 @@
             this.txtBoxTcpData.Name = "txtBoxTcpData";
             this.txtBoxTcpData.Size = new System.Drawing.Size(331, 22);
             this.txtBoxTcpData.TabIndex = 13;
-            this.txtBoxTcpData.Visible = false;
             // 
             // btnTcpStart
             // 
@@ -946,79 +1018,6 @@
             this.groupBox9.Size = new System.Drawing.Size(200, 107);
             this.groupBox9.TabIndex = 14;
             this.groupBox9.TabStop = false;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "Clock Time";
-            this.Column7.MinimumWidth = 10;
-            this.Column7.Name = "Column7";
-            this.Column7.Width = 80;
-            // 
-            // SampleTime
-            // 
-            dataGridViewCellStyle2.Format = "N3";
-            dataGridViewCellStyle2.NullValue = null;
-            this.SampleTime.DefaultCellStyle = dataGridViewCellStyle2;
-            this.SampleTime.HeaderText = "Time (min)";
-            this.SampleTime.MinimumWidth = 6;
-            this.SampleTime.Name = "SampleTime";
-            this.SampleTime.Width = 50;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Sensor #1";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 60;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Sensor #2";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 60;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Sensor #3";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 60;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Sensor #4";
-            this.Column4.MinimumWidth = 6;
-            this.Column4.Name = "Column4";
-            this.Column4.Width = 60;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Sensor #5";
-            this.Column5.MinimumWidth = 6;
-            this.Column5.Name = "Column5";
-            this.Column5.Width = 60;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Sensor #6";
-            this.Column6.MinimumWidth = 6;
-            this.Column6.Name = "Column6";
-            this.Column6.Width = 60;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "RH(%)";
-            this.Column8.MinimumWidth = 6;
-            this.Column8.Name = "Column8";
-            this.Column8.Width = 60;
-            // 
-            // Temp
-            // 
-            this.Temp.HeaderText = "Temp (Degree)";
-            this.Temp.MinimumWidth = 6;
-            this.Temp.Name = "Temp";
-            this.Temp.Width = 60;
             // 
             // Form1
             // 

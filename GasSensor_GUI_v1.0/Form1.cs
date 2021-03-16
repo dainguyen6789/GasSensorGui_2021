@@ -240,13 +240,13 @@ namespace GasSensor_GUI_v1._0
                 else if (serialPortReceiveddata[0] == 'E')
                 {
                     temperature = Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[7] = CompensateTemperature((int)temperature);
+                    //value[7] = CompensateTemperature((int)temperature);
                 }
                 else if (serialPortReceiveddata[0] == 'U')
                 { 
                     humidity = Convert.ToDouble(realValue_serialPortReceivedData);
                     //t_fine is used to  CompensateHumidity
-                    value[6] = Math.Round(CompensateHumidity((int)humidity), 0);
+                    //value[6] = Math.Round(CompensateHumidity((int)humidity), 0);
                 }
 
                 // For compensation data
@@ -270,12 +270,16 @@ namespace GasSensor_GUI_v1._0
             }
             #endregion
 
+            /// <summary>
+            /// this code will slow down the GUI when we have many data.
+            /// </summary>
+
             //txtBoxTcpData.Invoke((MethodInvoker)delegate ()
             //{
-            //    txtBoxTcpData.Text = null;
+            //    //txtBoxTcpData.Text = null;
             //    txtBoxTcpData.Text += serialPortReceiveddata;// serialPortReceiveddata.Substring(0, serialPortReceiveddata.Length - 1); ;
             //});
-        } 
+        }
         #endregion
 
         #region SetupUart and Its Event Handler
@@ -420,8 +424,9 @@ namespace GasSensor_GUI_v1._0
 
                     break;
                 case '6':
-                    dig_H6 = Double.Parse(realValue_serialPortReceivedData); ;//Convert.ToDouble(realValue_serialPortReceivedData);
-                    value[7] = CompensateTemperature((int)temperature);
+                    dig_H6 = Double.Parse(realValue_serialPortReceivedData); //Convert.ToDouble(realValue_serialPortReceivedData);
+
+                    value[7] = Math.Round(CompensateTemperature((int)temperature),2);
                     //t_fine is used to  CompensateHumidity
                     value[6] = Math.Round(CompensateHumidity((int)humidity), 0);
 
