@@ -325,7 +325,6 @@
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Status";
-            this.groupBox4.Visible = false;
             // 
             // labelSerialPortStatus
             // 
@@ -362,7 +361,6 @@
             this.groupBox8.TabIndex = 7;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Select Serial Port";
-            this.groupBox8.Visible = false;
             // 
             // connectSerialPort
             // 
