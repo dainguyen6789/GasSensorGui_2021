@@ -1,4 +1,8 @@
-﻿using System;
+﻿
+#define USE_UART
+//#define USE_TCP
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -43,6 +47,7 @@ namespace GasSensor_GUI_v1._0
                                             int current_row, int sensor_number);
         delegate void CloseUartCallback(int i);
         System.Threading.Thread CloseDown;
+        
         #region VariableDefinition
         // Timer timer = timer1;
         float time = 0, count = 0;
@@ -305,79 +310,84 @@ namespace GasSensor_GUI_v1._0
         }
         private void _uart_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            #region UARTDATARECEIVE
-            //string serialPortReceiveddata;
-            //string realValue_serialPortReceivedData;
-            //serialPortReceiveddata = _uart.ReadLine();
+          
+            #region UartDataReceive
+            string serialPortReceiveddata;
+            string realValue_serialPortReceivedData;
 
-            //if (serialPortReceiveddata != null)
-            //{
-            //    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
-            //    //  uController encoder
-            //    //  ASCII 1 denotes sensor #1 data
-            //    //  ASCII 2 denotes sensor #2 data
-            //    //  ASCII 3 demotes sensor #3 data
-            //    //  ASCII 4 denotes sensor #4 data
-            //    //  DataPoint datapoint = new DataPoint(0, Convert.ToDouble(realValue_serialPortReceivedData));
-            //    //  data is received every second.
-            //    if (serialPortReceiveddata[0] == '1')
-            //    {
-            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.ONE);
-            //    }
-            //    else if (serialPortReceiveddata[0] == '2')
-            //    {
-            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.TWO);
-            //    }
-            //    else if (serialPortReceiveddata[0] == '3')
-            //    {
+            serialPortReceiveddata = _uart.ReadLine();
+            //serialPortReceiveddata = (e.MessageString);
 
-            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.THREE);
 
-            //    }
-            //    else if (serialPortReceiveddata[0] == '4')
-            //    {
-            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FOUR);
+            if (serialPortReceiveddata != null && serialPortReceiveddata.Length > 3)
+            {
+                //serialPortReceiveddata = GetRealTcpData(e.MessageString);
 
-            //    }
-            //    else if (serialPortReceiveddata[0] == '5')
-            //    {
+                realValue_serialPortReceivedData = serialPortReceiveddata.Substring(1, serialPortReceiveddata.Length - 1);
+                //  uController encoder
+                //  ASCII 1 denotes sensor #1 data
+                //  ASCII 2 denotes sensor #2 data
+                //  ASCII 3 demotes sensor #3 data
+                //  ASCII 4 denotes sensor #4 data
+                //  DataPoint datapoint = new DataPoint(0, Convert.ToDouble(realValue_serialPortReceivedData));
+                //  data is received every second.
+                if (serialPortReceiveddata[0] == '1')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.ONE);
+                }
+                else if (serialPortReceiveddata[0] == '2')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.TWO);
+                }
+                else if (serialPortReceiveddata[0] == '3')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.THREE);
+                }
+                else if (serialPortReceiveddata[0] == '4')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FOUR);
+                }
+                else if (serialPortReceiveddata[0] == '5')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FIVE);
+                }
+                else if (serialPortReceiveddata[0] == '6')
+                {
+                    UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.SIX);
+                }
+           
+                else if (serialPortReceiveddata[0] == 'E')
+                {
+                    temperature = Convert.ToDouble(realValue_serialPortReceivedData);
+                    //value[7] = CompensateTemperature((int)temperature);
+                }
+                else if (serialPortReceiveddata[0] == 'U')
+                {
+                    humidity = Convert.ToDouble(realValue_serialPortReceivedData);
+                    //t_fine is used to  CompensateHumidity
+                    //value[6] = Math.Round(CompensateHumidity((int)humidity), 0);
+                }
 
-            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.FIVE);
+                // For compensation data
+                else
+                {
+                    realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
+                    // temperature compensation data
+                    if (serialPortReceiveddata[0] == 'T')
+                    {
+                        ReadTempCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
+                    }
+                    if (serialPortReceiveddata[0] == 'H')
+                    {
+                        ReadHumidityCompensationData(serialPortReceiveddata, serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2));
+                        // call this function when received all the humidity and compensation data.
+                    }
 
-            //    }
-            //    else if (serialPortReceiveddata[0] == '6')
-            //    {
-            //        UpdateSensorData(realValue_serialPortReceivedData, (int)SENSOR_NUMBER.SIX);
-            //    }
-            //    else if (serialPortReceiveddata[0] == 'U')
-            //    {
-            //        humidity = Convert.ToDouble(realValue_serialPortReceivedData);
-            //    }
-            //    else if (serialPortReceiveddata[0] == 'E')
-            //    {
-            //        value[7] = Convert.ToDouble(realValue_serialPortReceivedData);
-            //    }
-            //    // For compensation data
-            //    else
-            //    {
-            //        realValue_serialPortReceivedData = serialPortReceiveddata.Substring(2, serialPortReceiveddata.Length - 2);
+                }
 
-            //        // temperature compensation data
-            //        if (serialPortReceiveddata[0] == 'T')
-            //        {
-            //            ReadTempCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
+            }
+            #endregion
 
-            //        }
-            //        if (serialPortReceiveddata[0] == 'H')
-            //        {
-            //            ReadHumidityCompensationData(serialPortReceiveddata, realValue_serialPortReceivedData);
-            //            // call this function when received all the humidity and compensation data.
-            //        }
-
-            //    }
-
-                #endregion
-            //}
         }
 
         private void UpdateSensorData(string realValue_serialPortReceivedData,int sensorNumber)
@@ -700,6 +710,9 @@ namespace GasSensor_GUI_v1._0
             //() => 3            ||  delegate () { return 3; }
             //() => DateTime.Now ||  delegate () { return DateTime.Now; };
 
+            //await operator reformats the operand that follows this operator as a TASK that runs on the same THREAD as the async method
+            //The remainder of the code is converted into a continuation that
+            //runs when the task completes, again running on the same thread
             await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[0], (int)SENSOR_NUMBER.ONE));
             await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[1], (int)SENSOR_NUMBER.TWO));
             await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[2], (int)SENSOR_NUMBER.THREE));
@@ -707,7 +720,7 @@ namespace GasSensor_GUI_v1._0
             await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[4], (int)SENSOR_NUMBER.FIVE));
             await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[5], (int)SENSOR_NUMBER.SIX));
             await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[6], (int)SENSOR_NUMBER.HUMIDITY));//humidity value RH%
-            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[7], (int)SENSOR_NUMBER.TEMPERATURE));//Temprature
+            await Task.Run(() => UpdateChart(DateTime.Now.Subtract(startTime).TotalHours, value[7], (int)SENSOR_NUMBER.TEMPERATURE));//Temperature
 
             
             //addrow_gridview = 0;
